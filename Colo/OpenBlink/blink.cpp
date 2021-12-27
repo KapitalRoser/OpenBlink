@@ -1,107 +1,140 @@
 #include "../../processCore.h"
 
 
-float SLBMath(int SLB){
+float getThreshold(int SLB){
     return static_cast<float>((-SLB+110)*(SLB-10))/150000;
 }
 
-//This program calculates all the logic for the blinking process.
-//In the future, the reverse engineering of this to determine the seed is necessary.
-//Technically this is enough to do catch rng.
+void printBlinks(int i, int rngCount, int fBG, int minFrames, u32 seed){
+    std::cout <<std::dec << std::setw(4) << i << " : "
+    << std::setw(6) << rngCount << " : " 
+    << std::setw(6) << fBG << " : " 
+    << std::setw(6) << rngCount + minFrames << " : " 
+    << std::setw(8) << std::hex << seed << std::endl;
+}
+
+
+float blinkLogic(int sinceLastBlink){
+    float tHold;
+    if (sinceLastBlink >= 10){
+        if (sinceLastBlink < 60){
+            tHold = getThreshold(sinceLastBlink);  
+        } else if (sinceLastBlink < 180){
+            tHold = 1.0/60;
+        } else {
+            tHold = 1; 
+        }
+    return tHold;
+    }
+    return -1;
+}
+
+int blink(u32 &seed,int &blinkGap, int& sinceLastBlink,int slbFactor,std::vector<int>&SLBList){
+    if (blinkGap > 0){
+        blinkGap--;
+        return 0;
+    }
+
+    sinceLastBlink+=slbFactor;
+    float threshold = blinkLogic(sinceLastBlink);
+
+    if (threshold < 0){
+        return 0;
+    }
+
+    float percentRoll = LCGPercentage(seed);
+    if (percentRoll <= threshold){
+        SLBList.push_back(sinceLastBlink);
+        sinceLastBlink = 0;
+        return 2;
+    }
+    return 1;
+}
+
+
 
 int main(){
-    u32 seed = 0xC771EDB6;
+    u32 inputSeed = 0x353A8F38;
+    u32 seed = inputSeed;
     int frameWindow = 2000;
     float threshold = 0;
-    region rate = NTSCU; //All rates except PAL 50hz work.
+    region rate = NTSCU; 
     float frameSpeed = 60;
     int slbFactor = 2;
-    //It turns out XD has some extra stuff goin on.
-    // bool xd = true;
-    // if (xd){
-    //     slbFactor = 1;
-    // }
+    int visualminGap = 5; //4 apparently for EU.
+    std::vector<int>SLBList;
+    if (rate == PAL60 || rate == PAL50){
+        visualminGap = 4;
+    }
     if (rate == PAL50) {
-        frameSpeed = 50;
+        frameSpeed = 50; //currently does nothing? Not necessary for logic?
     }
-    int sinceLastBlink = 0; //in 60fps, incremented by 2 for colo, 1 for xd.
-    for (int i = 0; i < frameWindow; i++)
-    {
-        sinceLastBlink += slbFactor;
-        threshold = 0;
-        //blink logic
-        if (sinceLastBlink > 10){
-            if (sinceLastBlink < 60){
-                threshold = SLBMath(sinceLastBlink);
-            } else if (sinceLastBlink < 180){
-                threshold = 1.0/60;
-            } else {
-                threshold = 1; //guarantee
-            }
-        }
-        
-        // if (i > 208 && i < 225){
-        //     std::cout << std::dec << i << ": " << sinceLastBlink << ": " <<threshold <<": "<<std::hex<< seed<< std::endl; 
-        // }
+    int blinkGap = visualminGap;
+    int blinkFlag;
+    int sinceLastBlink = 0; 
 
-        //evaulate blink.
-        float percentRoll = LCG_PullHi16(seed);
-        //std::cout << "Evaluating: " << std::hex << seed << std::dec  << " With a value of: " << percentRoll << "\n";
-        if (percentRoll <= threshold){
-            //std::cout << "Blink at: " <<std::dec << i << " since " << sinceLastBlink<<  " with thresh: " << threshold << " : " << std::hex << seed << std::endl;
-            std::cout << "Blink at: " << std::hex << seed << std::endl;
-            sinceLastBlink = 8; //wtf lol
+    int visualFrame = 6918;
+    int vFrameFromStart = 0;
+
+    // int countRngCalls = 0;
+    // for (int i = 0; i < frameWindow;i++) //increment is conditional
+    // {   
+    //     if (blinkGap > 0){
+    //         blinkGap--;
+    //     }
+    //     sinceLastBlink += slbFactor;
+    //     threshold = 0;
+    //     if (sinceLastBlink >= 10){
+    //         if (sinceLastBlink < 60){
+    //             threshold = getThreshold(sinceLastBlink);  
+    //         } else if (sinceLastBlink < 180){
+    //             threshold = 1.0/60;
+    //         } else {
+    //             threshold = 1; 
+    //         }
+    //         float percentRoll = LCGPercentage(seed);
+    //         countRngCalls++;
+    //         if (percentRoll <= threshold){
+    //             //std::cout << "Blink at: " << std::hex << seed << std::endl;
+    //             blinkFlag = true;
+    //             SLBList.push_back(sinceLastBlink);
+    //             printBlinks(i,countRngCalls,sinceLastBlink,0,seed);
+    //             sinceLastBlink = 0;
+    //             blinkGap = visualminGap; 
+                
+                
+    //         }
+    //     } else {
+    //         i--; //extends searching
+    //     }
+    
+    // }
+
+    int waitAdvances = 0;
+    int successAdvances = 0;
+    int formattedBlinkGap = 0;
+    while(successAdvances < frameWindow){
+        blinkFlag = blink(seed,blinkGap,sinceLastBlink,slbFactor,SLBList);
+        waitAdvances++;
+        if (formattedBlinkGap == 0){
+            formattedBlinkGap = SLBList.front();
+        } else {
+            formattedBlinkGap = SLBList.back() - SLBList.at(SLBList.size()-2);
         }
-        
-        //std::cout << std::setprecision(17) << sinceLastBlink <<" : "<< threshold<< std::endl;
+        if (blinkFlag > 0){
+            successAdvances++;
+        }
+        if (blinkFlag == 2){
+            printBlinks(waitAdvances,successAdvances,formattedBlinkGap,0,seed);
+        }
+
     }
-     
+
+
+
+
+
+
     return 0;
 }
 
-//This works on NTSC! -- and presumably PAl 60hz as well.
-
-/*
-
-Frames since last blink are calculated at the 60 fps mark, even tho the game runs at 30. This is nice
-for xd since that game does run 60fps on the poke menu.
-
-There must be at least 10 frames have passed (5 at 30)
-10th frame is 0%
-
-12th frame is roughly 1/12 * 1/60.
-
-Actual math is in func 801df1d0;
-
-(2 - X) * 1/60
-
-2/50 float rounded, perfect 0.04 would be: 3FA47AE147AE147B
-instead it is rounded to: 0.039... so 3FA47AE140000000
-0.039999999105930328369140625
-
-2 - this num: 1.9600000381469727
-1.96... * 0.0399999... = 0.784
-
-sinceLastBlink -= 10;
-div50 = sinceLastBlink / 50;
-
-factor A = 2 - div50
-factor B = factor A * div50
-factor C = factor B * 1/60
-
-Equation comes out to:
-(2 - slb-10/50) * slb-10/50 * (1/60);
-Will check float rounding but thanks to symbolab its equivalent to:
-(-slb + 110) * (slb-10) / 150000
-
-float rounding appears ok! :D
-
-If sinceLastBlink is < 60 then
-Do a bunch of math to gradually raise chances up to the 1/60 mark.
-
-
-if sinceLastBlink is <180 then
-threshold is 1/60 or 1.666... %
-else 
-guaranteed to blink (threshold = 1 -> 100%)
-*/
