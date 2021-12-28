@@ -34,9 +34,9 @@ int next(u32 &seed,int& break_time, int &sinceLastBlink, int interval){
 int main(){
     u32 inputSeed = 0x353A8F38;
     u32 seed = inputSeed;
-    bool is_eu = 0;
+    bool is_jpn = 0;
     int min_adv = 0;
-    int max_adv = 2000;
+    int max_adv = 10000;
     int interval = 0;  
     int advance = min_adv;
     int vFrames = 0;
@@ -44,20 +44,20 @@ int main(){
     std::vector<int> blink_interval;
     int break_time = 0;
     int sinceLastBlink = 0;
-    if (is_eu){
-        interval = 5;
-    } else {
+    if (is_jpn){
         interval = 4;
+    } else {
+        interval = 5; 
     }
     
-    bool CTOldVersion = true;
-    if (CTOldVersion){
+    bool coToolOldVersion = true;
+    if (coToolOldVersion){
         vFrames = 3;
     }
     //auto advance
     LCGn(seed,min_adv);
 
-    printf("VFrame\tAdvSinceStart\tVFrameSLB\tAdvance\t\tSeed\n");
+    printf("#\tVFrame\tAdvSinceStart\tVFrameSLB\tAdvance\t\tSeed\n");
     while(advance < max_adv-min_adv){
         int flag = next(seed,break_time,sinceLastBlink,interval);
         if (flag){
@@ -65,7 +65,7 @@ int main(){
         }
         vFrames += 1;
         if (flag > 1){
-            if (CTOldVersion){
+            if (!is_jpn){
                 vFrames += 1;
             }
             int blink = vFrames;
@@ -75,11 +75,11 @@ int main(){
             } else {
                 blink_interval.push_back(blink - prev_blink);
             }
-            printf("%d\t%d\t\t%d\t\t%d\t\t%x\n",vFrames,advance-min_adv,blink-prev_blink,advance,seed);
+            printf("%d\t%d\t%d\t\t%d\t\t%d\t\t%x\n",blink_interval.size()-1,vFrames,advance-min_adv,blink-prev_blink,advance,seed);
             prev_blink = blink;
         }
     }
-    debugPrintVec(blink_interval);
+    //debugPrintVec(blink_interval);
 
 
 }
