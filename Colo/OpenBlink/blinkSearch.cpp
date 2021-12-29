@@ -88,7 +88,24 @@ int main (){
     int vFrames = 0; //this vframe thing is kinda pointless tbh.
     int prev_blink = 0;
     
-    region game = PAL50;
+    region game;
+    std::string regionIn;
+    std::cout << "What region are you playing? JPN (j), PAL (p), or NTSC-U (n) ?";
+    std::getline(std::cin,regionIn);
+    if (regionIn == "j" || regionIn == "J"){
+        game = NTSCJ;
+    } else if (regionIn == "n" || regionIn == "N"){
+        game = NTSCU;
+    } else {
+        std::cout << "Do you use 50 Hz? (Y/N)";
+        std::getline(std::cin,regionIn);
+        if (regionIn == "y" || regionIn == "Y"){
+            game = PAL50;
+        } else {
+            game = PAL60;
+        }
+    }
+
     if (game == NTSCJ){
         interval = 4;
     } else {
