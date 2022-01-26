@@ -22,12 +22,12 @@ float literalThreshold(int SLB){
 //Technically this is enough to do catch rng.
 
 int main(){
-    u32 seed = 0xC771EDB6;
+    u32 seed = 0x353A8F38;
     int frameWindow = 2000;
     float threshold = 0;
     region rate = NTSCU; //All rates except PAL 50hz work.
     float frameSpeed = 60;
-    int slbFactor = 2;
+    int slbFactor = 2; //This is "speedfactor" in ghidra. Idk where in memory it gets it, but it's always 2.
     //It turns out XD has some extra stuff goin on.
     // bool xd = true;
     // if (xd){

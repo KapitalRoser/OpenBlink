@@ -1,0 +1,60 @@
+This is an example of the errors in the 1 and 0.9 fluctuation in framerate.
+Given that this oscillation occurs constantly since boot, it will be in a slightly different position each time
+It would take the user some time to identify which spot in the pattern they began on, if they can actually tell.
+In most cases, the effect of the errors only causes the blink to be off by one or two frames at most.
+In my own opinion, only a tas would be able to account for this. However, I've kept this as a reference,
+if someone down the line wants to code it out.
+
+Failure 1: 12
+Failure 1: 110
+Failure 0.9: 111
+Failure 1: 312
+Failure 1: 410
+Failure 0.9: 411
+Failure 1: 612
+Failure 1: 710
+Failure 0.9: 711
+Failure 1: 912
+Failure 1: 1010
+Failure 0.9: 1011
+Failure 1: 1212
+Failure 1: 1310
+Failure 0.9: 1311
+Failure 1: 1512
+Failure 1: 1610
+Failure 0.9: 1611
+Failure 1: 1812
+Failure 1: 1910
+Failure 0.9: 1911
+Failure 1: 2112
+Failure 1: 2210
+Failure 0.9: 2211
+Failure 1: 2412
+Failure 1: 2510
+Failure 0.9: 2511
+Failure 1: 2712
+Failure 1: 2810
+Failure 0.9: 2811
+Failure 1: 3012
+Failure 1: 3110
+Failure 0.9: 3111
+Failure 1: 3312
+Failure 1: 3410
+Failure 0.9: 3411
+Failure 1: 3612
+Failure 1: 3710
+Failure 0.9: 3711
+Failure 1: 3912
+Failure 1: 4010
+Failure 0.9: 4011
+Failure 1: 4212
+Failure 1: 4310
+Failure 0.9: 4311
+Failure 1: 4512
+Failure 1: 4610
+Failure 0.9: 4611
+Failure 1: 4812
+Failure 1: 4910
+Failure 0.9: 4911
+Failure 1: 5002
+Total failures: 35

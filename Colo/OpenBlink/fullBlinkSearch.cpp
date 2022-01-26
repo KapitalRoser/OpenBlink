@@ -25,6 +25,7 @@ float getThreshold(int SLB){
     return static_cast<float>((-SLB+110)*(SLB-10))/150000;
 }
 float blinkLogic(int SLB){
+    //This holds true for colo, but the constants may need updating for gales. 
     if (SLB < 60){
         return getThreshold(SLB);
     }   
@@ -34,12 +35,12 @@ float blinkLogic(int SLB){
         return 1;
     }
 }
-int next(u32 &seed,int& break_time, int &sinceLastBlink, int interval){
+int next(u32 &seed,int& break_time, int &sinceLastBlink, int interval, int framesPer60){
     if (break_time > 0){
         break_time -= 1;
         return false;
     }       
-    sinceLastBlink += 2;
+    sinceLastBlink += framesPer60;
     if (sinceLastBlink < 10){
         return false;
     }
@@ -76,7 +77,8 @@ int main (){
     int numBlinks = 5; // for searching. Will eventually implement parallel search so that the user can stop inputting automatically when the program finds their seed.
     int flexValue = 10; //How lenient the seed searcher should be (in frames)
     float framerate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer. 
-    
+    const int HEURISTIC = 69; //68.138 or until a better number is found.
+    int framesPer60 = 0; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60.
     u32 seed = inputSeed;
     std::vector<int>searchPool;
     std::vector<u32>seedPool;
@@ -88,29 +90,44 @@ int main (){
     int vFrames = 0; //this vframe thing is kinda pointless tbh.
     int prev_blink = 0;
     
-    region game;
+    bool is_xd = 1;
+    bool is_emu5 = 0;
+    region gameRegion;
     std::string regionIn;
-    std::cout << "What region are you playing? JPN (j), PAL (p), or NTSC-U (n) ?";
-    std::getline(std::cin,regionIn);
-    if (regionIn == "j" || regionIn == "J"){
-        game = NTSCJ;
-    } else if (regionIn == "n" || regionIn == "N"){
-        game = NTSCU;
-    } else {
-        std::cout << "Do you use 50 Hz? (Y/N)";
-        std::getline(std::cin,regionIn);
-        if (regionIn == "y" || regionIn == "Y"){
-            game = PAL50;
-        } else {
-            game = PAL60;
-        }
-    }
 
-    if (game == NTSCJ){
+    // std::cout << "What region are you playing? JPN (j), PAL (p), or NTSC-U (n) ?";
+    // std::getline(std::cin,regionIn);
+    // if (regionIn == "j" || regionIn == "J"){
+    //     gameRegion = NTSCJ;
+    // } else if (regionIn == "n" || regionIn == "N"){
+         gameRegion = NTSCU;
+    // } else {
+    //     std::cout << "Do you use 50 Hz? (Y/N)";
+    //     std::getline(std::cin,regionIn);
+    //     if (regionIn == "y" || regionIn == "Y"){
+    //         gameRegion = PAL50;
+    //     } else {
+    //         gameRegion = PAL60;
+    //     }
+    // }
+
+    // std::cout << "Are you playing Colo (c) or XD (x) ?";
+    // std::string gameIn;
+    // std::getline(std::cin,gameIn);
+    // if (gameIn == "x" || gameIn == "X"){
+    //     is_xd = true;
+    //     std::cout << "Are you playing on Dolphin 5.0? Y/N";
+    //     std::getline(std::cin,gameIn);
+    //         if (gameIn == "y" || gameIn == "Y"){
+    //             is_emu5 = true;
+    //         }
+    // }
+
+    if (gameRegion == NTSCJ){
         interval = 4;
     } else {
         interval = 5;
-        if (game == PAL50){
+        if (gameRegion == PAL50){
             framerate = 40;
         }
     }
@@ -118,7 +135,20 @@ int main (){
     //generates pool of possible seeds in search range. Could later alter i and maxSearch to re-generate pool of possible seeds.
     for (int i = 0; i < maxSearch; i++)
     {
-        int flag = next(seed,break_time,sinceLastBlink,interval);
+        int flag = next(seed,break_time,sinceLastBlink,interval,framesPer60);
+        if (is_xd){
+            if (is_emu5){
+                if (is_emu5){
+                    framesPer60 = vFrames % 2;
+                }
+            } else {
+                if (vFrames % HEURISTIC == 0){
+                    framesPer60 = 0;
+                } else {
+                    framesPer60 = 1;
+                }
+            }
+        }
         vFrames += 1;
         if (flag > 1){ //meaning we blinked.
             int blink = vFrames;
