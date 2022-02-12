@@ -72,18 +72,19 @@ std::vector<int> getInputBlinks(int numBlinks, int framerate){
 int main (){
     //This code works on all regions!
     //initial search array setup
-    u32 inputSeed = 0x353A8F38;
+    u32 inputSeed = 0xBA17A99E;
     int maxSearch = 20000; //overkill? could user define.
     int numBlinks = 5; // for searching. Will eventually implement parallel search so that the user can stop inputting automatically when the program finds their seed.
-    int flexValue = 10; //How lenient the seed searcher should be (in frames)
-    float framerate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer. 
+    int flexValue = 20; //How lenient the seed searcher should be (in frames)
+    float framerate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer.
+        //Oh god what do we do about xd? 
     const int HEURISTIC = 69; //68.138 or until a better number is found.
     int framesPer60 = 0; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60.
     u32 seed = inputSeed;
     std::vector<int>searchPool;
     std::vector<u32>seedPool;
     
-    //blinker vars -- condense into class?
+    //blinker vars -- condense into struct?
     int break_time = 0;
     int sinceLastBlink = 0;
     int interval = 0;
@@ -94,7 +95,7 @@ int main (){
     bool is_emu5 = 0;
     region gameRegion;
     std::string regionIn;
-
+    //FDFE9435
     // std::cout << "What region are you playing? JPN (j), PAL (p), or NTSC-U (n) ?";
     // std::getline(std::cin,regionIn);
     // if (regionIn == "j" || regionIn == "J"){
@@ -130,6 +131,9 @@ int main (){
         if (gameRegion == PAL50){
             framerate = 40;
         }
+    }
+    if (is_xd){
+        framerate = framerate / 2;
     }
 
     //generates pool of possible seeds in search range. Could later alter i and maxSearch to re-generate pool of possible seeds.
@@ -219,3 +223,4 @@ int main (){
 
     return 0;
 }
+//Once blinking is done, still need to add the streamlined way to exit the blink (like in the current blink timer stuff) -- might need yatsune for this.
