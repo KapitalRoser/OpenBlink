@@ -42,7 +42,7 @@ int main(){
     bool is_emu5 = 1; //Dolphin 5.0 behaviour
     bool is_xd = 1;
     int min_adv = 0;
-    int max_adv = 10000;
+    int max_adv = 100000;
     int interval = is_jpn ? 4 : 5;  
     int advance = min_adv;
     int vFrames = 0;
@@ -58,6 +58,8 @@ int main(){
     // if (coToolOldVersion){
     //     vFrames = 3;
     // }    
+
+    
 
     //auto advance
     LCGn(seed,min_adv);
@@ -144,5 +146,9 @@ number of blinks necessary for finding the seed are the same as colo.
 A full length pattern analysis of the lag may need to wait for scripting in modern.
 5.0 alternates between 1 and 0.9x every frame, so it's different to modern. 
 
+So far I'm seeing:
+In modern XD: 1/290 for non 180f blinks, and 15/28 for 180f blinks.
+In 5.0: 19/5490 -- is this 180f blinks or all frames? I want to think its just 180s but I can't find my original tests. I'm pretty sure I saw no failures in non 180f blinks.
+I remember being pretty confident about that. 
 
 */
