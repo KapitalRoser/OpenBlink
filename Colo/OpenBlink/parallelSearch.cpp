@@ -102,18 +102,6 @@ int main (){
     framerate = (gameRegion == PAL50) ? 40 : 33.373;
     framerate = is_xd ? framerate / 2 : framerate;
 
-    // if (gameRegion == NTSCJ){
-    //     interval = 4;
-    // } else {
-    //     interval = 5;
-    //     if (gameRegion == PAL50){
-    //         framerate = 40;
-    //     }
-    // }
-    // if (is_xd){
-    //     framerate = framerate / 2;
-    // }
-
     //generates pool of possible seeds in search range. Could later alter i and maxSearch to re-generate pool of possible seeds.
     for (int i = 0; i < maxSearch; i++)
     {

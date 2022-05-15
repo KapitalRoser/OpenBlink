@@ -36,13 +36,13 @@ int next(u32 &seed,int& break_time, int &sinceLastBlink, int interval, int frame
 
 
 int main(){
-    u32 inputSeed = 0x353A8F38; //0x353A8F38
+    u32 inputSeed = 0xBA17A99E; //0x353A8F38
     u32 seed = inputSeed;
     bool is_jpn = 0;
-    bool is_emu5 = 1; //Dolphin 5.0 behaviour
-    bool is_xd = 1;
+    bool is_emu5 = 0; //Dolphin 5.0 behaviour
+    bool is_xd = 0;
     int min_adv = 0;
-    int max_adv = 100000;
+    int max_adv = 1000;
     int interval = is_jpn ? 4 : 5;  
     int advance = min_adv;
     int vFrames = 0;
