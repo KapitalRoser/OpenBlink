@@ -276,13 +276,14 @@ void runTimer(){
         if (msToEnd < msToTarget){
             timerLimit = msToEnd;
         }
-        int userInputOffset = 5000; 
+        int userInputOffset = -215; //always subtracting from time remaining.
         int userInputOffsetInterval = 5;
-        bool is_Blinking = false;
+        userInputOffset += userInputOffsetInterval * 1000; //in this case: 5000 + previous value.
         int blinkCounter = 0;
+        int DEFAULT_MS_ADJUST = 500; //Currently subtraction -- add ability to be added.
         debugPrintVec(incoming.upcomingBlinks);
-        auto calibrationStart = std::chrono::high_resolution_clock::now();
-        while (totalDuration.count() < timerLimit){
+        auto calibrationStart = std::chrono::high_resolution_clock::now() - std::chrono::milliseconds(DEFAULT_MS_ADJUST);
+        while (totalDuration.count() < timerLimit - userInputOffset){
             auto stop = std::chrono::high_resolution_clock::now();
             duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
             totalDuration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - calibrationStart);
@@ -293,21 +294,19 @@ void runTimer(){
                         std::cout << "Seeking: " << *nextBlinkIter << "\n";
                     }
                     std::cout << "BLINK!\r";
-                    is_Blinking = true;
                     start = std::chrono::high_resolution_clock::now(); //Where should this go honestly. Where should this be so that the timer remains accurate. 
                     Beep(1000,333); //This holds the thread up, maybe should send to other thread.
                     
                 } else {
-                    // if (totalDuration.count() - previousDur.count() != 1){
-                    //     std::cout << "SKIPPED " << totalDuration.count() << "By " << totalDuration.count() - previousDur.count() <<"\n"; 
-                    //     //tends to skip after a blink occurs. Additional 10-15 ms lag for the trouble. 
-                    // }
                     std::cout << "~~~~~~\r";
                 }
-                //I may need to delegate the flowtimer aspect of leading beeps to another thread
-                //May be skipping certain millisecond values, yikes. 
             }
             previousDur = totalDuration;
+        }
+        //Not the *most* accurate thing in the world, will have to do for now. 
+        for (int i = 0; i < userInputOffsetInterval; i++){
+            Sleep(700); //300 + 700 = units of 1000.
+            Beep(1500, 300); //Determined by userSettings, like in flowtimer.
         }
  
         std::cout << "FINAL BLINK REACHED!";
@@ -362,6 +361,7 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams){
     //SEND:
     outMsg.framerate = userPlatform.getFramerate(); //Doesn't change, that's fp60, which is already accounted for in the process of generating a blink list.
     outMsg.targetIdx = ARBITRARY_TARGET; //Is this right?
+    std::cout << "Seed at target: " << std::hex << exitPool[ARBITRARY_TARGET-1].seed << std::dec << std::endl;
     sendBlinkSet(outMsg);
     Beep(1200,100);
     Beep(1200,100);
@@ -388,7 +388,7 @@ int main (){
    Beep(900,300);
    //~~~~~~~~USER INPUT~~~~~~~~~~~~~~
     searchParameters userInputs;
-    userInputs.inputSeed = 0xBA17A99E;
+    userInputs.inputSeed = 0xB94281C4;
     userInputs.maxSearch = 20000; //in frames currently
     userInputs.flexValue = 10;
     userInputs.maxCalibrate = 5000; //in frames currently
