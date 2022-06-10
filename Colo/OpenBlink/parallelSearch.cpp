@@ -35,6 +35,9 @@ class platform{
     float m_framerate = 33.373;
     public:
     platform(bool is_xd, bool is_emu5, region gameRegion){
+        m_is_xd = is_xd;
+        m_is_emu5 = is_emu5;
+        m_gameRegion = gameRegion;
         m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60. DOES THIS BREAK XD?    
         m_framerate = (gameRegion == PAL50) ? 40 : 33.373; //as used by CoTool, other sites report 33.375 but this is closer. 
         m_framerate = is_xd ? m_framerate / 2 : m_framerate;
@@ -102,13 +105,6 @@ incBlinkMsg getIncoming(){
     incMsg_queue.pop(); //first-in, first-out.
     return message;
 }
-
-// void setupPlatform (platform p, int &interval,float &framerate, int &framesPer60){
-//     framesPer60 = p.is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60. DOES THIS BREAK XD?    
-//     framerate = (p.gameRegion == PAL50) ? 40 : 33.373; //as used by CoTool, other sites report 33.375 but this is closer. 
-//     framerate = p.is_xd ? framerate / 2 : framerate;
-//     interval = (p.gameRegion == NTSCJ) ? 4 : 5;
-// }
 
 //Blink functions
 float getThreshold(int SLB){
@@ -178,7 +174,6 @@ std::vector<int> searchPool(std::vector<pool> pool, std::vector<int>inputs, int 
     }
     return resultsIdx; //Index is found, it's up to the caller to find the appropriate pool struct in the mainPool.
 };
-
 std::vector<pool> generateBlinks(u32 seed,blinkVars blinkState, platform &userPlatform, int limit){
     const int HEURISTIC = 69; //XD, rate of Time Compensation failures. ~68.138 or until a better number is found.
     std::vector<pool>outPool;
@@ -199,6 +194,13 @@ std::vector<pool> generateBlinks(u32 seed,blinkVars blinkState, platform &userPl
     return outPool;
 }
 
+int setTarget(incBlinkMsg set, int limiter){
+    int timerLimit = 0;
+    for (unsigned int i = 0; i < limiter;i++){
+        timerLimit += set.upcomingBlinks[i];
+    }
+return timerLimit;
+}
 
 void printResults(std::vector<int> results,std::vector<int> inputBlinks,std::vector<pool>mainPool, u32 inputSeed){
     //Results printing:
@@ -219,7 +221,6 @@ void printResults(std::vector<int> results,std::vector<int> inputBlinks,std::vec
     }
 
 }
-
 void debugPool(std::vector<pool> pool){
     for (unsigned int i = 0; i < pool.size(); i++)
         {
@@ -263,24 +264,24 @@ void runTimer(){
         
         incBlinkMsg incoming = getIncoming(); //THESE BLINKS ARE IN MILLISECONDS!!
         iterI nextBlinkIter = incoming.upcomingBlinks.begin();
-        int msToEnd = 0;
-        for (unsigned int i = 0; i < incoming.upcomingBlinks.size()-1;i++){
-            msToEnd += incoming.upcomingBlinks[i];
+
+        int timerLimit = 0;
+        if (incoming.targetIdx < incoming.upcomingBlinks.size()){
+            timerLimit = setTarget(incoming,incoming.targetIdx); //Goes to target, assuming target is valid and within the list.
+        } else {
+            timerLimit = setTarget(incoming,incoming.upcomingBlinks.size()-1); //Goes to end of blink list
         }
-        int msToTarget = 0;
-        for(unsigned int i = 0; i < incoming.targetIdx; i++){
-            msToTarget += incoming.upcomingBlinks[i];
-        }
-        int timerLimit = msToTarget; //At least this targeting mechanism works in it's basic form. 
-        std::cout << msToEnd << " VS " << msToTarget << "\n";
-        if (msToEnd < msToTarget){
-            timerLimit = msToEnd;
-        }
+
+        //These values work for ntscu/pal60 but not jpn or pal50 for obv reasons.
         int userInputOffset = -215; //always subtracting from time remaining.
         int userInputOffsetInterval = 5;
         userInputOffset += userInputOffsetInterval * 1000; //in this case: 5000 + previous value.
         int blinkCounter = 0;
         int DEFAULT_MS_ADJUST = 500; //Currently subtraction -- add ability to be added.
+        //this number is the most heuristic-y of the heuristics. I hate how this is set up but we will fix in QT.
+
+
+
         debugPrintVec(incoming.upcomingBlinks);
         auto calibrationStart = std::chrono::high_resolution_clock::now() - std::chrono::milliseconds(DEFAULT_MS_ADJUST);
         while (totalDuration.count() < timerLimit - userInputOffset){
@@ -325,14 +326,13 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams){
     std::vector<int> resultIndexes;
     const int lagReduction = 10; //Heuristic, based on CoTool's performance.
     blinkState.interval = (userPlatform.getRegion() == NTSCJ) ? 4 : 5; //make blinkState a class and add this to constructor?
-    
     //generates pool of possible seeds in search range. Could later alter i and maxSearch to re-generate pool of possible seeds.
     std::vector<pool>mainPool = generateBlinks(seed,blinkState,userPlatform,userSearchParams.maxSearch); //SEED IS NOT MODIFIED
 
     //debug
     debugPool(mainPool);
     std::cout << "\n\n";
-
+    Beep(900,300);
     //TIME TO GET INPUTS BITCHES.
     std::vector<int> inputBlinks = {89,12,78,60,45}; //for debug
     while (resultIndexes.size() != 1){
@@ -343,6 +343,10 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams){
             std::cout << "\nSEED NOT FOUND OR ERROR!\n";
             stopFlag = true;
             errorFlag = true;
+            Beep(700,200);
+            Beep(700,200);
+            Beep(700,200);
+            Beep(700,200);
             return;
         }
     }
@@ -385,19 +389,17 @@ int main (){
     //Units: Frames = Visual frames at a certain framerate
     //Advances = LCG calls to rng
     //Blinks = Successful blinks
-   Beep(900,300);
+   
    //~~~~~~~~USER INPUT~~~~~~~~~~~~~~
     searchParameters userInputs;
-    userInputs.inputSeed = 0xB94281C4;
+    userInputs.inputSeed = 0x353A8F38;
     userInputs.maxSearch = 20000; //in frames currently
     userInputs.flexValue = 10;
     userInputs.maxCalibrate = 5000; //in frames currently
     //~~~~~~~~PLATFORM~~~~~~~~~~~~~~
-    platform userPlatform = platform(false,false,NTSCU); //intialize from QT.
-    //if passed by std::ref then I assume responsibility that nothing will destroy this object and make the reference invalid. 
-    //That would create a nasty stale reference/bad pointer which we do not want. 
-    //Unless timerT needs something from userPlatform that needs to change, and as such needs to be linked to from a global-ish reference like main(),
-    //then userPlatform can be safely defined inside searchT and thus doesn't need to be referenced from main. Not sure if QT will like this though. 
+    platform userPlatform = platform(false,false,NTSCJ); //intialize from QT.
+    //HA All this std::thread stuff becomes moot once we get into QT Threading. 
+    //Probably still good to know for future tools
     
     std::thread timerT(&runTimer);
     std::thread searchT(&handleSearch,std::ref(userPlatform),userInputs);
