@@ -1,0 +1,6 @@
+353A8F38 :Seed
+0 :range min
+20000 :range max
+10 :flexValue
+10 :Target
+0 :Region [0 = NSTCU, 1 = PAL60, 2 = PAL50, 3 = NTSCJ]

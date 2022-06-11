@@ -25,7 +25,8 @@ struct blinkVars{
 struct incBlinkMsg{
     int targetIdx = 0;
     float framerate = 0;
-    std::vector<int> upcomingBlinks; //This is already in MS to save on timer computing resources. 
+    std::vector<int> blinksMS; //This is already in MS to save on timer computing resources. 
+    std::vector<int> blinksF; //may morph into pool if desired.
 };
 
 class platform{
@@ -59,6 +60,7 @@ struct searchParameters {
     int minSearch = 0; // must be < max search, handle later. 
     int flexValue = 0;
     int maxCalibrate = 0;
+    int arbitrary_Target = 0; //Probably remove for Qt, as target may get chosen at runtime.
 };
 
 typedef std::vector<pool>::iterator iterP;
@@ -197,7 +199,7 @@ std::vector<pool> generateBlinks(u32 seed,blinkVars blinkState, platform &userPl
 int setTarget(incBlinkMsg set, int limiter){
     int timerLimit = 0;
     for (unsigned int i = 0; i < limiter;i++){
-        timerLimit += set.upcomingBlinks[i];
+        timerLimit += set.blinksMS[i];
     }
 return timerLimit;
 }
@@ -207,17 +209,13 @@ void printResults(std::vector<int> results,std::vector<int> inputBlinks,std::vec
     if (results.empty()){
         std::cout << "NOT FOUND!";
     } else {
-        std::cout << "Found subsequence ";
-        debugPrintVec(inputBlinks);
-        std::cout << "At position(s) ";
+        std::cout << "Found subsquence at position: ";
         debugPrintVec(results); 
-        std::cout <<"\nSeed\t : total rng advances\n";
-        for (unsigned int i = 0; i < results.size(); i++)
-        {
-            u32 resultSeed = mainPool[results[i]+inputBlinks.size()-1].seed; //IMPORTANT
-            std::cout  << std::hex << resultSeed << "\t : " << std::dec << findGap(inputSeed,resultSeed,true) << std::endl;
-        }
-        
+        std::cout <<"\nSeed found\t : total rng advances\n";
+        u32 resultSeed = mainPool[results[0]+inputBlinks.size()-1].seed; //IMPORTANT
+        std::cout  << std::hex << resultSeed << "\t : " << std::dec << findGap(inputSeed,resultSeed,true) << "\n";
+        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        std::cout << "Blinks:\n";
     }
 
 }
@@ -263,13 +261,13 @@ void runTimer(){
         std::chrono::milliseconds totalDuration = std::chrono::milliseconds::zero();
         
         incBlinkMsg incoming = getIncoming(); //THESE BLINKS ARE IN MILLISECONDS!!
-        iterI nextBlinkIter = incoming.upcomingBlinks.begin();
-
+        iterI nextBlinkIter = incoming.blinksMS.begin();
+        iterI nextBlinkF = incoming.blinksF.begin();
         int timerLimit = 0;
-        if (incoming.targetIdx < incoming.upcomingBlinks.size()){
+        if (incoming.targetIdx < incoming.blinksMS.size()){
             timerLimit = setTarget(incoming,incoming.targetIdx); //Goes to target, assuming target is valid and within the list.
         } else {
-            timerLimit = setTarget(incoming,incoming.upcomingBlinks.size()-1); //Goes to end of blink list
+            timerLimit = setTarget(incoming,incoming.blinksMS.size()-1); //Goes to end of blink list
         }
 
         //These values work for ntscu/pal60 but not jpn or pal50 for obv reasons.
@@ -282,17 +280,18 @@ void runTimer(){
 
 
 
-        debugPrintVec(incoming.upcomingBlinks);
+        //debugPrintVec(incoming.blinksMS);
         auto calibrationStart = std::chrono::high_resolution_clock::now() - std::chrono::milliseconds(DEFAULT_MS_ADJUST);
         while (totalDuration.count() < timerLimit - userInputOffset){
             auto stop = std::chrono::high_resolution_clock::now();
             duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
             totalDuration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - calibrationStart);
             if (totalDuration.count() > previousDur.count()){
-                if (duration.count() == *nextBlinkIter){
-                    if (nextBlinkIter != incoming.upcomingBlinks.end()){
+                if (duration.count() >= *nextBlinkIter){
+                    if (nextBlinkIter != incoming.blinksMS.end()){
                         nextBlinkIter++;
-                        std::cout << "Seeking: " << *nextBlinkIter << "\n";
+                        nextBlinkF++;
+                        std::cout << nextBlinkIter - incoming.blinksMS.begin() << ": " << *nextBlinkF << "f | " << *nextBlinkIter << "ms" << "\n";
                     }
                     std::cout << "BLINK!\r";
                     start = std::chrono::high_resolution_clock::now(); //Where should this go honestly. Where should this be so that the timer remains accurate. 
@@ -304,7 +303,8 @@ void runTimer(){
             }
             previousDur = totalDuration;
         }
-        //Not the *most* accurate thing in the world, will have to do for now. 
+        //Not the *most* accurate thing in the world, will have to do for now.
+        std::cout << "Starting countdown! (" << incoming.targetIdx - (nextBlinkIter - incoming.blinksMS.begin()) << ") blinks occur during countdown.\n"; 
         for (int i = 0; i < userInputOffsetInterval; i++){
             Sleep(700); //300 + 700 = units of 1000.
             Beep(1500, 300); //Determined by userSettings, like in flowtimer.
@@ -312,14 +312,9 @@ void runTimer(){
  
         std::cout << "FINAL BLINK REACHED!";
     }
-    
-    std::cout << "\nRUNTIMER EXITED!\n";
 }
-void handleSearch(platform &userPlatform, searchParameters userSearchParams){
+void handleSearch(platform &userPlatform, searchParameters userSearchParams, u32 &resultSeed){
     //SETUP
-
-    int ARBITRARY_TARGET = 10; //User will set this in QT, will be reselectable.
-
     u32 seed = userSearchParams.inputSeed; // == input seed
     blinkVars blinkState;
     std::vector<int> blinkList; //as vector for simplicity of flexSearch().
@@ -328,12 +323,13 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams){
     blinkState.interval = (userPlatform.getRegion() == NTSCJ) ? 4 : 5; //make blinkState a class and add this to constructor?
     //generates pool of possible seeds in search range. Could later alter i and maxSearch to re-generate pool of possible seeds.
     std::vector<pool>mainPool = generateBlinks(seed,blinkState,userPlatform,userSearchParams.maxSearch); //SEED IS NOT MODIFIED
-
+    std::cout << "Search pool generated!\n";
     //debug
-    debugPool(mainPool);
+    //debugPool(mainPool);
     std::cout << "\n\n";
     Beep(900,300);
     //TIME TO GET INPUTS BITCHES.
+    std::cout << "Press \"Enter\" to record Blinks: \n";
     std::vector<int> inputBlinks = {89,12,78,60,45}; //for debug
     while (resultIndexes.size() != 1){
         blinkList.push_back((getIntMessage()-lagReduction)/userPlatform.getFramerate());
@@ -360,12 +356,13 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams){
     std::vector<pool> exitPool = generateBlinks(seed,blinkState,userPlatform,userSearchParams.maxCalibrate);
     //CONVERT EXIT POOL TO MS THEN SEND.
     for (unsigned int i = 0; i < exitPool.size(); i++){
-        outMsg.upcomingBlinks.push_back(round(exitPool[i].blink * userPlatform.getFramerate())); //If desiring the same results as CoTool, then remove round(). CoTool Floors everything.
+        outMsg.blinksMS.push_back(round(exitPool[i].blink * userPlatform.getFramerate())); //If desiring the same results as CoTool, then remove round(). CoTool Floors everything.
+        outMsg.blinksF.push_back(exitPool[i].blink);
     }
     //SEND:
     outMsg.framerate = userPlatform.getFramerate(); //Doesn't change, that's fp60, which is already accounted for in the process of generating a blink list.
-    outMsg.targetIdx = ARBITRARY_TARGET; //Is this right?
-    std::cout << "Seed at target: " << std::hex << exitPool[ARBITRARY_TARGET-1].seed << std::dec << std::endl;
+    outMsg.targetIdx = userSearchParams.arbitrary_Target; //Is this right?
+    resultSeed = exitPool[userSearchParams.arbitrary_Target-1].seed;
     sendBlinkSet(outMsg);
     Beep(1200,100);
     Beep(1200,100);
@@ -374,64 +371,54 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams){
     //DONE??????
 
     // sendMessage(stopFlag); //bool convertible to int here. 
-    m.lock();
+    m.lock(); //does this do anything?
     printResults(resultIndexes,blinkList,mainPool,userSearchParams.inputSeed);
     m.unlock();
-    //NOW SEND incBlinkSet to timerT
-
-
-
-
+    //NOW SEND incBlinkSet to timer
 }
 
 int main (){
+
+    //OPENBLINK Originally developed by Kapital
+    //With help from Lincoln and others
+    //2021-2022.
+
     //This code works on all regions!
     //Units: Frames = Visual frames at a certain framerate
     //Advances = LCG calls to rng
     //Blinks = Successful blinks
-   
-   //~~~~~~~~USER INPUT~~~~~~~~~~~~~~
+
+    std::cout << "Tool launched! Reading input file:\n";
+    std::vector<std::string>setupL = readStringFromFile("input.txt");
+    for (unsigned int i = 0; i < 5; i++)
+    {
+        setupL[i] = setupL[i].substr(0,setupL[i].find(":")); //Does the space screw things up?
+    }
     searchParameters userInputs;
-    userInputs.inputSeed = 0x353A8F38;
-    userInputs.maxSearch = 20000; //in frames currently
-    userInputs.flexValue = 10;
-    userInputs.maxCalibrate = 5000; //in frames currently
-    //~~~~~~~~PLATFORM~~~~~~~~~~~~~~
-    platform userPlatform = platform(false,false,NTSCJ); //intialize from QT.
-    //HA All this std::thread stuff becomes moot once we get into QT Threading. 
-    //Probably still good to know for future tools
-    
+    std::stringstream hexConvert;
+    hexConvert << std::hex << setupL[0]; 
+    hexConvert >> userInputs.inputSeed;
+    hexConvert.clear();
+    hexConvert.str("");
+    userInputs.minSearch = stoi(setupL[1]);
+    userInputs.maxSearch = stoi(setupL[2]);
+    userInputs.flexValue = stoi(setupL[3]);
+    userInputs.arbitrary_Target = stoi(setupL[4]);
+    platform userPlatform = platform(false,false,region(stoi(setupL[5])));
+    userInputs.maxCalibrate = 200*userInputs.arbitrary_Target; //Will need to change with QT.
+    u32 resultSeed = 0;
     std::thread timerT(&runTimer);
-    std::thread searchT(&handleSearch,std::ref(userPlatform),userInputs);
+    std::thread searchT(&handleSearch,std::ref(userPlatform),userInputs,std::ref(resultSeed));
 
     timerT.join();
-    std::cout << "\nRUNTIMER JOINED!\n";
     searchT.join();
-    std::cout << "\nSEARCHER JOINED!\n";
 
+    std::cout << "\nYOUR CURRENT SEED IS: " << std::hex << resultSeed;
     return 0;
 }
        /*
+
         Now for blinkTimer
-
-        get message of all blinks within certain limit. Limit is functionally the same as the one used for search
-        What data do we need?
-
-        Run timer loop
-        Iterate over vector/array/linked list of upcoming blinks.
-        when certain amt of microseconds have passed,
-        send message to processing thread
-            certain blink is reached. 
-                Other thread removes blink from list (which would be updated on screen)\
-        Targets end and sets remaining time to that blink
-        If passed an index from user, then timer updates to target that instead
-
-        Timer receives 
-        a list of blinks to time for. 
-        an index of the target blink -- for message when near and msg when reached.
-        occasional alterations to alignment? -- +- visual FRAMES, dependent on framerate? region?
-
-
 
         Functionality:
         User specifies which blink they want to exit on. (last blink is default)
@@ -442,19 +429,7 @@ int main (){
         Flowtimer style beeps occur before input is to be pressed. User defined interval and frequency.
         Progress bar/visual indicator is updated alongside timer. 
 
-
-        What do we choose to split across threads? What makes sense to split?
-        We aren't searching big sets for anything, so it's fairly straightforward.
-        Does any of the reporting to the qt interface mess with timer accuracy?
-        This is probably a stringflow question. 
-
-
-        Until I think I have a need to offthread computation, it's probably fine to be single threaded here?
-        QT may force me to switch to a multithreaded model in order to update the screen but we will see.
-        Perhaps the console out will cause lags in the timer?
-
         Todo order:
-        Display blinks to screen
         Display time to target and time to blink
         Allow target changing.
         Allow resync via hotkeys. 
