@@ -198,24 +198,24 @@ std::vector<pool> generateBlinks(u32 seed,blinkVars blinkState, platform &userPl
 
 int setTarget(incBlinkMsg set, int limiter){
     int timerLimit = 0;
-    for (unsigned int i = 0; i < limiter;i++){
+    for (int i = 0; i < limiter;i++){
         timerLimit += set.blinksMS[i];
     }
 return timerLimit;
 }
 
-void printResults(std::vector<int> results,std::vector<int> inputBlinks,std::vector<pool>mainPool, u32 inputSeed){
+void printResults(int resultIdx,std::vector<int> inputBlinks,std::vector<pool>mainPool, u32 inputSeed){
     //Results printing:
-    if (results.empty()){
+    if (resultIdx == -1){
         std::cout << "NOT FOUND!";
     } else {
-        std::cout << "Found subsquence at position: ";
-        debugPrintVec(results); 
-        std::cout <<"\nSeed found\t : total rng advances\n";
-        u32 resultSeed = mainPool[results[0]+inputBlinks.size()-1].seed; //IMPORTANT
-        std::cout  << std::hex << resultSeed << "\t : " << std::dec << findGap(inputSeed,resultSeed,true) << "\n";
+        std::cout << "Found subsquence at position: " << resultIdx << "\n"; 
+        std::cout <<"\nSeed\t : total rng advances" << std::endl;
+        u32 resultSeed = mainPool[resultIdx+inputBlinks.size()-1].seed; //IMPORTANT
+        std::cout  << std::hex << resultSeed << "\t : " << std::dec << findGap(inputSeed,resultSeed,true) << std::endl;
         std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
         std::cout << "Blinks:\n";
+        Sleep(200);
     }
 
 }
@@ -230,7 +230,7 @@ void debugPool(std::vector<pool> pool){
 }
 
 //Application thread functions
-void runTimer(){
+void runTimer(int DEFAULT_MS_ADJUST){
     //framerate = 33.373; //I guess I pass this in? Safe and not changing? Apparently its framesPer60 which changes? Does framerate not need to change with it?
     getchar();
     auto start = std::chrono::high_resolution_clock::now();
@@ -274,8 +274,6 @@ void runTimer(){
         int userInputOffset = -215; //always subtracting from time remaining.
         int userInputOffsetInterval = 5;
         userInputOffset += userInputOffsetInterval * 1000; //in this case: 5000 + previous value.
-        int blinkCounter = 0;
-        int DEFAULT_MS_ADJUST = 500; //Currently subtraction -- add ability to be added.
         //this number is the most heuristic-y of the heuristics. I hate how this is set up but we will fix in QT.
 
 
@@ -352,8 +350,24 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams, u32
         return;
     }  
     seed = mainPool[resultIndexes[0]+blinkList.size()-1].seed;
+
+
+    int resultIdx = 0;
+    //m.lock(); //does this do anything?
+    if (resultIndexes.empty()){
+        resultIdx = -1;
+    } else {
+        resultIdx = resultIndexes[0];
+    }
+    printResults(resultIdx,blinkList,mainPool,userSearchParams.inputSeed);
+
+
+
+
+
     incBlinkMsg outMsg;
     std::vector<pool> exitPool = generateBlinks(seed,blinkState,userPlatform,userSearchParams.maxCalibrate);
+    
     //CONVERT EXIT POOL TO MS THEN SEND.
     for (unsigned int i = 0; i < exitPool.size(); i++){
         outMsg.blinksMS.push_back(round(exitPool[i].blink * userPlatform.getFramerate())); //If desiring the same results as CoTool, then remove round(). CoTool Floors everything.
@@ -371,9 +385,8 @@ void handleSearch(platform &userPlatform, searchParameters userSearchParams, u32
     //DONE??????
 
     // sendMessage(stopFlag); //bool convertible to int here. 
-    m.lock(); //does this do anything?
-    printResults(resultIndexes,blinkList,mainPool,userSearchParams.inputSeed);
-    m.unlock();
+    
+    //m.unlock();
     //NOW SEND incBlinkSet to timer
 }
 
@@ -405,15 +418,19 @@ int main (){
     userInputs.flexValue = stoi(setupL[3]);
     userInputs.arbitrary_Target = stoi(setupL[4]);
     platform userPlatform = platform(false,false,region(stoi(setupL[5])));
+    int msAdjust = stoi(setupL[6]);
     userInputs.maxCalibrate = 200*userInputs.arbitrary_Target; //Will need to change with QT.
     u32 resultSeed = 0;
-    std::thread timerT(&runTimer);
+    std::thread timerT(&runTimer,msAdjust);
     std::thread searchT(&handleSearch,std::ref(userPlatform),userInputs,std::ref(resultSeed));
 
     timerT.join();
     searchT.join();
 
-    std::cout << "\nYOUR CURRENT SEED IS: " << std::hex << resultSeed;
+    std::cout << "\nYOUR CURRENT SEED IS: " << std::hex << resultSeed << "\n";
+
+    system("Pause");
+
     return 0;
 }
        /*
