@@ -1,4 +1,4 @@
-#include "../../processCore.h"
+#include "processCore.h"
 
 //Thread includes, maybe worth putting into process core.
 #include <thread>
