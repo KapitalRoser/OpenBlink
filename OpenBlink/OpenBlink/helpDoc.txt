@@ -1,0 +1,48 @@
+~~~~~~~ Welcome to OpenBlink! ~~~~~~~~~~
+
+Originally developed by Kapital in 2022, with help
+from Lincoln and inspired by the inventor of Blink, Sinapoke.
+
+~~~~~~~ HOW TO USE ~~~~~~~~~
+
+First, modify the input.txt file in this folder. 
+
+Seed: Some observed seed found after starting up colosseum.
+
+Range min & range max: The rng search range in advances. 
+
+flexValue: the amount (in frames) you expect to vary when inputting blinks. 
+For example, setting a value of 10 gives you +5/-5 visual frames to input a blink. If you fall outside this value you probably will not find your seed. Set the number too high and the searcher will take a long time to find the seed.
+
+Target: The number of blinks after your seed is found that you want to observe before exiting. In future versions of this program you will be able to see and target a specific seed on the fly. For now, it's just how many blinks you need to get ready to press "B" and exit.
+
+Region: Your game region, so NTSCU == North America, PAL60/50 == Europe, and NTSCJ == Japan
+
+Blink & timer offset (ms): The tracker is only as good as your first blink input. This offset adjusts for your initial reaction time when inputting blinks.
+
+
+~~~~~ FINDING SEED ~~~~~~~
+
+This assumes you've never found your seed via blink before. 
+
+So you've found your seed once, did some things, and now rng is unknown. You want your seed.
+First you input the data into input.txt, and boot up the tool.
+
+1. In-game, go and bring up the party menu, and view the summary of your blinking pokemon. Misdreavus is recommended because it has large eyes. However if you're in the early game, you may use Espeon as well. You're not limited to just those two, you may use any blinking pokemon that calls RNG once per frame. If you don't know which ones those are then just stick to Misdreavus or Espeon.
+
+2. Once you're in the pokemon summary, make the tool active and get ready. Once you see a blink happen, hit the "Enter" key to register the blink.
+
+3. Watch Misdreavus/Espeon carefully and enter each blink right when it happens. The key is timing, you want the pace to be correct. You can't miss a blink or add one extra in. If you do, then you can either restart the program or play it out until you get an error. 
+
+4. After some # of blinks, you will hear some loud BEEPs. If you hear 3 quick beeps, then congrats! you were successful. You don't need to enter blinks anymore.
+4.b If you fail, you will hear 4 low pitch beeps. The program will end, but don't worry! You don't have to do anything in-game. Just restart the tool and start entering blinks again. This is designed to be easy to redo if you mess-up.
+
+5. The tool will now start tracking blinks. It will BEEP every time your poke blinks. Check to make sure you're on the correct seed. The blinks should line up closely, and shouldn't out-right miss or add any.
+
+6. Get your hands back on the controller. Once you get close to your "target" value, the timer will stop tracking and play 5 high-pitch beeps. 1...2...3...4...5. This is a countdown. ON the 5th beep, press "B" to exit the poke summary. This is a fairly generous window, at 10 frames @ 30 fps. If you're used to 60fps timers, then this is equivalent to a 20f window. 
+
+7. Congratulations! The tool will display your current seed at the moment of exiting the pokemon summary. You may now take this seed with you to Pokefinder, or CoSearch, or whatever you want!
+
+I'd say good luck, but we have that covered ;)
+
+Thanks for using my tool! Let me know if you have questions, feedback, ideas, or anything else! Reach out to me on Discord (Kapital#9267), Twitter or Github!
