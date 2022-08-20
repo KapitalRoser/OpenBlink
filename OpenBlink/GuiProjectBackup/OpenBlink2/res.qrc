@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/resfix1">
+        <file>lvlup.wav</file>
+        <file>blinkWoop.wav</file>
+        <file>snagSuccess.wav</file>
+    </qresource>
+</RCC>
