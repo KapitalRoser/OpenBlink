@@ -192,6 +192,9 @@ std::vector<pool> generateBlinks(u32 seed,blinkVars blinkState, platform &userPl
                 outPool.push_back({blink,seed});
                 prev_blink = vFrames;         
             }
+            if (!flag){
+                limit++;
+            }
         }
     return outPool;
 }
@@ -314,13 +317,14 @@ void runTimer(int DEFAULT_MS_ADJUST){
 void handleSearch(platform &userPlatform, searchParameters userSearchParams, u32 &resultSeed){
     //SETUP
     u32 seed = userSearchParams.inputSeed; // == input seed
+    LCGn(seed,userSearchParams.minSearch);
     blinkVars blinkState;
     std::vector<int> blinkList; //as vector for simplicity of flexSearch().
     std::vector<int> resultIndexes;
     const int lagReduction = 10; //Heuristic, based on CoTool's performance.
     blinkState.interval = (userPlatform.getRegion() == NTSCJ) ? 4 : 5; //make blinkState a class and add this to constructor?
     //generates pool of possible seeds in search range. Could later alter i and maxSearch to re-generate pool of possible seeds.
-    std::vector<pool>mainPool = generateBlinks(seed,blinkState,userPlatform,userSearchParams.maxSearch); //SEED IS NOT MODIFIED
+    std::vector<pool>mainPool = generateBlinks(seed,blinkState,userPlatform,userSearchParams.maxSearch-userSearchParams.minSearch); //SEED IS NOT MODIFIED
     std::cout << "Search pool generated!\n";
     //debug
     //debugPool(mainPool);

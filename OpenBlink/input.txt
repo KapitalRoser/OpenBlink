@@ -1,4 +1,4 @@
-61D2CA74 :Seed
+DEADBEEF :Seed
 0 :range min
 20000 :range max
 10 :flexValue
