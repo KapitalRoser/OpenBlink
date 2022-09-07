@@ -10,17 +10,30 @@ QT += multimedia
 
 SOURCES += \
     blinkbase.cpp \
+    hotkeysdialogue.cpp \
+    keycodes.cpp \
     main.cpp \
     mainwindow.cpp \
-    processcoreblink.cpp
+    processcoreblink.cpp \
+    soundsettingsdialogue.cpp \
+    timersettings.cpp \
+    timersettingsdialogue.cpp
 
 HEADERS += \
     blinkbase.h \
+    hotkeysdialogue.h \
+    keycodes.h \
     mainwindow.h \
-    processcoreblink.h
+    processcoreblink.h \
+    soundsettingsdialogue.h \
+    timersettings.h \
+    timersettingsdialogue.h
 
 FORMS += \
-    mainwindow.ui
+    hotkeysdialogue.ui \
+    mainwindow.ui \
+    soundsettingsdialogue.ui \
+    timersettingsdialogue.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -29,3 +42,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    settings.txt

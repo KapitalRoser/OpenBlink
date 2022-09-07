@@ -63,6 +63,9 @@ std::vector<pool> generateBlinks(u32 seed, platform &userPlatform, int limit){
                 outPool.push_back({blink,seed});
                 prev_blink = vFrames;
             }
+            if (!flag){
+                limit++;
+            }
         }
     return outPool;
 }
@@ -364,3 +367,4 @@ void runTimer(int DEFAULT_MS_ADJUST){
 
         Not sure what to do about variable framerates like in XD.
         */
+

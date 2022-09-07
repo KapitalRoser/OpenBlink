@@ -3,5 +3,7 @@
         <file>lvlup.wav</file>
         <file>blinkWoop.wav</file>
         <file>snagSuccess.wav</file>
+        <file>blinkBeep1.wav</file>
+        <file>searchFailure.wav</file>
     </qresource>
 </RCC>

@@ -89,7 +89,10 @@ class platform{
     int HEURISTIC = 69; //Nice - XD, rate of Time Compensation failures. ~68.138 or until a better number is found.
     bool m_is_xd = 0, m_is_emu5 = 0;
     region m_gameRegion = NTSCU;
-    float m_framerate = 33.373;
+    float m_framerate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer.
+    int m_fadeFrames = 8; //target halfway thru a 10f blink space, with a set# of frames for fadeout included.
+    int m_fadeOutMS = round(m_framerate*m_fadeFrames); //will need to find rate acrosss all regions/games.
+    //FadeOutMS gets added to the exit timer beeps, making them occur EARLIER.
     public:
     platform(){
         m_is_xd = 0;
@@ -100,32 +103,41 @@ class platform{
         m_is_xd = is_xd;
         m_is_emu5 = is_emu5;
         m_gameRegion = gameRegion;
-        m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60. DOES THIS BREAK XD?
-        m_framerate = (gameRegion == PAL50) ? 40 : 33.373; //as used by CoTool, other sites report 33.375 but this is closer.
-        m_framerate = is_xd ? m_framerate / 2 : m_framerate;
+        m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60. Redundant??
+        m_framerate = gameRegion == PAL50 ? is_xd ? 40/2:40 : is_xd ? 33.373/2:33.373; //xd halves the framerate.
+        m_fadeFrames = gameRegion == PAL50 ? is_xd ? 19:11 : is_xd ? 21:13;
+        //PAL50 < OTHERS
+        //Gonna assume smallest number for now.
+           //PAL60 == 22, sometimes 21?
+           //PAL50 == 19, sometimes 20?
+           //NTSCU == 21 to 23?
+           //JPN == 22, sometimes 21?
+            //Emu5 seems to be the same as modern here.
+        m_fadeFrames -= 5; //Target center of blink instead of beginning.
+        m_fadeOutMS = round(m_framerate*m_fadeFrames); //REPLACE WITH FADEOUT FRAMES COUNT BY REGION
     }
+
     int m_framesPer60 = 0; //The only variable that changes often --really should be part of blinkState but not sure how to write it.
-
-
+    //why is this zero????
     void verifyFP60(int vFrames){
         if (m_is_xd){
             m_framesPer60 = m_is_emu5 ? vFrames % 2 : (vFrames % HEURISTIC);
         }
     }
 
-    //Getters
+    //technically these could be defined in .cpp rather than here in the .h
     bool getXD(){return m_is_xd;}
     bool getEmu5(){return m_is_emu5;}
     region getRegion(){return m_gameRegion;}
     float getFramerate(){return m_framerate;}
+    int getFadeOutMS(){return m_fadeOutMS;}
     //can add a getter/setter function for framesPer60 if I really wanted to keep all vars private.
 
-    //Setters
     void setXD(bool input){m_is_xd = input;}
     void setEmu5(bool input){m_is_emu5 = input;}
     void setRegion(region input){m_gameRegion = input;}
     void setFramerate(float input){m_framerate = input;}
-
+    void setFadeOutMS(int input){m_fadeOutMS = input;} //should this really exist? Or should this only be set by constructor?
 };
 
 

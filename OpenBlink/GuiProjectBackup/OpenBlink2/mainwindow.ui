@@ -6,69 +6,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>838</width>
+    <height>709</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="outTable">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>80</y>
-      <width>231</width>
-      <height>381</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="RecBlinkLabel">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>10</y>
-      <width>91</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Recorded Blinks</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>160</y>
-      <width>71</width>
-      <height>31</height>
+      <x>350</x>
+      <y>510</y>
+      <width>141</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
      <string>START</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>200</y>
-      <width>71</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>STOP</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="statusLabel">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>350</y>
-      <width>461</width>
+      <x>110</x>
+      <y>490</y>
+      <width>181</width>
       <height>61</height>
      </rect>
     </property>
@@ -79,37 +43,11 @@
      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="seedEntry">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>300</y>
-      <width>113</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>DEADBEEF</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="seeInputButton">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>50</y>
-      <width>231</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>^ See inputs</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="TotalTimeLabel">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>440</y>
+      <x>110</x>
+      <y>540</y>
       <width>181</width>
       <height>21</height>
      </rect>
@@ -121,8 +59,8 @@
    <widget class="QLabel" name="localTimeLabel">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>480</y>
+      <x>110</x>
+      <y>580</y>
       <width>181</width>
       <height>21</height>
      </rect>
@@ -131,66 +69,11 @@
      <string>Next blink:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="delayLabel">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>180</y>
-      <width>201</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>CPU DELAY</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="exitTimeLabel">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>520</y>
-      <width>171</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>EXIT ON:</string>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="arbTargetBox">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>450</y>
-      <width>42</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>1</number>
-    </property>
-    <property name="maximum">
-     <number>1000</number>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="increaseBlinksButton">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>470</y>
-      <width>231</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Add 10 more blinks</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>90</y>
+      <x>10</x>
+      <y>20</y>
       <width>131</width>
       <height>41</height>
      </rect>
@@ -199,13 +82,358 @@
      <string>test targetSelection</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>60</y>
+      <width>271</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Blinks</string>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>271</width>
+       <height>561</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="seeInputButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>^ See inputs</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="outTable"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="increaseBlinksButton">
+        <property name="text">
+         <string>Add 10 more blinks</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="slowerButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>←  Slower</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="fasterButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Faster →</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="nudgeOffsetLabel">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>190</y>
+      <width>315</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Input Seed:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="seedEntry">
+         <property name="text">
+          <string>DEADBEEF</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>input forgiveness (frames)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="flexValueBox">
+         <property name="minimum">
+          <number>-1000</number>
+         </property>
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+         <property name="value">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="flexValueHalfLabel">
+         <property name="text">
+          <string>+- 5f</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Search from:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="searchMinBox">
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>10000000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>~</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="searchMaxBox">
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>10000001</number>
+         </property>
+         <property name="singleStep">
+          <number>1</number>
+         </property>
+         <property name="value">
+          <number>10000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="palHzBox_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>Advances</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Visual Frames</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Blinks</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Target:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="arbTargetBox">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>1000</number>
+         </property>
+         <property name="value">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>80</y>
+      <width>272</width>
+      <height>42</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="gameHorizLayout">
+     <item>
+      <widget class="QRadioButton" name="coloRadio">
+       <property name="text">
+        <string>Colosseum</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QRadioButton" name="galesRadio">
+         <property name="text">
+          <string>Gales</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="emu5CheckBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Dolphin 5.0?</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>130</y>
+      <width>272</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QRadioButton" name="ntscuRadio">
+       <property name="text">
+        <string>NTSC-U</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QRadioButton" name="palRadio">
+         <property name="text">
+          <string>PAL</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="palHzBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>60hz</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>50hz</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="ntscjRadio">
+       <property name="text">
+        <string>NTSC-J</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>838</width>
      <height>20</height>
     </rect>
    </property>
@@ -213,6 +441,9 @@
     <property name="title">
      <string>Settings</string>
     </property>
+    <addaction name="actionHotkeys"/>
+    <addaction name="actionSounds"/>
+    <addaction name="actionTimer"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -229,12 +460,43 @@
      <string>GitHub</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuLog">
+    <property name="title">
+     <string>Log</string>
+    </property>
+   </widget>
    <addaction name="menuSettings"/>
+   <addaction name="menuLog"/>
    <addaction name="menuHelp"/>
    <addaction name="menuGithub"/>
    <addaction name="menuExit"/>
   </widget>
+  <action name="actionHotkeys">
+   <property name="text">
+    <string>Hotkeys</string>
+   </property>
+  </action>
+  <action name="actionSounds">
+   <property name="text">
+    <string>Sounds</string>
+   </property>
+  </action>
+  <action name="actionTimer">
+   <property name="text">
+    <string>Timer</string>
+   </property>
+  </action>
  </widget>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>seedEntry</tabstop>
+  <tabstop>arbTargetBox</tabstop>
+  <tabstop>outTable</tabstop>
+  <tabstop>slowerButton</tabstop>
+  <tabstop>fasterButton</tabstop>
+  <tabstop>seeInputButton</tabstop>
+  <tabstop>pushButton_3</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

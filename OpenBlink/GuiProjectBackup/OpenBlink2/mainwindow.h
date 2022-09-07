@@ -7,7 +7,11 @@
 #include <QSoundEffect>
 #include <QDir>
 #include "blinkbase.h"
+#include "keycodes.h"
+#include "timersettings.h" //not to be confused with the timersettingsdialogue class
 
+//MAKE SURE TO GO THROUGH PROCESS CORE AND BLINK BASE TO PRUNE ALL THE DEPRECATED CODE
+//THERE'S A LOT OF UNUSED JUNK IN THERE!!!
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,7 +28,9 @@ public:
     bool searchUnlock;
     bool resultsActiveView;
     searchParameters userSP;
-    platform userPlatform;
+    platform userPF;
+    TimerSettings userTS;
+    KeyCodes keys;
     std::vector<int> blinkList;
     std::vector<pool> mainPool;
     std::vector<pool> exitPool;
@@ -39,11 +45,15 @@ public:
     QTimer *totalTimer; //Runs till target
     int totalTimerLimit;
     int localBlinkMs;
-//    QTimer *localTimerA; //Runs till next blink
-//    QTimer *localTimerB;
-    std::vector<QTimer*> simulTimerSet;
     QTimer *basicTimer; //Updates Gui
-    int exitOffset; //ms
+
+    //sfx
+    QSoundEffect sfxSearchSuccess;
+    QSoundEffect sfxSearchFailure;
+    QSoundEffect sfxBlinkOccurs;
+    QSoundEffect sfxCalibrationComplete;
+    QSoundEffect sfxExitCue;
+
     //There is probably a way to use just one or two timers instead, but likely more convoluted.
 
     //lots of these things are declared inside mainWindow to make logging easier
@@ -56,19 +66,16 @@ public:
     void highlightTableRow(int row,QColor color);
     int iterPToMS(iterP iter, float framerate);
     void restoreResults();
-
+    void expandExitPool(int expandAmt);
+    void nudgeCalibration(bool direction);
+    platform collectPlatformInputs();
+    void writeAllSettings();
 private slots:
     void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
 
     void on_seeInputButton_clicked();
 
     void totalTimerUpdate();
-//    void localTimerUpdateA();
-//    void localTimerUpdateB();
-
-    void testTimerUpdate();
 
     void timerGUIUpdate();
 
@@ -80,10 +87,29 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_slowerButton_clicked();
+
+    void on_fasterButton_clicked();
+
+    void on_galesRadio_clicked();
+
+    void on_coloRadio_clicked();
+
+    void on_palRadio_clicked();
+
+    void on_ntscuRadio_clicked();
+
+    void on_ntscjRadio_clicked();
+
+    void on_flexValueBox_valueChanged(int arg1);
+
+    void on_actionHotkeys_triggered();
+
+    void on_actionTimer_triggered();
+
+    void on_actionSounds_triggered();
+
 private:
-    QSoundEffect sfxSearchSuccess;
-    QSoundEffect sfxBlinkOccurs;
-    QSoundEffect sfxCalibrationComplete;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
