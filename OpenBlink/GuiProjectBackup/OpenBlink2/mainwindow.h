@@ -85,8 +85,6 @@ private slots:
 
     void on_increaseBlinksButton_clicked();
 
-    void on_pushButton_3_clicked();
-
     void on_slowerButton_clicked();
 
     void on_fasterButton_clicked();

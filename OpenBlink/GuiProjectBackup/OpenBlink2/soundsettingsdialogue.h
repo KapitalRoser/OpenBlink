@@ -6,22 +6,24 @@
 #include <QSlider>
 #include <QLabel>
 #include <QSoundEffect>
-
+#include <map>
 //Idea to store a struct of the needed buttons to update,
 //Then create a vector of those items
 //Pass that vector or struct into function.
 //Allow looping of all buttons with ptrs.
 //struct boundItems{
 //    QSoundEffect* sfxPtr; //Belong?
-//    float volume;
-//    bool mute;
-//    QString fileName; //path?
 //    QSlider* slide;
 //    QSpinBox* box;
 //    QPushButton* muteButton;
 //    QPushButton* changeButton; //needed?
 //    QLabel* fileLabel;
 //};
+
+enum effects {SUCCESS,FAILURE,OCCURS,COMPLETE,CUE};
+
+enum columns {VOLUME = 1, MUTE = 3,FILENAME = 4};
+
 
 namespace Ui {
 class soundSettingsDialogue;
@@ -35,23 +37,27 @@ public:
     explicit soundSettingsDialogue(QWidget *parent = nullptr);
     ~soundSettingsDialogue();
 
+
     std::vector<QSoundEffect *> bundle;
+    std::map<effects, QString> m;
+//    std::vector<boundItems> set;
     void set_all_sfx(std::vector<QSoundEffect*>in);
     std::vector<QSoundEffect*> get_all_sfx();
-    void updateValue(float vol, QSpinBox* box, QSlider* slide);
-    void updateAllValues();
+    void initialSetup(effects effect);
+    void updateVolume(float vol, effects effect);
     void updateMute(bool mute, QPushButton* button);
-    void updateFilePath(QString fileName, QLabel* fileLabel);
+    QUrl updateFilePath(QString fileName, QLabel* fileLabel);
+    void demoSFX(effects sfx);
+
 private slots:
+    void volumeInput_released();
+    void slide_Moved();
+    void box_value_changed();
+    void mute_clicked();
+    void fileChange_clicked();
+
     void buttonBox_reset();
 
-    void on_successChange_clicked();
-
-    void on_successSlide_valueChanged(int value);
-
-    void on_successBox_valueChanged(int arg1);
-
-    void on_successMute_clicked();
 
 private:
     Ui::soundSettingsDialogue *ui;

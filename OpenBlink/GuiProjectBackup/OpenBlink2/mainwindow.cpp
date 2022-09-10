@@ -280,6 +280,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
     sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
+    //sfxSearchFailure.setSource(QUrl(""));
     sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
     sfxCalibrationComplete.setSource(QUrl::fromLocalFile(":/resfix1/snagSuccess.wav"));
     sfxExitCue.setSource(QUrl::fromLocalFile(":/resfix1/blinkBeep1.wav"));
@@ -483,13 +484,6 @@ void MainWindow::on_increaseBlinksButton_clicked()
 
     restoreResults();
     qDebug() << exitPool.size() << " blinks now.";
-
-}
-
-void MainWindow::on_pushButton_3_clicked()
-{
-
-    //THIS BUTTON ONLY EXISTS FOR TESTING :)
 
 }
 

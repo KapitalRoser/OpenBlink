@@ -1,0 +1,14 @@
+release/blinkbase.o
+release/hotkeysdialogue.o
+release/keycodes.o
+release/main.o
+release/mainwindow.o
+release/processcoreblink.o
+release/soundsettingsdialogue.o
+release/timersettings.o
+release/timersettingsdialogue.o
+release/qrc_res.o
+release/moc_hotkeysdialogue.o
+release/moc_mainwindow.o
+release/moc_soundsettingsdialogue.o
+release/moc_timersettingsdialogue.o

@@ -69,19 +69,6 @@
      <string>Next blink:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>131</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>test targetSelection</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
@@ -166,7 +153,7 @@
      <rect>
       <x>100</x>
       <y>190</y>
-      <width>315</width>
+      <width>416</width>
       <height>281</height>
      </rect>
     </property>
@@ -332,7 +319,7 @@
      <rect>
       <x>100</x>
       <y>80</y>
-      <width>272</width>
+      <width>357</width>
       <height>42</height>
      </rect>
     </property>
@@ -375,7 +362,7 @@
      <rect>
       <x>100</x>
       <y>130</y>
-      <width>272</width>
+      <width>358</width>
       <height>51</height>
      </rect>
     </property>
@@ -434,7 +421,7 @@
      <x>0</x>
      <y>0</y>
      <width>838</width>
-     <height>20</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -495,7 +482,6 @@
   <tabstop>slowerButton</tabstop>
   <tabstop>fasterButton</tabstop>
   <tabstop>seeInputButton</tabstop>
-  <tabstop>pushButton_3</tabstop>
  </tabstops>
  <resources/>
  <connections/>
