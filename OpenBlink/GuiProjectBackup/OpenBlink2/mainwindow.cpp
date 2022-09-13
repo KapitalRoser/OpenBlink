@@ -316,38 +316,39 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     if (ui->pushButton->text() == "START"){
-        //    ui->pushButton->setEnabled(false);
-            qDebug() << QString::number(ui->seedEntry->text().toUInt(nullptr,16),16);
-            //keycodetoname
-            ui->statusLabel->setText("Press to search!"); //Allow user to change hotkey.
+        //ui->pushButton->setEnabled(false);
+        qDebug() << QString::number(ui->seedEntry->text().toUInt(nullptr,16),16);
 
-            ui->outTable->clear();
-            ui->outTable->setRowCount(0);
-            ui->outTable->setColumnCount(2);
-            ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: green");
+        //keycodetoname
+        ui->statusLabel->setText("Press " + keyCodeToName(keys.getBlinkKey()) + " to search!"); //Allow user to change hotkey.
 
-            //definitions
+        ui->outTable->clear();
+        ui->outTable->setRowCount(0);
+        ui->outTable->setColumnCount(2);
+        ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: green");
 
-            userPF = collectPlatformInputs(); //remember to disable/enable the inputs.
-            userTS.buildQueue();
+        //definitions
 
-            userSP.inputSeed =  ui->seedEntry->text().toUInt(nullptr,16);; //input cleanse
-            userSP.flexValue = ui->flexValueBox->value(); //FALSE -- FLEX IS THE +- VALUE, NOT TOTAL WINDOW!!! CHECK WITH COTOOL FOR ACCURACY
-            userSP.arbitrary_Target = ui->arbTargetBox->value();
-            userSP.maxCalibrate = 10000; //Roll this into target?;
-            userSP.maxSearch = ui->searchMaxBox->value();
-            userSP.minSearch = ui->searchMinBox->value(); //UNITS?
+        userPF = collectPlatformInputs(); //remember to disable/enable the inputs.
+        userTS.buildQueue();
 
-            blinkList.clear();
-            exitPool.clear();
-            mainPool.clear();
-            u32 seed = userSP.inputSeed;
-            LCGn(seed,userSP.minSearch); //abstraction is needed to prevent modification
-            mainPool = generateBlinks(seed,userPF,userSP.maxSearch-userSP.minSearch); //SEED IS NOT MODIFIED
+        userSP.inputSeed =  ui->seedEntry->text().toUInt(nullptr,16);; //input cleanse
+        userSP.flexValue = ui->flexValueBox->value(); //FALSE -- FLEX IS THE +- VALUE, NOT TOTAL WINDOW!!! CHECK WITH COTOOL FOR ACCURACY
+        userSP.arbitrary_Target = ui->arbTargetBox->value();
+        userSP.maxCalibrate = 10000; //Roll this into target?;
+        userSP.maxSearch = ui->searchMaxBox->value();
+        userSP.minSearch = ui->searchMinBox->value(); //UNITS?
 
-            keyUnlock = true;
-            ui->pushButton->clearFocus();
+        blinkList.clear();
+        exitPool.clear();
+        mainPool.clear();
+        u32 seed = userSP.inputSeed;
+        LCGn(seed,userSP.minSearch); //abstraction is needed to prevent modification
+        mainPool = generateBlinks(seed,userPF,userSP.maxSearch-userSP.minSearch); //SEED IS NOT MODIFIED
 
+        keyUnlock = true;
+        ui->pushButton->clearFocus();
+        ui->seeInputButton->setEnabled(false);
         ui->pushButton->setText("STOP");
     } else {
         totalTimer->stop();
@@ -389,11 +390,12 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
                 int status = performSearchPass(seed); //returns status: -1 error, 0 failure, 1 success, 2 continue search
                 if (status < 2){
                     //LOG NOW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~********************!!!!!!!!!!!!!!!!!!!!!!!!!******************!!!!!!!!!!!!!!!!!!!!!!!*************!!!!!!!!!!!!!!
-                    ui->outTable->clear();
+
                     keyUnlock = false;
                     if (status == 1){
-                     //PROCEED TO CALIBRATE
-                     ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: purple");
+                        //PROCEED TO CALIBRATE
+                        ui->outTable->clear();
+                        ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: purple");
                         sfxSearchSuccess.play();
                         //DebugBlock
                         QString line = QString::number(mainPool[0].blink) + ", ";
@@ -406,7 +408,6 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
                         }
                         qDebug() << line;
                         runCalibration(seed);
-
                     } else if (status == 0){
                         ui->statusLabel->setText("FAILURE");
                         sfxSearchFailure.play();

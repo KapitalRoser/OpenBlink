@@ -30,15 +30,15 @@ soundSettingsDialogue::soundSettingsDialogue(QWidget *parent) :
     QList<QSlider*> ls = this->findChildren<QSlider*>();
     for (QSlider* x : ls) {
         connect(x,&QSlider::sliderReleased,
-                this,&soundSettingsDialogue::volumeInput_released);
-        connect(x,&QSlider::sliderMoved,
+                this,&soundSettingsDialogue::slide_Released);
+        connect(x,&QSlider::valueChanged,
                 this,&soundSettingsDialogue::slide_Moved);
     }
 
     QList<QSpinBox*> lb = this->findChildren<QSpinBox*>();
     for(QSpinBox* x : lb){
         connect(x,&QSpinBox::editingFinished,
-                this,&soundSettingsDialogue::volumeInput_released);
+                this,&soundSettingsDialogue::box_Editing_Finished);
         connect(x,&QSpinBox::valueChanged,
                 this,&soundSettingsDialogue::box_value_changed);
     }
@@ -94,10 +94,7 @@ void soundSettingsDialogue::updateVolume(float vol, effects effect)
 {
     //Only used initially.
     vol *= 100;
-    QSpinBox* activeB = this->findChild<QSpinBox*>(m[effect]+"Box");
-    activeB->blockSignals(true);
-    activeB->setValue(vol);
-    activeB->blockSignals(false); //not required for slider...
+    this->findChild<QSpinBox*>(m[effect]+"Box")->setValue(vol);
     this->findChild<QSlider*>(m[effect]+"Slide")->setValue(vol);
 }
 
@@ -108,6 +105,7 @@ void soundSettingsDialogue::updateMute(bool mute, QPushButton *button)
 
 QUrl soundSettingsDialogue::updateFilePath(QString fileName, QLabel* fileLabel)
 {
+ QUrl fUrl;
     if (fileName.isEmpty()){
         //From button
         fileName =
@@ -118,9 +116,9 @@ QUrl soundSettingsDialogue::updateFilePath(QString fileName, QLabel* fileLabel)
                 "WAV files (*.wav);"
             );
     }
-    fileName = QFileInfo(fileName).fileName();
-    fileLabel->setText(fileName);
-    return QUrl("file:" + fileName);
+    fUrl = "file:" + fileName;
+    fileLabel->setText(QFileInfo(fileName).fileName());
+    return fUrl;
 }
 
 void soundSettingsDialogue::demoSFX(effects sfx)
@@ -128,39 +126,34 @@ void soundSettingsDialogue::demoSFX(effects sfx)
     bundle[sfx]->play();
 }
 
-void soundSettingsDialogue::volumeInput_released()
+void soundSettingsDialogue::slide_Released()
 {
-    int value = 0;
-    int chopAmt = 0;
-    if (QString(sender()->metaObject()->className()) == "QSlider"){
-        value = qobject_cast<QSlider*>(sender())->value();
-        chopAmt = 5;
-    } else {
-        value = qobject_cast<QSpinBox*>(sender())->value();
-        chopAmt = 3;
-    }
-    QString sName = sender()->objectName().chopped(chopAmt);
-
-    QSlider* activeS = this->findChild<QSlider*>(sName + "Slide");
-    QSpinBox* activeB = this->findChild<QSpinBox*>(sName + "Box");
-    activeS->setValue(value);
-    activeB->setValue(value);
-
-    bundle[findEffect(m,sName)]->setVolume(float(value/100));
-    demoSFX(findEffect(m,sName));
+    QSlider* activeS = qobject_cast<QSlider*>(sender());
+    QString sName = sender()->objectName().chopped(5);
+    effects fx = findEffect(m,sName);
+    bundle[fx]->setVolume(float(activeS->value())/100);
+    demoSFX(fx);
 }
 
 void soundSettingsDialogue::slide_Moved()
 {
     QSlider* activeS = qobject_cast<QSlider*>(sender());
     this->findChild<QSpinBox*>(activeS->objectName().chopped(5)+"Box")->setValue(activeS->value());
+}
 
+void soundSettingsDialogue::box_Editing_Finished()
+{
+    QSpinBox* activeB = qobject_cast<QSpinBox*>(sender());
+    QString bName = sender()->objectName().chopped(3);
+    effects fx = findEffect(m,bName);
+    bundle[fx]->setVolume(float(activeB->value())/100);
+    demoSFX(fx);
 }
 
 void soundSettingsDialogue::box_value_changed()
 {
-    QSpinBox* activeB = qobject_cast<QSpinBox*>(sender()); //something to do with this.
-    this->findChild<QSpinBox*>(activeB->objectName().chopped(3)+"Slide")->setValue(activeB->value());
+    QSpinBox* activeB = qobject_cast<QSpinBox*>(sender());
+    this->findChild<QSlider*>(activeB->objectName().chopped(3)+"Slide")->setValue(activeB->value());
 }
 
 void soundSettingsDialogue::mute_clicked()

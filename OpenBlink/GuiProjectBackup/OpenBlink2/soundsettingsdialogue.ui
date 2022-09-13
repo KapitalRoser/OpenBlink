@@ -282,6 +282,28 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>successSlide</tabstop>
+  <tabstop>successBox</tabstop>
+  <tabstop>successMute</tabstop>
+  <tabstop>successChange</tabstop>
+  <tabstop>failureSlide</tabstop>
+  <tabstop>failureBox</tabstop>
+  <tabstop>failureMute</tabstop>
+  <tabstop>failureChange</tabstop>
+  <tabstop>occursSlide</tabstop>
+  <tabstop>occursBox</tabstop>
+  <tabstop>occursMute</tabstop>
+  <tabstop>occursChange</tabstop>
+  <tabstop>completeSlide</tabstop>
+  <tabstop>completeBox</tabstop>
+  <tabstop>completeMute</tabstop>
+  <tabstop>completeChange</tabstop>
+  <tabstop>cueSlide</tabstop>
+  <tabstop>cueBox</tabstop>
+  <tabstop>cueMute</tabstop>
+  <tabstop>cueChange</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

@@ -50,8 +50,10 @@ public:
     void demoSFX(effects sfx);
 
 private slots:
-    void volumeInput_released();
+    //void volumeInput_released();
+    void slide_Released();
     void slide_Moved();
+    void box_Editing_Finished();
     void box_value_changed();
     void mute_clicked();
     void fileChange_clicked();
