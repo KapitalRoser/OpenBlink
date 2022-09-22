@@ -99,14 +99,18 @@ class platform{
         m_is_emu5 = 0;
         m_gameRegion = NTSCU;
     }
-    platform(bool is_xd, bool is_emu5, region gameRegion){
+    platform(bool is_xd, bool is_emu5, region gameRegion){ //make a better constructor.
         m_is_xd = is_xd;
         m_is_emu5 = is_emu5;
         m_gameRegion = gameRegion;
         m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60. Redundant??
         m_framerate = gameRegion == PAL50 ? is_xd ? 40/2:40 : is_xd ? 33.373/2:33.373; //xd halves the framerate.
         m_fadeFrames = gameRegion == PAL50 ? is_xd ? 19:11 : is_xd ? 21:13;
+        //FADE FRAMES SHOULD BE USER ADJSUTABLE TOO, THE SAME WAY YOU WOULD IN THE MAIN TOOL.
+        //Interestingly, flowtimer doesn't account for this, is left to the user to adjust
         //PAL50 < OTHERS
+        //Why did I feel the need to alter this.
+        //?? either restore to old cli numbers OR peek at what cotool does?
         //Gonna assume smallest number for now.
            //PAL60 == 22, sometimes 21?
            //PAL50 == 19, sometimes 20?
@@ -143,15 +147,13 @@ class platform{
 
 struct searchParameters {
     u32 inputSeed = 0;
-    int maxSearch = 0; //Have different units possible like frames, seconds, advances, and blinks.
-    int minSearch = 0; // must be < max search, handle later.
+    int maxSearch = 0; //Have different units possible like frames, seconds, advances, and blinks. -- maybe in the future
+    int minSearch = 0;
     int flexValue = 0;
     int maxCalibrate = 0;
-    int arbitrary_Target = 0; //Probably remove for Qt, as target may get chosen at runtime.
+    int arbitrary_Target = 0;
 };
 
-
-//func signatures
 std::vector<pool> generateBlinks(u32 seed, platform &userPlatform, int limit);
 std::vector<int> searchPool(std::vector<pool> pool, std::vector<int>inputs, int flexValue);
 

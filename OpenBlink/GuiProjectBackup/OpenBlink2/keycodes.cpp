@@ -5,12 +5,14 @@ KeyCodes::KeyCodes()
     m_blink = 0x01000020;
     m_slower = 0x01000012;
     m_faster = 0x01000014;
+    m_startStop = 0x01000004;
 }
-KeyCodes::KeyCodes(int b, int s, int f)
+KeyCodes::KeyCodes(int b, int s, int f, int p)
 {
     m_blink = b;
     m_slower = s;
     m_faster = f;
+    m_startStop = p;
 }
 
 QString keyCodeToName(int keyCode){
@@ -99,6 +101,16 @@ void KeyCodes::setFaster(int faster)
     m_faster = faster;
 }
 
+int KeyCodes::getStartStopKey() const
+{
+    return m_startStop;
+}
+
+void KeyCodes::setStartStop(int startStop)
+{
+    m_startStop = startStop;
+}
+
 void KeyCodes::markActive(blinkKeyTypes type){
     if (type == eBLINK_bkt){
         activeKey = &m_blink;
@@ -106,6 +118,8 @@ void KeyCodes::markActive(blinkKeyTypes type){
         activeKey = &m_slower;
     } else if (type == eFASTER_bkt){
         activeKey = &m_faster;
+    } else if (type == eSTARTSTOP_bkt){
+        activeKey = &m_startStop;
     } else {
         qDebug() << "ERROR: invalid blinkKeyType enum";
     }
@@ -116,17 +130,7 @@ void KeyCodes::setActive(int value)
     *activeKey = value; //protects the private variables
 }
 
-//void KeyCodes::alterKey(blinkKeyTypes type, int value){
-//    if(type == eBLINK_bkt){
-//        m_blink = value;
-//    } else if (type == eSLOWER_bkt){
-//        m_slower = value;
-//    } else if (type == eFASTER_bkt){
-//        m_faster = value;
-//    } else {
-//        qDebug() << "Key Type ERROR in setting";
-//    }
-//}
+
 
 
 

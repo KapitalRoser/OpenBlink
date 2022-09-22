@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QSoundEffect>
 #include <QDir>
+#include <QGraphicsDropShadowEffect>
 #include "blinkbase.h"
 #include "keycodes.h"
 #include "timersettings.h" //not to be confused with the timersettingsdialogue class
@@ -17,6 +18,15 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+typedef QGraphicsDropShadowEffect* QDropShadow;
+typedef QGraphicsDropShadowEffect QDropShadowObj;
+enum keyUnlock {INACTIVE, PRESEARCH, LISTEN, CALIBRATE};
+//All states allow start/stop
+//PRESEARCH = Only shift but not search
+//Listen = Only Shift but now shift
+//Calibrate = NO shift, allow slow/faster
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -26,6 +36,8 @@ public:
     ~MainWindow();
     bool keyUnlock;
     bool searchUnlock;
+    int hotKeyLockState;
+
     bool resultsActiveView;
     searchParameters userSP;
     platform userPF;
@@ -40,6 +52,8 @@ public:
     QColor tbl_currentBlink;
     QColor tbl_targetBlink;
     QColor tbl_upcomingBlink;
+
+    //QGraphicsDropShadowEffect* std_Shadow;
 
     //Timers
     QTimer *totalTimer; //Runs till target
@@ -71,7 +85,7 @@ public:
     platform collectPlatformInputs();
     void writeAllSettings();
 private slots:
-    void on_pushButton_clicked();
+    void on_startButton_clicked();
 
     void on_seeInputButton_clicked();
 
@@ -89,16 +103,6 @@ private slots:
 
     void on_fasterButton_clicked();
 
-    void on_galesRadio_clicked();
-
-    void on_coloRadio_clicked();
-
-    void on_palRadio_clicked();
-
-    void on_ntscuRadio_clicked();
-
-    void on_ntscjRadio_clicked();
-
     void on_flexValueBox_valueChanged(int arg1);
 
     void on_actionHotkeys_triggered();
@@ -106,6 +110,10 @@ private slots:
     void on_actionTimer_triggered();
 
     void on_actionSounds_triggered();
+
+    void on_actionExit_triggered();
+
+    void on_regionBox_activated(int index);
 
 private:
     Ui::MainWindow *ui;

@@ -6,9 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
+    <width>455</width>
     <height>226</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Century Gothic</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -18,8 +23,8 @@
     <rect>
      <x>20</x>
      <y>30</y>
-     <width>271</width>
-     <height>161</height>
+     <width>406</width>
+     <height>171</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">

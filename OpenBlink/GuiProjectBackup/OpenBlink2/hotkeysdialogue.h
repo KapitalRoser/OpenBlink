@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QKeyEvent>
-#include "blinkbase.h"
 #include "keycodes.h"
 
 
@@ -20,7 +19,8 @@ public:
     explicit HotkeysDialogue(QWidget *parent = nullptr);
     ~HotkeysDialogue();
 
-    int blinkKey, slowerKey,fasterKey; //short, easy to work with. Packaged into keyCodes() object to be sent to MainWindow().
+    int blinkKey, slowerKey,fasterKey,startStopKey; //short, easy to work with. Packaged into keyCodes() object to be sent to MainWindow().
+    QList<QPushButton*> keyList;
     KeyCodes keys;
     //Could store these as a keyCodes object directly, but watch out for the verbosity.
     int* activeKey;

@@ -10,6 +10,11 @@
     <height>347</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Century Gothic</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>

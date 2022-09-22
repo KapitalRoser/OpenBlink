@@ -4,24 +4,31 @@
 #include "timersettingsdialogue.h"
 #include "soundsettingsdialogue.h"
 
-//These are almost entirely just debug globals.
-auto start = std::chrono::high_resolution_clock::now();
+/*TODO:
+    -add Exit offset input in frames to TimerSettingsDialogue
+    -Input cleansing on seed entry
+    -Finish visual design
+    -XD Dolphin bad frames indication
+    -XD Modern bad frames indication
+    -Settings file Read/Write
+    -Windows and Mac Build testing.
+     Then done!
+//Optional
+    -Add century gothic font to resources??
+    -Up/Down Arrow keys to adjust arbitrary_target?
+    -Clean up the .h files
+    -Tidy up in general
+    -If the JPN devs discover battle blink in time then I suppose I'll add that
+*/
 
+
+auto start = std::chrono::high_resolution_clock::now(); //super useful, leave as global
 
 
 platform MainWindow::collectPlatformInputs(){
-    //collection of inputs is done all at once so that the user can't change them while the search is running.
-
-   //could make a loop looking for selected children but that's overcomplicating things for just a few options
-    region gr;
-    if (ui->ntscuRadio->isChecked()){
-        gr = NTSCU;
-    } else if (ui->ntscjRadio->isChecked()){
-        gr = NTSCJ;
-    } else {
-        gr = ui->palHzBox->currentIndex()? PAL50 : PAL60; //not in love with the dropdown, the ux of that is icky.
-    }
-    return platform(ui->galesRadio->isChecked(),ui->emu5CheckBox->isChecked(),gr);
+    return platform( ui->gameBox->currentIndex(),
+                    (ui->gameBox->currentIndex() == 2),
+                     region(ui->regionBox->currentIndex()));
 }
 
 
@@ -129,11 +136,6 @@ void MainWindow::totalTimerUpdate(){
 }
 
 void MainWindow::timerGUIUpdate(){
-
-    //calls to remainingTime() are basically free, much faster than restarting the blink timer constantly so lets just use that for everything.
-    //THIS TIMER ISN'T PERFECT. SOMETIMES TIME BETWEEN CALLS IS >1 MS, AT LEAST ACCORDING TO MAINTIME
-    //MAYBE NOT ACCORDING TO STD CHRONO TIME?
-
     int mainTime = 0;
     bool totalActive = totalTimer->isActive();
     int blinkTiming = setTimerLimit(iterExit+1,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate());
@@ -157,17 +159,12 @@ void MainWindow::timerGUIUpdate(){
                 userTS.timingAdvance();
             }
         }
-
-
         if (mainTime <= blinkTiming && iterExit-exitPool.begin() != userSP.arbitrary_Target-1){
             //If the clock has reached the next blink, and if its not the final blink, then proceed
             iterExit++;
             blinkOccurs();
         }
-
-
-}
-
+    }
     if (!totalActive){
         qDebug() << "BasicTimer stopped!";
         ui->TotalTimeLabel->setText("Complete! Seed is: " + ui->outTable->item(userSP.arbitrary_Target-1,0)->text()); //0 is seed column -- fix MAGIC NUMBER
@@ -191,7 +188,6 @@ void MainWindow::runCalibration(u32 seed){
     ui->fasterButton->setEnabled(true);
     ui->seeInputButton->setEnabled(true);
     //Visual setup complete
-
 
     //INCLUDE TIME TO START EXIT BEEPING LIKE FLOWTIMER DEFAULT 5000 MS BEFORE FINISHED.
 
@@ -257,7 +253,24 @@ void MainWindow::postInterval(QString results, int f, int row){
     ui->outTable->setItem(row,1,fTime);
 }
 
-
+void prepShadow(QDropShadow &shd){
+    shd->setOffset(0,4);
+    shd->setBlurRadius(4);
+    shd->setColor(QColor(0,0,0,64));
+}
+std::queue<QDropShadow> fillShadowSet(int numShadows, QWidget* parent){
+    std::queue<QDropShadow> set;
+    for (int i = 0; i < numShadows;i++){
+        QDropShadow sh = new QDropShadowObj(parent);
+        prepShadow(sh);
+        set.push(sh);
+    }
+    return set;
+}
+void applyShadow(QWidget* obj,std::queue<QDropShadow>&set){
+    obj->setGraphicsEffect(set.front());
+    set.pop(); //note that object still exists in memory until MainWindow is deleted.
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -265,9 +278,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    keyUnlock = false;
-    searchUnlock = false;
+
+    QAction *logAction = ui->menubar->addAction("Log");
+
+    QAction *githubAction = ui->menubar->addAction("GitHub");
+
+    QAction *helpAction = ui->menubar->addAction("Help");
+
+    QAction *exitAction = ui->menubar->addAction("Exit");
+    connect(exitAction,&QAction::triggered,this,&MainWindow::on_actionExit_triggered);
+    std::queue<QDropShadow> shadowSet;
+    shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
+    applyShadow(ui->statusFrame,shadowSet);
+    applyShadow(ui->seedQFrame,shadowSet);
+    applyShadow(ui->timerFrame,shadowSet);
+    applyShadow(ui->paramsFrame,shadowSet);
+    applyShadow(ui->platformFrame,shadowSet);
+    applyShadow(ui->blinkTableFrame,shadowSet);
+    //repeat as necessary for each object
     resultsActiveView = false;
+    hotKeyLockState = INACTIVE;
 
     //loads defaults -- will read from file when done.
     keys = KeyCodes();
@@ -313,9 +343,9 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_startButton_clicked()
 {
-    if (ui->pushButton->text() == "START"){
+    if (ui->startButton->text() == "START"){
         //ui->pushButton->setEnabled(false);
         qDebug() << QString::number(ui->seedEntry->text().toUInt(nullptr,16),16);
 
@@ -346,86 +376,91 @@ void MainWindow::on_pushButton_clicked()
         LCGn(seed,userSP.minSearch); //abstraction is needed to prevent modification
         mainPool = generateBlinks(seed,userPF,userSP.maxSearch-userSP.minSearch); //SEED IS NOT MODIFIED
 
-        keyUnlock = true;
-        ui->pushButton->clearFocus();
+        hotKeyLockState = PRESEARCH;
+        ui->startButton->clearFocus();
         ui->seeInputButton->setEnabled(false);
-        ui->pushButton->setText("STOP");
+        ui->startButton->setText("STOP");
     } else {
         totalTimer->stop();
         basicTimer->stop();
         ui->statusLabel->setText("STATUS");
         ui->TotalTimeLabel->setText("TIME REMAINING:");
         ui->localTimeLabel->setText("NEXT BLINK:");
-        keyUnlock = false;
-        searchUnlock = false;
+        hotKeyLockState = INACTIVE;
         ui->arbTargetBox->setEnabled(true);
         ui->nudgeOffsetLabel->setText("0");
-        ui->pushButton->setText("START");
+        ui->startButton->setText("START");
     }
 }
 
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    //SO THIS FUNC CALLS EVERY TIME THERE'S A KEY
+    if (event->key() == keys.getStartStopKey()){ //valid across all states
+        on_startButton_clicked();
+    }
 
-    //Keys to change target?
+    switch (hotKeyLockState) {
+    case PRESEARCH:
+        if (event->key() == keys.getBlinkKey()){
+            hotKeyLockState = LISTEN;
+            ui->statusLabel->setText("Listening!");
+            start = std::chrono::high_resolution_clock::now();
+        }
+        break;
+    case LISTEN:
+    { //this brace allows us to declare locals in a case statement. Otherwise big error
+        auto stop = std::chrono::high_resolution_clock::now(); //seems accurate enough? Switch to QDateTime if needed?
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+        start = std::chrono::high_resolution_clock::now();
+        const int LAG_REDUCTION = 10; //holdover, seemed to better align my code with sinapoke's. Accounts for some difference in hardware timing used.
+        blinkList.push_back((duration.count()-LAG_REDUCTION)/userPF.getFramerate());
 
-    if (event->key() == keys.getBlinkKey()) {
-        if (keyUnlock){
-            if (!searchUnlock){
-                searchUnlock = true;
-                ui->statusLabel->setText("Listening!");
-                start = std::chrono::high_resolution_clock::now();
-            } else {
-                //do stuff
-                auto stop = std::chrono::high_resolution_clock::now(); //seems accurate enough? Switch to QDateTime if needed?
-                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-                start = std::chrono::high_resolution_clock::now();
-                const int LAG_REDUCTION = 10; //holdover, seemed to better align my code with sinapoke's. Accounts for some difference in hardware timing used.
-                blinkList.push_back((duration.count()-LAG_REDUCTION)/userPF.getFramerate());
+        //Debug blink list?
+        u32 seed = 0; //result of searching
+        int status = performSearchPass(seed); //returns status: -1 error, 0 failure, 1 success, 2 continue search
+        if (status < 2){
+            //LOG NOW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~********************!!!!!!!!!!!!!!!!!!!!!!!!!******************!!!!!!!!!!!!!!!!!!!!!!!*************!!!!!!!!!!!!!!
+            if (status == 1){
+                hotKeyLockState = CALIBRATE;
+                ui->outTable->clear();
+                ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: purple");
+                sfxSearchSuccess.play();
 
-                //Debug blink list?
-                u32 seed = 0; //result of searching
-                int status = performSearchPass(seed); //returns status: -1 error, 0 failure, 1 success, 2 continue search
-                if (status < 2){
-                    //LOG NOW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~********************!!!!!!!!!!!!!!!!!!!!!!!!!******************!!!!!!!!!!!!!!!!!!!!!!!*************!!!!!!!!!!!!!!
-
-                    keyUnlock = false;
-                    if (status == 1){
-                        //PROCEED TO CALIBRATE
-                        ui->outTable->clear();
-                        ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: purple");
-                        sfxSearchSuccess.play();
-                        //DebugBlock
-                        QString line = QString::number(mainPool[0].blink) + ", ";
-                        for (unsigned int i = 1; i < mainPool.size(); i++) {
-                            line += QString::number(mainPool[i].blink) + ", ";
-                            if (i % 20 == 19){
-                                qDebug() << line;
-                                line = "";
-                            }
-                        }
+                //DebugBlock
+                QString line = QString::number(mainPool[0].blink) + ", ";
+                for (unsigned int i = 1; i < mainPool.size(); i++) {
+                    line += QString::number(mainPool[i].blink) + ", ";
+                    if (i % 20 == 19){
                         qDebug() << line;
-                        runCalibration(seed);
-                    } else if (status == 0){
-                        ui->statusLabel->setText("FAILURE");
-                        sfxSearchFailure.play();
+                        line = "";
                     }
                 }
+                qDebug() << line;
+
+                runCalibration(seed);
+
+            } else if (status == 0){
+                ui->statusLabel->setText("FAILURE");
+                sfxSearchFailure.play();
+                hotKeyLockState = INACTIVE;
             }
-            event->accept();
         }
+        break;
     }
-    else if (event->key() == keys.getSlowerKey()) {
-        on_slowerButton_clicked();
-        event->accept();
-    } else if (event->key() == keys.getFasterKey()){
-        on_fasterButton_clicked();
-        event->accept();
-    } else {
+    case CALIBRATE:
+        if (event->key() == keys.getSlowerKey()) {
+            on_slowerButton_clicked();
+        }
+        if (event->key() == keys.getFasterKey()){
+            on_fasterButton_clicked();
+        }
+        break;
+    default:
         QWidget::keyPressEvent(event);
+        return;
     }
+    event->accept();
 }
 
 
@@ -502,33 +537,6 @@ void MainWindow::on_fasterButton_clicked()
     }
 }
 
-void MainWindow::on_galesRadio_clicked()
-{
-    ui->emu5CheckBox->setEnabled(true);
-}
-
-void MainWindow::on_coloRadio_clicked()
-{
-    ui->emu5CheckBox->setEnabled(false);
-    ui->emu5CheckBox->setChecked(false);
-}
-
-void MainWindow::on_palRadio_clicked()
-{
-    ui->palHzBox->setEnabled(true);
-}
-
-void MainWindow::on_ntscuRadio_clicked()
-{
-    ui->palHzBox->setEnabled(false);
-    ui->palHzBox->setCurrentIndex(0);
-}
-
-void MainWindow::on_ntscjRadio_clicked()
-{
-    ui->palHzBox->setEnabled(false);
-    ui->palHzBox->setCurrentIndex(0);
-}
 
 void MainWindow::on_flexValueBox_valueChanged(int arg1)
 {
@@ -553,7 +561,7 @@ void MainWindow::on_actionTimer_triggered()
      if (timeSet_d.exec() == QDialog::Accepted){
         userTS = timeSet_d.getTs();
      }
-     qDebug() << "Results are: " << userTS.offset() << " | " << userTS.gap() << " | " << userTS.beeps();
+     //qDebug() << "Results are: " << userTS.offset() << " | " << userTS.gap() << " | " << userTS.beeps();
 
 }
 
@@ -567,3 +575,15 @@ void MainWindow::on_actionSounds_triggered()
     setSound_d.exec();
 
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    QCoreApplication::quit();
+}
+
+
+void MainWindow::on_regionBox_activated(int index)
+{
+
+}
+

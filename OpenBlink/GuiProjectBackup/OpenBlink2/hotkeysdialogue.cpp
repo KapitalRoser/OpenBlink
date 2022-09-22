@@ -1,12 +1,12 @@
 #include "hotkeysdialogue.h"
 #include "ui_hotkeysdialogue.h"
-#include "processcoreblink.h"
 
 
 void HotkeysDialogue::fillButtonNames(KeyCodes k){
     ui->blinkKeyButton->setText(keyCodeToName(k.getBlinkKey()));
     ui->slowerKeyButton->setText(keyCodeToName(k.getSlowerKey()));
     ui->fasterKeyButton->setText(keyCodeToName(k.getFasterKey()));
+    ui->startStopKeyButton->setText(keyCodeToName(k.getStartStopKey()));
 }
 
 KeyCodes HotkeysDialogue::getKeyCodes(){ //Use these for passing data into a dialogue -- see mainwindow for calling code
@@ -23,21 +23,18 @@ void HotkeysDialogue::prepActiveButton(QPushButton *button){
     button->setText("Press key...");
 }
 void HotkeysDialogue::disableButtons(){
-    ui->blinkKeyButton->setEnabled(false);
-    ui->slowerKeyButton->setEnabled(false);
-    ui->fasterKeyButton->setEnabled(false);
+    for(QPushButton* x : keyList){
+        x->setEnabled(false);
+    }
 }
 
 void HotkeysDialogue::enableButtons(){
-    ui->blinkKeyButton->setEnabled(true);
-    ui->slowerKeyButton->setEnabled(true);
-    ui->fasterKeyButton->setEnabled(true);
+    for(QPushButton* x : keyList){
+        x->setEnabled(true);
+        x->setChecked(false);
+    }
 
-    ui->blinkKeyButton->setChecked(false);
-    ui->slowerKeyButton->setChecked(false);
-    ui->fasterKeyButton->setChecked(false);
 }
-
 
 HotkeysDialogue::HotkeysDialogue(QWidget *parent) :
     QDialog(parent),
@@ -47,7 +44,9 @@ HotkeysDialogue::HotkeysDialogue(QWidget *parent) :
     connect(ui->blinkKeyButton, &QPushButton::clicked, this, &HotkeysDialogue::input_clicked);
     connect(ui->slowerKeyButton, &QPushButton::clicked, this, &HotkeysDialogue::input_clicked);
     connect(ui->fasterKeyButton, &QPushButton::clicked, this, &HotkeysDialogue::input_clicked);
-    keys = KeyCodes(); //default failsafe initialization
+    connect(ui->startStopKeyButton, &QPushButton::clicked, this, &HotkeysDialogue::input_clicked);
+    keys = KeyCodes(); //default failsafe initialization, runs before the setKeys in mainwindow
+    keyList = this->findChildren<QPushButton*>();
 }
 
 HotkeysDialogue::~HotkeysDialogue()
@@ -65,11 +64,12 @@ void HotkeysDialogue::input_clicked(){
         keys.markActive(eSLOWER_bkt);
     } else if (activeButton->objectName().contains("fast")){
         keys.markActive(eFASTER_bkt);
+    } else if (activeButton->objectName().contains("start")){
+        keys.markActive(eSTARTSTOP_bkt);
     }
 }
 
-void HotkeysDialogue::defaultResetButton_clicked()
-{
+void HotkeysDialogue::defaultResetButton_clicked(){
     setKeyCodes(KeyCodes()); //Calling default constructor fills object with default values.
 }
 void HotkeysDialogue::keyPressEvent(QKeyEvent* event){

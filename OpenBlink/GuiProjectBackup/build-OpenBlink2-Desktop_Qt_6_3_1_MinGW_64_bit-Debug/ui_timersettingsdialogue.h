@@ -39,10 +39,13 @@ public:
     {
         if (timerSettingsDialogue->objectName().isEmpty())
             timerSettingsDialogue->setObjectName(QString::fromUtf8("timerSettingsDialogue"));
-        timerSettingsDialogue->resize(313, 226);
+        timerSettingsDialogue->resize(455, 226);
+        QFont font;
+        font.setFamilies({QString::fromUtf8("Century Gothic")});
+        timerSettingsDialogue->setFont(font);
         layoutWidget = new QWidget(timerSettingsDialogue);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(20, 30, 271, 161));
+        layoutWidget->setGeometry(QRect(20, 30, 406, 171));
         gridLayout_2 = new QGridLayout(layoutWidget);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         gridLayout_2->setContentsMargins(0, 0, 0, 0);

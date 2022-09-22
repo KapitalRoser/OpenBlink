@@ -45,7 +45,7 @@ u32 LCGn(u32 &seed, const u32 n)
 }
 
 std::string formatCase(std::string &str, strCase ulCase){
-    for (unsigned int i = 0; i < str.length(); i++)
+    for (uint i = 0; i < str.length(); i++)
     {
         if (ulCase){
             str.at(i) = tolower(str.at(i));
@@ -166,7 +166,7 @@ void fillStarterGenHiddenPowerInfo(PokemonProperties &starter)
     starter.hiddenPowerPower = (powerSum * 40 / 63) + 30;
 }
 void coreDummyCam(uint32_t &seed, int camAngle1, int camAngle2, bool isFirst){
-    u32 v1 = 0;
+    int v1 = 0;
     int modulus = isFirst ? 10 : 12;
     do{
         LCG(seed);
@@ -227,7 +227,7 @@ void generateMon(uint32_t inputSeed, int genderRatio){
     PID = (hId << 16) | (lId);
 
     std::string displayNature = naturesList[PID % 25];
-    bool pidGender = genderRatio > (PID & 0xFF) ? 1 : 0;
+    bool pidGender = uint(genderRatio) > (PID & 0xFF);
     std::string displayGender;
     if (pidGender){
         displayGender = "Female";
@@ -339,15 +339,15 @@ int findGap(u32 behind, u32 ahead, bool forward){
 }
 void debugPrint2DVec(std::vector<std::vector<int> > set){
     //FOR DEBUG:
-    for (unsigned int i = 0; i < set.size(); i++){
-        for (unsigned int j = 0; j < set.at(i).size(); j++){
+    for (uint i = 0; i < set.size(); i++){
+        for (uint j = 0; j < set.at(i).size(); j++){
             std::cout << set.at(i).at(j) << ", ";
         }
         std::cout << std::endl;
     }
 }
 void debugPrintVec(std::vector<int> set){
-    for (unsigned int i = 0; i < set.size(); i++)
+    for (uint i = 0; i < set.size(); i++)
     {
         std::cout << set.at(i);
         if (i != set.size()-1){

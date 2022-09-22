@@ -65,6 +65,9 @@ public:
         if (soundSettingsDialogue->objectName().isEmpty())
             soundSettingsDialogue->setObjectName(QString::fromUtf8("soundSettingsDialogue"));
         soundSettingsDialogue->resize(803, 347);
+        QFont font;
+        font.setFamilies({QString::fromUtf8("Century Gothic")});
+        soundSettingsDialogue->setFont(font);
         verticalLayout = new QVBoxLayout(soundSettingsDialogue);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         gridMain = new QGridLayout();
@@ -253,6 +256,25 @@ public:
 
         verticalLayout->addWidget(buttonBox);
 
+        QWidget::setTabOrder(successSlide, successBox);
+        QWidget::setTabOrder(successBox, successMute);
+        QWidget::setTabOrder(successMute, successChange);
+        QWidget::setTabOrder(successChange, failureSlide);
+        QWidget::setTabOrder(failureSlide, failureBox);
+        QWidget::setTabOrder(failureBox, failureMute);
+        QWidget::setTabOrder(failureMute, failureChange);
+        QWidget::setTabOrder(failureChange, occursSlide);
+        QWidget::setTabOrder(occursSlide, occursBox);
+        QWidget::setTabOrder(occursBox, occursMute);
+        QWidget::setTabOrder(occursMute, occursChange);
+        QWidget::setTabOrder(occursChange, completeSlide);
+        QWidget::setTabOrder(completeSlide, completeBox);
+        QWidget::setTabOrder(completeBox, completeMute);
+        QWidget::setTabOrder(completeMute, completeChange);
+        QWidget::setTabOrder(completeChange, cueSlide);
+        QWidget::setTabOrder(cueSlide, cueBox);
+        QWidget::setTabOrder(cueBox, cueMute);
+        QWidget::setTabOrder(cueMute, cueChange);
 
         retranslateUi(soundSettingsDialogue);
         QObject::connect(buttonBox, &QDialogButtonBox::accepted, soundSettingsDialogue, qOverload<>(&QDialog::accept));

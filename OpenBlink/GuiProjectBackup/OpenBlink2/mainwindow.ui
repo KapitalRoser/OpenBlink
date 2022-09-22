@@ -6,187 +6,75 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>838</width>
-    <height>709</height>
+    <width>1248</width>
+    <height>756</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Century Gothic</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QFrame" name="paramsFrame">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>510</y>
-      <width>141</width>
-      <height>51</height>
+      <x>820</x>
+      <y>340</y>
+      <width>436</width>
+      <height>311</height>
      </rect>
     </property>
-    <property name="text">
-     <string>START</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="statusLabel">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>490</y>
-      <width>181</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>STATUS</string>
-    </property>
-    <property name="textInteractionFlags">
-     <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="TotalTimeLabel">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>540</y>
-      <width>181</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TOTAL REMAINING:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="localTimeLabel">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>580</y>
-      <width>181</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Next blink:</string>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>40</y>
-      <width>271</width>
-      <height>581</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Blinks</string>
-    </property>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>20</y>
-       <width>271</width>
-       <height>561</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QPushButton" name="seeInputButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>^ See inputs</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableWidget" name="outTable"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="increaseBlinksButton">
-        <property name="text">
-         <string>Add 10 more blinks</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QPushButton" name="slowerButton">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>←  Slower</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="fasterButton">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Faster →</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QLabel" name="nudgeOffsetLabel">
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>190</y>
-      <width>416</width>
-      <height>281</height>
-     </rect>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid white;
+color: black;
+background-color: white;
+border-radius: 20px;
+</string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Input Seed:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="seedEntry">
-         <property name="text">
-          <string>DEADBEEF</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>input forgiveness (frames)</string>
+          <string>Input forgiveness (frames)</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QSpinBox" name="flexValueBox">
+         <property name="styleSheet">
+          <string notr="true">QSpinBox{
+border: 2px solid #828282;
+padding-left: 15px;
+padding-top:5px;
+padding-bottom:5px;
+}
+
+QSpinBox::up-button{
+image: url(:/resfix1/arrow2.jpg);
+width: 14px;
+height:14px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom:5px;
+}
+QSpinBox::down-button{
+image: url(:/resfix1/arrow1.jpg);
+width: 14px;
+height:14px;
+padding-right: 10px;
+padding-top: 5px;
+padding-bottom:5px;
+}</string>
+         </property>
          <property name="minimum">
           <number>-1000</number>
          </property>
@@ -265,40 +153,598 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="palHzBox_2">
-         <property name="enabled">
-          <bool>false</bool>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Advances</string>
          </property>
-         <item>
-          <property name="text">
-           <string>Advances</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Visual Frames</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Blinks</string>
-          </property>
-         </item>
         </widget>
        </item>
       </layout>
      </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="LogoLabel">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>50</y>
+      <width>141</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Century Gothic</family>
+      <pointsize>14</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>OpenBlink</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="statusFrame">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>370</y>
+      <width>321</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Century Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid white;
+color: black;
+background-color: white;
+border-radius: 20px;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>20</number>
+    </property>
+    <property name="midLineWidth">
+     <number>3</number>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="statusBox">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="statusLabel">
+        <property name="font">
+         <font>
+          <family>Century Gothic</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>STATUS</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="startButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Century Gothic</family>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #e0e0e0;
+color: black;
+border: 5px solid #e0e0e0;
+border-radius: 0px;
+border-bottom-right-radius: 15px;
+border-bottom-left-radius: 15px;</string>
+        </property>
+        <property name="text">
+         <string>START</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="seedQFrame">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>290</y>
+      <width>321</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid white;
+color: black;
+background-color: white;
+border-radius: 20px;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="seedLabelEntry">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Century Gothic</family>
+          <bold>false</bold>
+          <kerning>false</kerning>
+         </font>
+        </property>
+        <property name="text">
+         <string>Seed:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="seedEntry">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">padding:10px;</string>
+        </property>
+        <property name="text">
+         <string>DEADBEEF</string>
+        </property>
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>600</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Century Gothic</family>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #e0e0e0;
+color: black;
+border: 5px solid #e0e0e0;
+border-radius: 0px;
+border-bottom-right-radius: 15px;
+border-top-right-radius: 15px;</string>
+        </property>
+        <property name="text">
+         <string>Paste</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="timerFrame">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>520</y>
+      <width>321</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid white;
+font: 9pt &quot;Century Gothic&quot;;
+color: black;
+background-color: white;
+border-radius: 20px;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0" colspan="4">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="slowerButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>115</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>9</pointsize>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #e0e0e0;
+font: 9pt &quot;Century Gothic&quot;;
+color: black;
+border: 5px solid #e0e0e0;</string>
+         </property>
+         <property name="text">
+          <string>←  Slower</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="nudgeOffsetLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="fasterButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>115</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>9</pointsize>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #e0e0e0;
+font: 9pt &quot;Century Gothic&quot;;
+color: black;
+border: 5px solid #e0e0e0;</string>
+         </property>
+         <property name="text">
+          <string>Faster →</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="localTimeLabel">
+       <property name="text">
+        <string>Next blink:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="nudgeOffsetLabel_2">
+       <property name="text">
+        <string>+0f</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Minimum</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="TotalTimeLabel">
+       <property name="text">
+        <string>TIME REMAINING:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QFrame" name="blinkTableFrame">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>20</y>
+      <width>292</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Century Gothic</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid white;
+color: black;
+background-color: white;
+border-radius: 20px;
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <widget class="QLabel" name="label_9">
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+         <pointsize>14</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Blinks</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="seeInputButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #e0e0e0;
+font: 9pt &quot;Century Gothic&quot;;
+color: black;
+border: 5px solid #e0e0e0;
+border-radius: 15px;</string>
+       </property>
+       <property name="text">
+        <string>↑ See inputs</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="outTable"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="increaseBlinksButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #e0e0e0;
+font: 9pt &quot;Century Gothic&quot;;
+color: black;
+border: 5px solid #e0e0e0;
+border-radius: 20px;</string>
+       </property>
+       <property name="text">
+        <string>Add 10 more blinks</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,2,3">
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
          <property name="text">
           <string>Target:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QSpinBox" name="arbTargetBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 2px solid #828282;
+border-radius: 14px;
+padding:5px;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
          <property name="minimum">
           <number>1</number>
          </property>
@@ -310,95 +756,91 @@
          </property>
         </widget>
        </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QFrame" name="platformFrame">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>870</x>
       <y>80</y>
-      <width>357</width>
-      <height>42</height>
+      <width>311</width>
+      <height>261</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="gameHorizLayout">
-     <item>
-      <widget class="QRadioButton" name="coloRadio">
-       <property name="text">
-        <string>Colosseum</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_8">
-       <item>
-        <widget class="QRadioButton" name="galesRadio">
-         <property name="text">
-          <string>Gales</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="emu5CheckBox">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Dolphin 5.0?</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>130</y>
-      <width>358</width>
-      <height>51</height>
-     </rect>
+    <property name="styleSheet">
+     <string notr="true">border: 5px solid white;
+font: 9pt &quot;Century Gothic&quot;;
+color: black;
+background-color: white;
+border-radius: 20px;
+</string>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QRadioButton" name="ntscuRadio">
-       <property name="text">
-        <string>NTSC-U</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QHBoxLayout" name="gameHorizLayout">
        <item>
-        <widget class="QRadioButton" name="palRadio">
+        <widget class="QLabel" name="label_7">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
-          <string>PAL</string>
+          <string>Game:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="palHzBox">
-         <property name="enabled">
-          <bool>false</bool>
+        <widget class="QComboBox" name="gameBox">
+         <property name="styleSheet">
+          <string notr="true">QComboBox{
+border: 2px solid #828282;
+padding-left: 15px;
+padding-top:10px;
+padding-bottom:10px;
+}
+QComboBox::drop-down{
+border: 0px;
+}
+QComboBox::down-arrow{
+image: url(:/resfix1/arrow1.jpg);
+width: 28px;
+height:28px;
+padding-right: 40px;
+}
+QComboBox QAbstractItemView{
+	border: 2px solid #828282;
+}</string>
          </property>
          <item>
           <property name="text">
-           <string>60hz</string>
+           <string>Colosseum</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>50hz</string>
+           <string>XD</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>XD (Dolphin 5.0)</string>
           </property>
          </item>
         </widget>
@@ -406,11 +848,65 @@
       </layout>
      </item>
      <item>
-      <widget class="QRadioButton" name="ntscjRadio">
-       <property name="text">
-        <string>NTSC-J</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="regionHorzLayout">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Region:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="regionBox">
+         <property name="styleSheet">
+          <string notr="true">QComboBox{
+border: 2px solid #828282;
+padding-left: 15px;
+padding-top:10px;
+padding-bottom:10px;
+}
+QComboBox::drop-down{
+border: 0px;
+}
+QComboBox::down-arrow{
+image: url(:/resfix1/arrow1.jpg);
+width: 28px;
+height:28px;
+padding-right: 40px;
+}
+QComboBox QAbstractItemView{
+	border: 2px solid #828282;
+}</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>NTSC-U (NA)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PAL - 60Hz (EU)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PAL - 50Hz</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>NTSC-J (JP)</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -420,8 +916,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>838</width>
-     <height>22</height>
+     <width>1248</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -432,55 +928,44 @@
     <addaction name="actionSounds"/>
     <addaction name="actionTimer"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuExit">
-    <property name="title">
-     <string>Exit</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuGithub">
-    <property name="title">
-     <string>GitHub</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuLog">
-    <property name="title">
-     <string>Log</string>
-    </property>
-   </widget>
    <addaction name="menuSettings"/>
-   <addaction name="menuLog"/>
-   <addaction name="menuHelp"/>
-   <addaction name="menuGithub"/>
-   <addaction name="menuExit"/>
   </widget>
   <action name="actionHotkeys">
    <property name="text">
     <string>Hotkeys</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+    </font>
    </property>
   </action>
   <action name="actionSounds">
    <property name="text">
     <string>Sounds</string>
    </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+    </font>
+   </property>
   </action>
   <action name="actionTimer">
    <property name="text">
     <string>Timer</string>
    </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+    </font>
+   </property>
   </action>
  </widget>
  <tabstops>
-  <tabstop>pushButton</tabstop>
+  <tabstop>startButton</tabstop>
   <tabstop>seedEntry</tabstop>
   <tabstop>arbTargetBox</tabstop>
   <tabstop>outTable</tabstop>
-  <tabstop>slowerButton</tabstop>
-  <tabstop>fasterButton</tabstop>
   <tabstop>seeInputButton</tabstop>
  </tabstops>
  <resources/>
