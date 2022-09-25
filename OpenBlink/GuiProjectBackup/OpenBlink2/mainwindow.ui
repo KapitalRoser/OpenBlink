@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1248</width>
-    <height>756</height>
+    <width>896</width>
+    <height>817</height>
    </rect>
   </property>
   <property name="font">
@@ -25,10 +25,10 @@
    <widget class="QFrame" name="paramsFrame">
     <property name="geometry">
      <rect>
-      <x>820</x>
-      <y>340</y>
-      <width>436</width>
-      <height>311</height>
+      <x>110</x>
+      <y>170</y>
+      <width>341</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -43,6 +43,11 @@ border-radius: 20px;
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
          <property name="text">
           <string>Input forgiveness (frames)</string>
          </property>
@@ -50,26 +55,34 @@ border-radius: 20px;
        </item>
        <item>
         <widget class="QSpinBox" name="flexValueBox">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>9</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
          <property name="styleSheet">
           <string notr="true">QSpinBox{
 border: 2px solid #828282;
-padding-left: 15px;
+border-radius: 10px;
+padding-left: 5px;
 padding-top:5px;
 padding-bottom:5px;
 }
 
 QSpinBox::up-button{
 image: url(:/resfix1/arrow2.jpg);
-width: 14px;
-height:14px;
+width: 10px;
+height:10px;
 padding-right: 10px;
 padding-top: 5px;
 padding-bottom:5px;
 }
 QSpinBox::down-button{
 image: url(:/resfix1/arrow1.jpg);
-width: 14px;
-height:14px;
+width: 10px;
+height:10px;
 padding-right: 10px;
 padding-top: 5px;
 padding-bottom:5px;
@@ -88,6 +101,11 @@ padding-bottom:5px;
        </item>
        <item>
         <widget class="QLabel" name="flexValueHalfLabel">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
          <property name="text">
           <string>+- 5f</string>
          </property>
@@ -97,8 +115,22 @@ padding-bottom:5px;
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
          <property name="text">
           <string>Search from:</string>
          </property>
@@ -112,6 +144,19 @@ padding-bottom:5px;
            <height>0</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 2px solid #828282;
+border-radius: 10px;
+padding-left: 2px;
+padding-top: 2px;
+padding-bottom:2px;
+</string>
+         </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::NoButtons</enum>
          </property>
@@ -122,6 +167,12 @@ padding-bottom:5px;
        </item>
        <item>
         <widget class="QLabel" name="label_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>~</string>
          </property>
@@ -134,6 +185,21 @@ padding-bottom:5px;
            <width>60</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 2px solid #828282;
+border-radius: 10px;
+padding-left: 2px;
+padding-top: 2px;
+padding-bottom:2px;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::NoButtons</enum>
@@ -154,6 +220,11 @@ padding-bottom:5px;
        </item>
        <item>
         <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
          <property name="text">
           <string>Advances</string>
          </property>
@@ -166,8 +237,8 @@ padding-bottom:5px;
    <widget class="QLabel" name="LogoLabel">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>50</y>
+      <x>120</x>
+      <y>70</y>
       <width>141</width>
       <height>41</height>
      </rect>
@@ -186,9 +257,9 @@ padding-bottom:5px;
    <widget class="QFrame" name="statusFrame">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>370</y>
-      <width>321</width>
+      <x>110</x>
+      <y>390</y>
+      <width>341</width>
       <height>121</height>
      </rect>
     </property>
@@ -221,7 +292,7 @@ border-radius: 20px;
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>321</width>
+       <width>341</width>
        <height>121</height>
       </rect>
      </property>
@@ -234,6 +305,8 @@ border-radius: 20px;
         <property name="font">
          <font>
           <family>Century Gothic</family>
+          <pointsize>11</pointsize>
+          <bold>true</bold>
          </font>
         </property>
         <property name="text">
@@ -258,6 +331,8 @@ border-radius: 20px;
         <property name="font">
          <font>
           <family>Century Gothic</family>
+          <pointsize>11</pointsize>
+          <bold>true</bold>
          </font>
         </property>
         <property name="styleSheet">
@@ -279,9 +354,9 @@ border-bottom-left-radius: 15px;</string>
    <widget class="QFrame" name="seedQFrame">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>290</y>
-      <width>321</width>
+      <x>110</x>
+      <y>310</y>
+      <width>341</width>
       <height>61</height>
      </rect>
     </property>
@@ -309,13 +384,16 @@ border-radius: 20px;
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>321</width>
+       <width>341</width>
        <height>61</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
        <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
       </property>
       <item>
        <widget class="QLabel" name="seedLabelEntry">
@@ -328,7 +406,8 @@ border-radius: 20px;
         <property name="font">
          <font>
           <family>Century Gothic</family>
-          <bold>false</bold>
+          <pointsize>11</pointsize>
+          <bold>true</bold>
           <kerning>false</kerning>
          </font>
         </property>
@@ -348,6 +427,7 @@ border-radius: 20px;
         <property name="font">
          <font>
           <family>Segoe UI</family>
+          <pointsize>11</pointsize>
          </font>
         </property>
         <property name="styleSheet">
@@ -387,6 +467,7 @@ border-radius: 20px;
         <property name="font">
          <font>
           <family>Century Gothic</family>
+          <pointsize>11</pointsize>
          </font>
         </property>
         <property name="styleSheet">
@@ -408,15 +489,14 @@ border-top-right-radius: 15px;</string>
    <widget class="QFrame" name="timerFrame">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>520</y>
-      <width>321</width>
+      <x>110</x>
+      <y>540</y>
+      <width>341</width>
       <height>191</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">border: 5px solid white;
-font: 9pt &quot;Century Gothic&quot;;
 color: black;
 background-color: white;
 border-radius: 20px;
@@ -490,6 +570,11 @@ border: 5px solid #e0e0e0;</string>
            <height>0</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+          </font>
+         </property>
          <property name="text">
           <string>0</string>
          </property>
@@ -541,6 +626,11 @@ border: 5px solid #e0e0e0;</string>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="localTimeLabel">
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+        </font>
+       </property>
        <property name="text">
         <string>Next blink:</string>
        </property>
@@ -561,6 +651,11 @@ border: 5px solid #e0e0e0;</string>
      </item>
      <item row="0" column="2">
       <widget class="QLabel" name="nudgeOffsetLabel_2">
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+        </font>
+       </property>
        <property name="text">
         <string>+0f</string>
        </property>
@@ -587,6 +682,14 @@ border: 5px solid #e0e0e0;</string>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="TotalTimeLabel">
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+         <pointsize>11</pointsize>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>TIME REMAINING:</string>
        </property>
@@ -597,10 +700,10 @@ border: 5px solid #e0e0e0;</string>
    <widget class="QFrame" name="blinkTableFrame">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>20</y>
+      <x>480</x>
+      <y>30</y>
       <width>292</width>
-      <height>681</height>
+      <height>701</height>
      </rect>
     </property>
     <property name="font">
@@ -776,30 +879,58 @@ padding:5px;</string>
    <widget class="QFrame" name="platformFrame">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>80</y>
-      <width>311</width>
-      <height>261</height>
+      <x>110</x>
+      <y>30</y>
+      <width>341</width>
+      <height>121</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">border: 5px solid white;
-font: 9pt &quot;Century Gothic&quot;;
 color: black;
 background-color: white;
 border-radius: 20px;
 </string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
      <item>
       <layout class="QHBoxLayout" name="gameHorizLayout">
        <item>
         <widget class="QLabel" name="label_7">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>74</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>11</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
          </property>
          <property name="text">
           <string>Game:</string>
@@ -808,12 +939,21 @@ border-radius: 20px;
        </item>
        <item>
         <widget class="QComboBox" name="gameBox">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>11</pointsize>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
          <property name="styleSheet">
           <string notr="true">QComboBox{
 border: 2px solid #828282;
 padding-left: 15px;
 padding-top:10px;
 padding-bottom:10px;
+border-radius: 10px;
 }
 QComboBox::drop-down{
 border: 0px;
@@ -823,9 +963,6 @@ image: url(:/resfix1/arrow1.jpg);
 width: 28px;
 height:28px;
 padding-right: 40px;
-}
-QComboBox QAbstractItemView{
-	border: 2px solid #828282;
 }</string>
          </property>
          <item>
@@ -852,10 +989,18 @@ QComboBox QAbstractItemView{
        <item>
         <widget class="QLabel" name="label_8">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>11</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
          </property>
          <property name="text">
           <string>Region:</string>
@@ -864,12 +1009,19 @@ QComboBox QAbstractItemView{
        </item>
        <item>
         <widget class="QComboBox" name="regionBox">
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="styleSheet">
           <string notr="true">QComboBox{
 border: 2px solid #828282;
 padding-left: 15px;
 padding-top:10px;
 padding-bottom:10px;
+border-radius:10px;
 }
 QComboBox::drop-down{
 border: 0px;
@@ -879,9 +1031,6 @@ image: url(:/resfix1/arrow1.jpg);
 width: 28px;
 height:28px;
 padding-right: 40px;
-}
-QComboBox QAbstractItemView{
-	border: 2px solid #828282;
 }</string>
          </property>
          <item>
@@ -916,8 +1065,8 @@ QComboBox QAbstractItemView{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1248</width>
-     <height>27</height>
+     <width>896</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
