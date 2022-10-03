@@ -20,10 +20,86 @@
     -Tidy up in general
     -If the JPN devs discover battle blink in time then I suppose I'll add that
 */
-
-
+QString tableStyle =
+        "QTableWidget {font: 9pt \"Century Gothic\";max-width:210px;}"
+        "QTableWidget QScrollBar:vertical{background: white;border:1px solid white;border-radius:5px;}"
+        "QTableWidget QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{background:none;}"
+        "QTableWidget QScrollBar::handle:vertical{"
+        "background-color:#e0e0e0;"
+        "border-radius: 5px;"
+        "min-height: 100px;}"
+        "QTableWidget QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical{background:none;}"
+        "QTableWidget QHeaderView::section{background-color:white;border:none;font: 9pt \"Century Gothic\";}"
+        "QTableWidget QTableCornerButton:section{background-color:white;border-top-left-radius:15px;border:none;}"
+        ;
 auto start = std::chrono::high_resolution_clock::now(); //super useful, leave as global
 
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+
+    QAction *logAction = ui->menubar->addAction("Log");
+
+    QAction *githubAction = ui->menubar->addAction("GitHub");
+    connect(githubAction,&QAction::triggered,this,&MainWindow::on_actionGithub_triggered);
+    QAction *helpAction = ui->menubar->addAction("Help");
+
+    QAction *exitAction = ui->menubar->addAction("Exit");
+    connect(exitAction,&QAction::triggered,this,&MainWindow::on_actionExit_triggered);
+    std::queue<QDropShadow> shadowSet;
+    shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
+    applyShadow(ui->statusFrame,shadowSet);
+    applyShadow(ui->seedQFrame,shadowSet);
+    applyShadow(ui->timerFrame,shadowSet);
+    applyShadow(ui->paramsFrame,shadowSet);
+    applyShadow(ui->platformFrame,shadowSet);
+    applyShadow(ui->blinkTableFrame,shadowSet);
+    //repeat as necessary for each object
+    resultsActiveView = false;
+    hotKeyLockState = INACTIVE;
+    ui->copyButton->setVisible(false);
+    ui->copyButton->setEnabled(false);
+    //loads defaults -- will read from file when done.
+    keys = KeyCodes();
+    userTS = TimerSettings();
+
+    tbl_pastBlink = QColor(222,222,222); //gray
+    tbl_currentBlink = QColor(255,236,116); //light green
+    tbl_targetBlink = QColor(168,255,200); //Gold
+    tbl_upcomingBlink = QColor(255,255,255); //White
+
+    sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
+    sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
+    //sfxSearchFailure.setSource(QUrl(""));
+    sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
+    sfxCalibrationComplete.setSource(QUrl::fromLocalFile(":/resfix1/snagSuccess.wav"));
+    sfxExitCue.setSource(QUrl::fromLocalFile(":/resfix1/blinkBeep1.wav"));
+
+    sfxSearchSuccess.setVolume(0.2);
+    sfxSearchFailure.setVolume(0.2);
+    sfxBlinkOccurs.setVolume(0.2);
+    sfxCalibrationComplete.setVolume(0.2);
+    sfxExitCue.setVolume(0.2);
+
+    totalTimer = new QTimer(this); //Governs the whole process
+    basicTimer = new QTimer(this); //Repeats continuously. Purely to create events.
+
+    totalTimer->setSingleShot(true); //Pretty sure this is fine
+    totalTimer->setTimerType(Qt::PreciseTimer); //CRITICAL IMPORTANCE. Otherwise defaults to Coarse Timer, which can be wrong by up to 5%
+
+    //There is also a setsingleshot function, avoiding the need to declare and object. However, having the object may be useful
+
+    //connects
+    connect(basicTimer,&QTimer::timeout, this, &MainWindow::timerGUIUpdate);
+    connect(totalTimer, &QTimer::timeout, this, &MainWindow::totalTimerUpdate);
+
+
+    ui->arbTargetBox->setValue(15);
+}
 
 platform MainWindow::collectPlatformInputs(){
     return platform( ui->gameBox->currentIndex(),
@@ -151,8 +227,9 @@ void MainWindow::timerGUIUpdate(){
             if (ui->arbTargetBox->isEnabled()){
                 ui->arbTargetBox->setEnabled(false);
             }
-            ui->slowerButton->setEnabled(false);
-            ui->fasterButton->setEnabled(false);
+            ui->timerFrame->setEnabled(false);
+            //ui->fasterButton->setEnabled(false);
+           // ui->slowerButton->setEnabled(false); //I hate that these don't get updated when timerFrame gets changed.
             if (mainTime <= userTS.getTiming() + userPF.getFadeOutMS() && userTS.getTiming() != -1){
                 sfxExitCue.play();
                 qDebug() << userTS.getTiming() + userPF.getFadeOutMS();
@@ -167,26 +244,34 @@ void MainWindow::timerGUIUpdate(){
     }
     if (!totalActive){
         qDebug() << "BasicTimer stopped!";
-        ui->TotalTimeLabel->setText("Complete! Seed is: " + ui->outTable->item(userSP.arbitrary_Target-1,0)->text()); //0 is seed column -- fix MAGIC NUMBER
+        ui->TotalTimeLabel->setText("Complete!");
+        u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
+        ui->statusLabel->setText("FINISHED! New seed: 0x" + QString::number(seedFinal,16).toUpper()
+                                 + "\nTotal Advancements: " + QString::number(findGap(seedAfterMin,seedFinal,1)));
         basicTimer->stop();
+        ui->copyButton->setVisible(true);
+        ui->copyButton->setEnabled(true);
     }
 }
 
 
 void MainWindow::runCalibration(u32 seed){
     resultsActiveView = true;
+    ui->outTable->clear();
+    ui->outTable->setStyleSheet("QTableWidget{border:2px solid purple;padding:6px;padding-left:10px;}" + tableStyle);
+    sfxSearchSuccess.play();
     //populate table with blinks
     exitPool = generateBlinks(seed,userPF,userSP.maxCalibrate);
     qDebug() << exitPool.size() << " blinks generated";
-
     ui->outTable->setRowCount(userSP.arbitrary_Target);
-
+    ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Frames");
     iterExit = exitPool.begin();
     postPool(iterExit,iterExit+userSP.arbitrary_Target,0);
-
-    ui->slowerButton->setEnabled(true);
-    ui->fasterButton->setEnabled(true);
+    ui->outTable->resizeColumnsToContents();
+    ui->outTable->setColumnWidth(0,77);
+    ui->timerFrame->setEnabled(true);
     ui->seeInputButton->setEnabled(true);
+    ui->increaseBlinksButton->setEnabled(true);
     //Visual setup complete
 
     //INCLUDE TIME TO START EXIT BEEPING LIKE FLOWTIMER DEFAULT 5000 MS BEFORE FINISHED.
@@ -217,9 +302,11 @@ int MainWindow::performSearchPass(u32 &outSeed){
                 foundIdx = resultIndexes.front()+blinkList.size()-1;
                 outSeed = mainPool[foundIdx].seed;
                 qDebug() << QString::number(outSeed,16) << " SEED";
+
                 ui->statusLabel->setText("SUCCESS: Seed is: 0x"
                     + QString::number(outSeed,16).toUpper()
-                    + ".\nSubsequence at position: " + QString::number(resultIndexes.front()));
+                                         + "\nAdvances from " + QString::number(ui->searchMinBox->value()) + ": " + QString::number(findGap(seedAfterMin,outSeed,1)));
+                    // + ".\nSubsequence at position: " + QString::number(resultIndexes.front())); //THIS WILL BE LOGGED
                 foundIdx = resultIndexes.front();
                 //Use debug if necessary
                 return 1;
@@ -237,6 +324,8 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
     while (setP != limitP){
         QTableWidgetItem *tblSeed= new QTableWidgetItem(QString::number(setP->seed,16).toUpper()); //DO I NEED DESTRUCTORS FOR THESE?
         QTableWidgetItem *fTime = new QTableWidgetItem(QString::number(setP->blink));
+        tblSeed->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        fTime->setTextAlignment(Qt::AlignCenter);
         ui->outTable->setItem(rowCurrent,0,tblSeed);
         ui->outTable->setItem(rowCurrent,1,fTime);
         rowCurrent++;
@@ -246,9 +335,13 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
 
 
 void MainWindow::postInterval(QString results, int f, int row){
-    ui->outTable->setRowCount(ui->outTable->rowCount()+1);
+    if (!ui->outTable->item(0,0)->text().isNull()){
+        ui->outTable->setRowCount(ui->outTable->rowCount()+1);
+    }
     QTableWidgetItem *resultsStr= new QTableWidgetItem(results);
     QTableWidgetItem *fTime = new QTableWidgetItem(QString::number(f));
+    resultsStr->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    fTime->setTextAlignment(Qt::AlignCenter);
     ui->outTable->setItem(row,0,resultsStr);
     ui->outTable->setItem(row,1,fTime);
 }
@@ -272,70 +365,6 @@ void applyShadow(QWidget* obj,std::queue<QDropShadow>&set){
     set.pop(); //note that object still exists in memory until MainWindow is deleted.
 }
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-
-
-    QAction *logAction = ui->menubar->addAction("Log");
-
-    QAction *githubAction = ui->menubar->addAction("GitHub");
-
-    QAction *helpAction = ui->menubar->addAction("Help");
-
-    QAction *exitAction = ui->menubar->addAction("Exit");
-    connect(exitAction,&QAction::triggered,this,&MainWindow::on_actionExit_triggered);
-    std::queue<QDropShadow> shadowSet;
-    shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
-    applyShadow(ui->statusFrame,shadowSet);
-    applyShadow(ui->seedQFrame,shadowSet);
-    applyShadow(ui->timerFrame,shadowSet);
-    applyShadow(ui->paramsFrame,shadowSet);
-    applyShadow(ui->platformFrame,shadowSet);
-    applyShadow(ui->blinkTableFrame,shadowSet);
-    //repeat as necessary for each object
-    resultsActiveView = false;
-    hotKeyLockState = INACTIVE;
-
-    //loads defaults -- will read from file when done.
-    keys = KeyCodes();
-    userTS = TimerSettings();
-
-    tbl_pastBlink = QColor(222,222,222);
-    tbl_currentBlink = QColor(255,236,116);
-    tbl_targetBlink = QColor(168,255,200);
-    tbl_upcomingBlink = QColor(255,255,255);
-
-    sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
-    sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
-    //sfxSearchFailure.setSource(QUrl(""));
-    sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
-    sfxCalibrationComplete.setSource(QUrl::fromLocalFile(":/resfix1/snagSuccess.wav"));
-    sfxExitCue.setSource(QUrl::fromLocalFile(":/resfix1/blinkBeep1.wav"));
-
-    sfxSearchSuccess.setVolume(0.2);
-    sfxSearchFailure.setVolume(0.2);
-    sfxBlinkOccurs.setVolume(0.2);
-    sfxCalibrationComplete.setVolume(0.2);
-    sfxExitCue.setVolume(0.2);
-
-    totalTimer = new QTimer(this); //Governs the whole process
-    basicTimer = new QTimer(this); //Repeats continuously. Purely to create events.
-
-    totalTimer->setSingleShot(true); //Pretty sure this is fine
-    totalTimer->setTimerType(Qt::PreciseTimer); //CRITICAL IMPORTANCE. Otherwise defaults to Coarse Timer, which can be wrong by up to 5%
-
-    //There is also a setsingleshot function, avoiding the need to declare and object. However, having the object may be useful
-
-    //connects
-    connect(basicTimer,&QTimer::timeout, this, &MainWindow::timerGUIUpdate);
-    connect(totalTimer, &QTimer::timeout, this, &MainWindow::totalTimerUpdate);
-
-
-    ui->arbTargetBox->setValue(15);
-}
 
 MainWindow::~MainWindow()
 {
@@ -348,14 +377,16 @@ void MainWindow::on_startButton_clicked()
     if (ui->startButton->text() == "START"){
         //ui->pushButton->setEnabled(false);
         qDebug() << QString::number(ui->seedEntry->text().toUInt(nullptr,16),16);
-
         //keycodetoname
         ui->statusLabel->setText("Press " + keyCodeToName(keys.getBlinkKey()) + " to search!"); //Allow user to change hotkey.
-
         ui->outTable->clear();
-        ui->outTable->setRowCount(0);
+        ui->outTable->setRowCount(1);
         ui->outTable->setColumnCount(2);
-        ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: green");
+        ui->outTable->setItem(0,0,new QTableWidgetItem());
+        ui->outTable->setHorizontalHeaderLabels(QStringList() << "Candidates"<<"Frames");//Dummy sizing, to set up for later
+
+        ui->outTable->setStyleSheet("QTableWidget{border: 2px solid green;padding:6px;padding-left:10px;}" + tableStyle);
+        ui->outTable->resizeColumnsToContents();
 
         //definitions
 
@@ -372,22 +403,36 @@ void MainWindow::on_startButton_clicked()
         blinkList.clear();
         exitPool.clear();
         mainPool.clear();
-        u32 seed = userSP.inputSeed;
-        LCGn(seed,userSP.minSearch); //abstraction is needed to prevent modification
-        mainPool = generateBlinks(seed,userPF,userSP.maxSearch-userSP.minSearch); //SEED IS NOT MODIFIED
+
+        //Move this inside blinkBase class?
+        seedAfterMin = userSP.inputSeed;
+        LCGn(seedAfterMin,userSP.minSearch); //abstraction is needed to prevent modification of inputSeed
+        mainPool = generateBlinks(seedAfterMin,userPF,userSP.maxSearch-userSP.minSearch); //SEED IS NOT MODIFIED
 
         hotKeyLockState = PRESEARCH;
         ui->startButton->clearFocus();
         ui->seeInputButton->setEnabled(false);
+        ui->increaseBlinksButton->setEnabled(false);
+        ui->paramsFrame->setEnabled(false);
+        ui->platformFrame->setEnabled(false);
+        ui->seedQFrame->setEnabled(false);
+        ui->copyButton->setVisible(false);
+        ui->copyButton->setEnabled(false);
         ui->startButton->setText("STOP");
     } else {
+        ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
         totalTimer->stop();
         basicTimer->stop();
-        ui->statusLabel->setText("STATUS");
         ui->TotalTimeLabel->setText("TIME REMAINING:");
         ui->localTimeLabel->setText("NEXT BLINK:");
-        hotKeyLockState = INACTIVE;
+        hotKeyLockState = INACTIVE;\
+        ui->timerFrame->setEnabled(false);
         ui->arbTargetBox->setEnabled(true);
+        ui->paramsFrame->setEnabled(true);
+        ui->platformFrame->setEnabled(true);
+        ui->seedQFrame->setEnabled(true);
+        ui->copyButton->setVisible(false);
+        ui->copyButton->setEnabled(false);
         ui->nudgeOffsetLabel->setText("0");
         ui->startButton->setText("START");
     }
@@ -423,9 +468,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
             //LOG NOW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~********************!!!!!!!!!!!!!!!!!!!!!!!!!******************!!!!!!!!!!!!!!!!!!!!!!!*************!!!!!!!!!!!!!!
             if (status == 1){
                 hotKeyLockState = CALIBRATE;
-                ui->outTable->clear();
-                ui->outTable->setStyleSheet("border-style: solid; border-width: 2px; border-color: purple");
-                sfxSearchSuccess.play();
+
 
                 //DebugBlock
                 QString line = QString::number(mainPool[0].blink) + ", ";
@@ -449,12 +492,15 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         break;
     }
     case CALIBRATE:
-        if (event->key() == keys.getSlowerKey()) {
-            on_slowerButton_clicked();
+        if(ui->timerFrame->isEnabled()){
+            if (event->key() == keys.getSlowerKey()) {
+                on_slowerButton_clicked();
+            }
+            if (event->key() == keys.getFasterKey()){
+                on_fasterButton_clicked();
+            }
         }
-        if (event->key() == keys.getFasterKey()){
-            on_fasterButton_clicked();
-        }
+        ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFramerate()) + "ms");
         break;
     default:
         QWidget::keyPressEvent(event);
@@ -474,10 +520,12 @@ void MainWindow::on_seeInputButton_clicked()
             retroInputPool.push_back(pool({blinkList[i],mainPool[foundIdx+i].seed}));
         }
         postPool(retroInputPool.begin(),retroInputPool.end(),0);
+        ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Input");
         ui->seeInputButton->setText("v See future blinks");
     } else {
         resultsActiveView = true;
         restoreResults();
+        ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Frames");
         ui->seeInputButton->setText("^ See inputs");
     }
 }
@@ -581,9 +629,28 @@ void MainWindow::on_actionExit_triggered()
     QCoreApplication::quit();
 }
 
-
-void MainWindow::on_regionBox_activated(int index)
+void MainWindow::on_actionGithub_triggered()
 {
+    QDesktopServices::openUrl(QUrl("https://github.com/KapitalRoser/OpenBlink"));
+}
 
+void MainWindow::on_copyButton_clicked()
+{
+    QClipboard *clip = QApplication::clipboard();
+    clip->setText(ui->outTable->item(userSP.arbitrary_Target-1,0)->text());
+    ui->copyButton->setText("Copied!");
+}
+
+void MainWindow::on_pasteButton_clicked()
+{
+    ui->seedEntry->setText("");
+    ui->seedEntry->paste();
+    ui->pasteButton->setText("Pasted!");
+}
+
+
+void MainWindow::on_seedEntry_textChanged(const QString &arg1)
+{
+    ui->pasteButton->setText("Paste");
 }
 

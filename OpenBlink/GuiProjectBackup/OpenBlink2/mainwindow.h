@@ -7,6 +7,8 @@
 #include <QSoundEffect>
 #include <QDir>
 #include <QGraphicsDropShadowEffect>
+#include <QDesktopServices>
+#include <QClipboard>
 #include "blinkbase.h"
 #include "keycodes.h"
 #include "timersettings.h" //not to be confused with the timersettingsdialogue class
@@ -37,8 +39,8 @@ public:
     bool keyUnlock;
     bool searchUnlock;
     int hotKeyLockState;
-
     bool resultsActiveView;
+    u32 seedAfterMin;
     searchParameters userSP;
     platform userPF;
     TimerSettings userTS;
@@ -113,9 +115,19 @@ private slots:
 
     void on_actionExit_triggered();
 
-    void on_regionBox_activated(int index);
+    void on_actionGithub_triggered();
+
+    void on_copyButton_clicked();
+
+    void on_pasteButton_clicked();
+
+    void on_seedEntry_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
 };
+//outside class
+void applyShadow(QWidget* obj,std::queue<QDropShadow>&set);
+std::queue<QDropShadow> fillShadowSet(int numShadows, QWidget* parent);
+
 #endif // MAINWINDOW_H

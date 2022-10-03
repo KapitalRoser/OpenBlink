@@ -32,11 +32,15 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 5px solid white;
+     <string notr="true">*{
+border: 5px solid white;
 color: black;
 background-color: white;
 border-radius: 20px;
-</string>
+}
+QFrame QLabel:disabled{
+color:grey;
+}</string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
@@ -86,6 +90,10 @@ height:10px;
 padding-right: 10px;
 padding-top: 5px;
 padding-bottom:5px;
+}
+QSpinBox:disabled{
+color:grey;
+border-color: lightgrey;
 }</string>
          </property>
          <property name="minimum">
@@ -95,7 +103,7 @@ padding-bottom:5px;
           <number>1000</number>
          </property>
          <property name="value">
-          <number>10</number>
+          <number>20</number>
          </property>
         </widget>
        </item>
@@ -150,12 +158,17 @@ padding-bottom:5px;
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">border: 2px solid #828282;
+          <string notr="true">QSpinBox{
+border: 2px solid #828282;
 border-radius: 10px;
 padding-left: 2px;
-padding-top: 2px;
+padding-top:2px;
 padding-bottom:2px;
-</string>
+}
+QSpinBox:disabled{
+color:grey;
+border-color:lightgrey;
+}</string>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::NoButtons</enum>
@@ -192,11 +205,17 @@ padding-bottom:2px;
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">border: 2px solid #828282;
+          <string notr="true">QSpinBox{
+border: 2px solid #828282;
 border-radius: 10px;
 padding-left: 2px;
-padding-top: 2px;
-padding-bottom:2px;</string>
+padding-top:2px;
+padding-bottom:2px;
+}
+QSpinBox:disabled{
+color:grey;
+border-color:lightgrey;
+}</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -260,7 +279,7 @@ padding-bottom:2px;</string>
       <x>110</x>
       <y>390</y>
       <width>341</width>
-      <height>121</height>
+      <height>126</height>
      </rect>
     </property>
     <property name="font">
@@ -269,8 +288,7 @@ padding-bottom:2px;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 5px solid white;
-color: black;
+     <string notr="true">color: black;
 background-color: white;
 border-radius: 20px;
 </string>
@@ -287,77 +305,140 @@ border-radius: 20px;
     <property name="midLineWidth">
      <number>3</number>
     </property>
-    <widget class="QWidget" name="verticalLayoutWidget_2">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>341</width>
-       <height>121</height>
-      </rect>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="statusBox">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="statusLabel">
-        <property name="font">
-         <font>
-          <family>Century Gothic</family>
-          <pointsize>11</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>STATUS</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="startButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Century Gothic</family>
-          <pointsize>11</pointsize>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: #e0e0e0;
-color: black;
-border: 5px solid #e0e0e0;
-border-radius: 0px;
-border-bottom-right-radius: 15px;
-border-bottom-left-radius: 15px;</string>
-        </property>
-        <property name="text">
-         <string>START</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="statusLabel">
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>STATUS</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="8,3">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <item>
+        <widget class="QPushButton" name="startButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>11</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+background-color: #004080;
+font: 11pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:0px;
+border-bottom-right-radius:20px;
+border-bottom-left-radius:20px;
+}
+QPushButton:hover{
+cursor:pointer;
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+         </property>
+         <property name="text">
+          <string>START</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="copyButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+background-color: #004080;
+font: 11pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:0px;
+border-bottom-left-radius:20px;
+border-bottom-right-radius:20px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+         </property>
+         <property name="text">
+          <string>Copy</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
    <widget class="QFrame" name="seedQFrame">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>310</y>
-      <width>341</width>
-      <height>61</height>
+      <x>170</x>
+      <y>300</y>
+      <width>230</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -366,12 +447,23 @@ border-bottom-left-radius: 15px;</string>
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
     <property name="styleSheet">
-     <string notr="true">border: 5px solid white;
+     <string notr="true">
+*{
 color: black;
 background-color: white;
 border-radius: 20px;
-</string>
+}
+*:disabled{
+color:grey;
+font-weight:normal;}
+QLineEdit:disabled{color:grey;}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -379,114 +471,133 @@ border-radius: 20px;
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>341</width>
-       <height>61</height>
-      </rect>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,5,2">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>10</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="seedLabelEntry">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Century Gothic</family>
-          <pointsize>11</pointsize>
-          <bold>true</bold>
-          <kerning>false</kerning>
-         </font>
-        </property>
-        <property name="text">
-         <string>Seed:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="seedEntry">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>11</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">padding:10px;</string>
-        </property>
-        <property name="text">
-         <string>DEADBEEF</string>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>600</width>
-          <height>100</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Century Gothic</family>
-          <pointsize>11</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: #e0e0e0;
-color: black;
-border: 5px solid #e0e0e0;
-border-radius: 0px;
-border-bottom-right-radius: 15px;
-border-top-right-radius: 15px;</string>
-        </property>
-        <property name="text">
-         <string>Paste</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+     <property name="leftMargin">
+      <number>26</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="seedLabelEntry">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+         <pointsize>11</pointsize>
+         <bold>true</bold>
+         <kerning>false</kerning>
+        </font>
+       </property>
+       <property name="text">
+        <string>Seed:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="seedEntry">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding:10px;</string>
+       </property>
+       <property name="text">
+        <string>DEADBEEF</string>
+       </property>
+       <property name="maxLength">
+        <number>8</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pasteButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>600</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+         <pointsize>9</pointsize>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:0px;
+border-top-right-radius:20px;
+border-bottom-right-radius:20px;
+padding:10px;
+}
+QPushButton:hover{
+cursor:pointer;
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+       </property>
+       <property name="text">
+        <string>Paste</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QFrame" name="timerFrame">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -495,12 +606,19 @@ border-top-right-radius: 15px;</string>
       <height>191</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
     <property name="styleSheet">
-     <string notr="true">border: 5px solid white;
+     <string notr="true">*{border: 5px solid white;
+font: &quot;Century Gothic&quot;;
 color: black;
 background-color: white;
 border-radius: 20px;
-</string>
+}
+QFrame:disabled{
+color:grey;
+}</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -509,151 +627,13 @@ border-radius: 20px;
      <enum>QFrame::Raised</enum>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="0" colspan="4">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>5</number>
-       </property>
-       <property name="rightMargin">
-        <number>5</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="slowerButton">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>115</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Century Gothic</family>
-           <pointsize>9</pointsize>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: #e0e0e0;
-font: 9pt &quot;Century Gothic&quot;;
-color: black;
-border: 5px solid #e0e0e0;</string>
-         </property>
-         <property name="text">
-          <string>←  Slower</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="nudgeOffsetLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>40</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Century Gothic</family>
-          </font>
-         </property>
-         <property name="text">
-          <string>0</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="fasterButton">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>115</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Century Gothic</family>
-           <pointsize>9</pointsize>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: #e0e0e0;
-font: 9pt &quot;Century Gothic&quot;;
-color: black;
-border: 5px solid #e0e0e0;</string>
-         </property>
-         <property name="text">
-          <string>Faster →</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="localTimeLabel">
-       <property name="font">
-        <font>
-         <family>Century Gothic</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Next blink:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="nudgeOffsetLabel_2">
+      <widget class="QLabel" name="nudgeMSLabel">
        <property name="font">
         <font>
          <family>Century Gothic</family>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -680,6 +660,139 @@ border: 5px solid #e0e0e0;</string>
        </property>
       </spacer>
      </item>
+     <item row="2" column="0" colspan="4">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="slowerButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>115</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>9</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:21%;
+}
+QPushButton:hover{
+cursor:pointer;
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+         </property>
+         <property name="text">
+          <string>←  Slower</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="nudgeOffsetLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="fasterButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>115</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Century Gothic</family>
+           <pointsize>9</pointsize>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:21%;
+}
+QPushButton:hover{
+cursor:pointer;
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+         </property>
+         <property name="text">
+          <string>Faster →</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="TotalTimeLabel">
        <property name="font">
@@ -695,6 +808,33 @@ border: 5px solid #e0e0e0;</string>
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="localTimeLabel">
+       <property name="font">
+        <font>
+         <family>Century Gothic</family>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Next blink:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
     </layout>
    </widget>
    <widget class="QFrame" name="blinkTableFrame">
@@ -702,7 +842,7 @@ border: 5px solid #e0e0e0;</string>
      <rect>
       <x>480</x>
       <y>30</y>
-      <width>292</width>
+      <width>251</width>
       <height>701</height>
      </rect>
     </property>
@@ -712,8 +852,7 @@ border: 5px solid #e0e0e0;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 5px solid white;
-color: black;
+     <string notr="true">color: black;
 background-color: white;
 border-radius: 20px;
 </string>
@@ -725,6 +864,21 @@ border-radius: 20px;
      <enum>QFrame::Raised</enum>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>20</number>
+     </property>
+     <property name="topMargin">
+      <number>20</number>
+     </property>
+     <property name="rightMargin">
+      <number>20</number>
+     </property>
+     <property name="bottomMargin">
+      <number>20</number>
+     </property>
      <item>
       <widget class="QLabel" name="label_9">
        <property name="font">
@@ -757,11 +911,24 @@ border-radius: 20px;
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #e0e0e0;
+        <string notr="true">QPushButton{background-color: #004080;
 font: 9pt &quot;Century Gothic&quot;;
-color: black;
-border: 5px solid #e0e0e0;
-border-radius: 15px;</string>
+color: white;
+font-weight: bold;
+border-radius:21%;
+}
+QPushButton:hover{
+cursor:pointer;
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
        </property>
        <property name="text">
         <string>↑ See inputs</string>
@@ -769,10 +936,63 @@ border-radius: 15px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QTableWidget" name="outTable"/>
+      <widget class="QFrame" name="frame">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>465</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
+       <widget class="QTableWidget" name="outTable">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>9</y>
+          <width>210</width>
+          <height>451</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectItems</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+        <property name="cornerButtonEnabled">
+         <bool>false</bool>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>true</bool>
+        </attribute>
+       </widget>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="increaseBlinksButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -786,11 +1006,24 @@ border-radius: 15px;</string>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #e0e0e0;
+        <string notr="true">QPushButton{background-color: #004080;
 font: 9pt &quot;Century Gothic&quot;;
-color: black;
-border: 5px solid #e0e0e0;
-border-radius: 20px;</string>
+color: white;
+font-weight: bold;
+border-radius:21%;
+}
+QPushButton:hover{
+cursor:pointer;
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
        </property>
        <property name="text">
         <string>Add 10 more blinks</string>
@@ -798,10 +1031,23 @@ border-radius: 20px;</string>
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,2,3">
+      <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1,2,0">
        <property name="rightMargin">
         <number>0</number>
        </property>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item>
         <widget class="QLabel" name="label_2">
          <property name="font">
@@ -820,7 +1066,7 @@ border-radius: 20px;</string>
        <item>
         <widget class="QSpinBox" name="arbTargetBox">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -828,7 +1074,7 @@ border-radius: 20px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>0</height>
+           <height>30</height>
           </size>
          </property>
          <property name="font">
@@ -838,15 +1084,28 @@ border-radius: 20px;</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">border: 2px solid #828282;
-border-radius: 14px;
-padding:5px;</string>
+          <string notr="true">QSpinBox{
+border: 2px solid #828282;
+border-radius: 10px;
+}
+
+QSpinBox::up-button{
+image: url(:/resfix1/arrow2.jpg);
+width: 12px;
+height:12px;
+padding-right: 5px;
+padding-top:2px;
+}
+QSpinBox::down-button{
+image: url(:/resfix1/arrow1.jpg);
+width: 12px;
+height:12px;
+padding-right: 5px;
+padding-bottom:2px;
+}</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
+          <set>Qt::AlignCenter</set>
          </property>
          <property name="minimum">
           <number>1</number>
@@ -886,28 +1145,18 @@ padding:5px;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 5px solid white;
+     <string notr="true">
+*{border: 5px solid white;
 color: black;
 background-color: white;
 border-radius: 20px;
-</string>
+}
+QFrame QLabel:disabled{
+color:grey;
+font-weight:normal;
+}</string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
-     <property name="spacing">
-      <number>10</number>
-     </property>
-     <property name="leftMargin">
-      <number>10</number>
-     </property>
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <property name="rightMargin">
-      <number>10</number>
-     </property>
-     <property name="bottomMargin">
-      <number>10</number>
-     </property>
      <item>
       <layout class="QHBoxLayout" name="gameHorizLayout">
        <item>
@@ -963,6 +1212,10 @@ image: url(:/resfix1/arrow1.jpg);
 width: 28px;
 height:28px;
 padding-right: 40px;
+}
+QComboBox:disabled{
+color:grey;
+border-color:lightgrey;
 }</string>
          </property>
          <item>
@@ -1031,6 +1284,10 @@ image: url(:/resfix1/arrow1.jpg);
 width: 28px;
 height:28px;
 padding-right: 40px;
+}
+QComboBox:disabled{
+color:grey;
+border-color:lightgrey;
 }</string>
          </property>
          <item>
@@ -1066,7 +1323,7 @@ padding-right: 40px;
      <x>0</x>
      <y>0</y>
      <width>896</width>
-     <height>20</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -1111,10 +1368,8 @@ padding-right: 40px;
   </action>
  </widget>
  <tabstops>
-  <tabstop>startButton</tabstop>
   <tabstop>seedEntry</tabstop>
   <tabstop>arbTargetBox</tabstop>
-  <tabstop>outTable</tabstop>
   <tabstop>seeInputButton</tabstop>
  </tabstops>
  <resources/>
