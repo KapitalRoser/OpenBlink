@@ -207,13 +207,13 @@ void MainWindow::totalTimerUpdate(){
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start); //debug
     qDebug() << "Total Duration: " << float(duration.count())/1000;
-    sfxCalibrationComplete.play();
+    //sfxCalibrationComplete.play();
     highlightTableRow(iterExit-exitPool.begin(),tbl_targetBlink);
-    ui->arbTargetBox->setEnabled(true);
 }
 
 void MainWindow::timerGUIUpdate(){
     bool totalActive = totalTimer->isActive();
+    bool exitActive = exitTimer->isActive();
     int blinkTiming = setTimerLimit(iterExit+1,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate());
 
     if (totalActive){
@@ -227,14 +227,15 @@ void MainWindow::timerGUIUpdate(){
 
 
         if (mainTime <= firstMS){
-            if (!exitTimer->isActive()&& userTS.checkState()){
+            if (!exitActive&& userTS.checkState()){
                 exitTimer->start(firstMS);
+                sfxBlinkOccurs.setMuted(true); //mute the blinks to prevent distraction.
                 qDebug() << "ExitTimer Started: " << firstMS ;
             }
             ui->arbTargetBox->setEnabled(false); //set these to false at maintime <= offset NOT INCL INPUT becaues otherwise user could fuck shit up on the last blink or two.
             ui->timerFrame->setEnabled(false);
             int exitTime = exitTimer->remainingTime();
-            if (exitTimer->isActive() && exitTime <= localMS && userTS.checkState()){
+            if (exitActive && exitTime <= localMS && userTS.checkState()){
                 qDebug() << "LocalMS:" << localMS;
                 userTS.timingAdvance();
                 qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
@@ -243,37 +244,6 @@ void MainWindow::timerGUIUpdate(){
             }
         }
 
-
-//            if(exitTime <= localMS && userTS.checkState()){
-
-//                userTS.timingAdvance();
-//                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
-//                             << " : "<< mainTime << totalTimer->remainingTime();
-//                sfxExitCue.play();
-//            }
-
-//        }
-
-
-//        if (mainTime <= firstMS){
-//            if (mainTime <= localMS && userTS.checkState()){
-//                userTS.timingAdvance();
-//                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate());
-////                         << " : "<< mainTime << totalTimer->remainingTime();
-//                sfxExitCue.play(); //On the surfacePro4 this sfx takes 100ms to complete
-//            }
-//            if(!exitTimer->isActive() && userTS.checkState()){
-//                exitTimer->start(userTS.getTiming());
-//            }
-//            ui->arbTargetBox->setEnabled(false);
-//            ui->timerFrame->setEnabled(false);
-//        }
-
-//        if (exitTime <= localMS && userTS.checkState()){
-//            qDebug() << "ExitBeep! " << mainTime << " : " << exitTime << " : " << totalTimer->remainingTime();
-//            //timingadvance
-//            //exitcue play
-//        }
         ui->TotalTimeLabel->setText("TIME REMAINING: " + QString::number(float(mainTime)/1000)); //Can we get by updating this every 10 ms instead of 1?
         ui->localTimeLabel->setText("NEXT BLINK: " + QString::number(float(mainTime-blinkTiming)/1000));
         if (mainTime <= blinkTiming && iterExit-exitPool.begin() != userSP.arbitrary_Target-1){
@@ -282,13 +252,16 @@ void MainWindow::timerGUIUpdate(){
             blinkOccurs();
         }
     }
-    if (!totalActive){
+    if (!totalActive && !exitActive){
         qDebug() << "BasicTimer stopped!";
         ui->TotalTimeLabel->setText("Complete!");
         u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
         ui->statusLabel->setText("FINISHED! New seed: 0x" + QString::number(seedFinal,16).toUpper()
                                  + "\nTotal Advancements: " + QString::number(findGap(seedAfterMin,seedFinal,1)));
-        basicTimer->stop(); //set this to be after both totalTimer and exitTimer finish.
+        basicTimer->stop(); //set this to be after both totalTimer and exitTimer finish
+        sfxBlinkOccurs.setMuted(wasMuted);
+        sfxCalibrationComplete.play();
+        ui->arbTargetBox->setEnabled(true);
         ui->copyButton->setVisible(true);
         ui->copyButton->setEnabled(true);
     }
@@ -467,6 +440,7 @@ void MainWindow::on_startButton_clicked()
         ui->copyButton->setText("Copy");
         ui->pasteButton->setText("Paste");
         ui->startButton->setText("STOP");
+        wasMuted = sfxBlinkOccurs.isMuted();
     } else {
         ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
         totalTimer->stop();
@@ -703,6 +677,7 @@ void MainWindow::on_pasteButton_clicked()
 
 void MainWindow::on_seedEntry_textChanged(const QString &arg1)
 {
+    //input validation?
     ui->pasteButton->setText("Paste");
 }
 

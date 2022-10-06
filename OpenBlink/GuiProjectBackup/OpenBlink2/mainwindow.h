@@ -72,6 +72,7 @@ public:
     QSoundEffect sfxBlinkOccurs;
     QSoundEffect sfxCalibrationComplete;
     QSoundEffect sfxExitCue;
+    bool wasMuted;
 
     //There is probably a way to use just one or two timers instead, but likely more convoluted.
 
