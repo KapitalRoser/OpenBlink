@@ -27,6 +27,7 @@ void timerSettingsDialogue::setTs(const TimerSettings &value)
     ui->exitOffsetBox->setValue(ts.offset());
     ui->exitIntervalBox->setValue(ts.gap());
     ui->exitBeepsBox->setValue(ts.beeps());
+    ui->exitInputBox->setValue(-ts.input());
 }
 
 void timerSettingsDialogue::validateInput(bool condition)
@@ -65,3 +66,10 @@ void timerSettingsDialogue::on_exitBeepsBox_valueChanged(int arg1)
 {
     validateInput(ts.setBeeps(arg1));
 }
+
+void timerSettingsDialogue::on_exitInputBox_valueChanged(int arg1)
+{
+    ts.setInput(-arg1);
+    qDebug() << QString::number(-arg1);
+}
+

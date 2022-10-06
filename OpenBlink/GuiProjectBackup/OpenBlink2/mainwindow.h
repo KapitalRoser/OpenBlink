@@ -41,6 +41,9 @@ public:
     int hotKeyLockState;
     bool resultsActiveView;
     u32 seedAfterMin;
+
+    bool settingsChanged;
+
     searchParameters userSP;
     platform userPF;
     TimerSettings userTS;
@@ -62,7 +65,7 @@ public:
     int totalTimerLimit;
     int localBlinkMs;
     QTimer *basicTimer; //Updates Gui
-
+    QTimer *exitTimer; //Need to test if this can completely replace.
     //sfx
     QSoundEffect sfxSearchSuccess;
     QSoundEffect sfxSearchFailure;
@@ -94,6 +97,8 @@ private slots:
     void totalTimerUpdate();
 
     void timerGUIUpdate();
+
+    void exitTimerUpdate();
 
     void blinkOccurs();
 

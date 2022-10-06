@@ -1398,10 +1398,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_soundsettingsdialogue.h"
+        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_mainwindow.h"
     ],
     "directory": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/.qtc_clangd",
-    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_soundsettingsdialogue.h"
+    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_mainwindow.h"
 },
 {
     "arguments": [
@@ -1476,10 +1476,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_mainwindow.h"
+        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_soundsettingsdialogue.h"
     ],
     "directory": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/.qtc_clangd",
-    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_mainwindow.h"
+    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_soundsettingsdialogue.h"
 },
 {
     "arguments": [

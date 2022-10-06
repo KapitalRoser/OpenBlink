@@ -369,7 +369,7 @@ public:
 
         seedQFrame = new QFrame(centralwidget);
         seedQFrame->setObjectName(QString::fromUtf8("seedQFrame"));
-        seedQFrame->setGeometry(QRect(120, 310, 230, 51));
+        seedQFrame->setGeometry(QRect(170, 300, 230, 51));
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);

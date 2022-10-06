@@ -1,20 +1,18 @@
 #include "timersettings.h"
 
 TimerSettings::TimerSettings()
+    : m_offset(5000), m_gap(500), m_beeps(5), m_input(0)
 {
-    m_offset = 5000;
-    m_gap = 500;
-    m_beeps = 5;
     if (validate()){
         buildQueue();
     }
 }
 
-TimerSettings::TimerSettings(int offset, int gap, int beeps)
+TimerSettings::TimerSettings(int offset, int gap, int beeps, int input)
+    : m_offset(offset), m_gap(gap), m_beeps(beeps), m_input(input)
 {
-    m_offset = offset; //Try not to use this constructor, if you manually input a invalid item, then queue wont build.
-    m_gap = gap;
-    m_beeps = beeps;
+    /*Try not to use this constructor, if you manually input a invalid item, then queue wont build.
+    Should build from default first and then modify values individually*/
     if (validate()){
         buildQueue();
     }
@@ -49,11 +47,7 @@ void TimerSettings::buildQueue()
 
 int TimerSettings::getTiming()
 {
-    if (checkState()){
-        return m_timings.front();
-    } else {
-        return -1;
-    }
+    return checkState() ? m_timings.front() : 0;
 }
 
 void TimerSettings::timingAdvance(){
@@ -87,6 +81,11 @@ int TimerSettings::beeps() const
     return m_beeps;
 }
 
+int TimerSettings::input() const
+{
+    return m_input;
+}
+
 bool TimerSettings::checkState()
 {
     return !m_timings.empty(); //true == valid state, false == invalid state
@@ -95,6 +94,11 @@ bool TimerSettings::checkState()
 bool TimerSettings::setBeeps(int beeps)
 {
     return updateFactor(m_beeps,beeps);
+}
+
+void TimerSettings::setInput(int input)
+{
+    m_input = input;
 }
 
 

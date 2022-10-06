@@ -90,7 +90,7 @@ class platform{
     bool m_is_xd = 0, m_is_emu5 = 0;
     region m_gameRegion = NTSCU;
     float m_framerate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer.
-    int m_fadeFrames = 8; //target halfway thru a 10f blink space, with a set# of frames for fadeout included.
+    int m_fadeFrames = 5; //overwritten
     int m_fadeOutMS = round(m_framerate*m_fadeFrames); //will need to find rate acrosss all regions/games.
     //FadeOutMS gets added to the exit timer beeps, making them occur EARLIER.
     public:
@@ -117,8 +117,8 @@ class platform{
            //NTSCU == 21 to 23?
            //JPN == 22, sometimes 21?
             //Emu5 seems to be the same as modern here.
-        m_fadeFrames -= 5; //Target center of blink instead of beginning.
-        m_fadeOutMS = round(m_framerate*m_fadeFrames); //REPLACE WITH FADEOUT FRAMES COUNT BY REGION
+        m_fadeFrames += 5; //Target center of blink instead of beginning.
+        m_fadeOutMS = round(m_framerate*m_fadeFrames);
     }
 
     int m_framesPer60 = 0; //The only variable that changes often --really should be part of blinkState but not sure how to write it.

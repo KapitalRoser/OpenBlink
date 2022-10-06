@@ -5,15 +5,15 @@
 #include "soundsettingsdialogue.h"
 
 /*TODO:
-    -add Exit offset input in frames to TimerSettingsDialogue
+    -Seperate Exit Timer from Total Timer OR Start a new timer with a duration of the remaining exit time.
     -Input cleansing on seed entry
-    -Finish visual design
     -XD Dolphin bad frames indication
     -XD Modern bad frames indication
     -Settings file Read/Write
     -Windows and Mac Build testing.
      Then done!
 //Optional
+    -Retry QThread for performance reasons
     -Add century gothic font to resources??
     -Up/Down Arrow keys to adjust arbitrary_target?
     -Clean up the .h files
@@ -86,16 +86,19 @@ MainWindow::MainWindow(QWidget *parent)
     sfxExitCue.setVolume(0.2);
 
     totalTimer = new QTimer(this); //Governs the whole process
-    basicTimer = new QTimer(this); //Repeats continuously. Purely to create events.
+    basicTimer = new QTimer(this); //Repeats continuously. Purely to create events. Even if the sfx delays this on older pcs, the main timer remains accurate.
+    exitTimer = new QTimer(this); //how often do we run this timer?
 
     totalTimer->setSingleShot(true); //Pretty sure this is fine
     totalTimer->setTimerType(Qt::PreciseTimer); //CRITICAL IMPORTANCE. Otherwise defaults to Coarse Timer, which can be wrong by up to 5%
-
+    exitTimer->setSingleShot(true);
+    exitTimer->setTimerType(Qt::PreciseTimer);
     //There is also a setsingleshot function, avoiding the need to declare and object. However, having the object may be useful
 
     //connects
     connect(basicTimer,&QTimer::timeout, this, &MainWindow::timerGUIUpdate);
     connect(totalTimer, &QTimer::timeout, this, &MainWindow::totalTimerUpdate);
+    connect(exitTimer,&QTimer::timeout,this,&MainWindow::exitTimerUpdate);
 
 
     ui->arbTargetBox->setValue(15);
@@ -204,38 +207,75 @@ void MainWindow::totalTimerUpdate(){
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start); //debug
     qDebug() << "Total Duration: " << float(duration.count())/1000;
-    //sfxExitCue.play(); //If this is better, then is it better to include it here or in the regular timer rhythm?
-    sfxCalibrationComplete.play(); //Is this it?
-
+    sfxCalibrationComplete.play();
     highlightTableRow(iterExit-exitPool.begin(),tbl_targetBlink);
     ui->arbTargetBox->setEnabled(true);
 }
 
 void MainWindow::timerGUIUpdate(){
-    int mainTime = 0;
     bool totalActive = totalTimer->isActive();
     int blinkTiming = setTimerLimit(iterExit+1,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate());
 
     if (totalActive){
-        mainTime = totalTimer->remainingTime();
-        ui->TotalTimeLabel->setText("TIME REMAINING: " + QString::number(float(mainTime)/1000)); //Can we get by updating this every 10 ms instead of 1?
+        int mainTime = totalTimer->remainingTime();
 
-        ui->localTimeLabel->setText("NEXT BLINK: " + QString::number(float(mainTime-blinkTiming)/1000));
 
-        //Make sure to mathematically validate these, such that the beeps * interval is < Offset.
-        if (mainTime <= userTS.offset() + userPF.getFadeOutMS()){
-            if (ui->arbTargetBox->isEnabled()){
-                ui->arbTargetBox->setEnabled(false);
+        //Pre-convert the queue inside TS? Pass in the userPF values?
+        float msAdjustment = userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
+        float firstMS = userTS.offset() + msAdjustment;
+        float localMS = userTS.getTiming() + msAdjustment;
+
+
+        if (mainTime <= firstMS){
+            if (!exitTimer->isActive()&& userTS.checkState()){
+                exitTimer->start(firstMS);
+                qDebug() << "ExitTimer Started: " << firstMS ;
             }
+            ui->arbTargetBox->setEnabled(false); //set these to false at maintime <= offset NOT INCL INPUT becaues otherwise user could fuck shit up on the last blink or two.
             ui->timerFrame->setEnabled(false);
-            //ui->fasterButton->setEnabled(false);
-           // ui->slowerButton->setEnabled(false); //I hate that these don't get updated when timerFrame gets changed.
-            if (mainTime <= userTS.getTiming() + userPF.getFadeOutMS() && userTS.getTiming() != -1){
-                sfxExitCue.play();
-                qDebug() << userTS.getTiming() + userPF.getFadeOutMS();
+            int exitTime = exitTimer->remainingTime();
+            if (exitTimer->isActive() && exitTime <= localMS && userTS.checkState()){
+                qDebug() << "LocalMS:" << localMS;
                 userTS.timingAdvance();
+                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
+                                             << " : "<< mainTime << totalTimer->remainingTime();
+                                sfxExitCue.play();
             }
         }
+
+
+//            if(exitTime <= localMS && userTS.checkState()){
+
+//                userTS.timingAdvance();
+//                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
+//                             << " : "<< mainTime << totalTimer->remainingTime();
+//                sfxExitCue.play();
+//            }
+
+//        }
+
+
+//        if (mainTime <= firstMS){
+//            if (mainTime <= localMS && userTS.checkState()){
+//                userTS.timingAdvance();
+//                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate());
+////                         << " : "<< mainTime << totalTimer->remainingTime();
+//                sfxExitCue.play(); //On the surfacePro4 this sfx takes 100ms to complete
+//            }
+//            if(!exitTimer->isActive() && userTS.checkState()){
+//                exitTimer->start(userTS.getTiming());
+//            }
+//            ui->arbTargetBox->setEnabled(false);
+//            ui->timerFrame->setEnabled(false);
+//        }
+
+//        if (exitTime <= localMS && userTS.checkState()){
+//            qDebug() << "ExitBeep! " << mainTime << " : " << exitTime << " : " << totalTimer->remainingTime();
+//            //timingadvance
+//            //exitcue play
+//        }
+        ui->TotalTimeLabel->setText("TIME REMAINING: " + QString::number(float(mainTime)/1000)); //Can we get by updating this every 10 ms instead of 1?
+        ui->localTimeLabel->setText("NEXT BLINK: " + QString::number(float(mainTime-blinkTiming)/1000));
         if (mainTime <= blinkTiming && iterExit-exitPool.begin() != userSP.arbitrary_Target-1){
             //If the clock has reached the next blink, and if its not the final blink, then proceed
             iterExit++;
@@ -248,10 +288,15 @@ void MainWindow::timerGUIUpdate(){
         u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
         ui->statusLabel->setText("FINISHED! New seed: 0x" + QString::number(seedFinal,16).toUpper()
                                  + "\nTotal Advancements: " + QString::number(findGap(seedAfterMin,seedFinal,1)));
-        basicTimer->stop();
+        basicTimer->stop(); //set this to be after both totalTimer and exitTimer finish.
         ui->copyButton->setVisible(true);
         ui->copyButton->setEnabled(true);
     }
+}
+
+void MainWindow::exitTimerUpdate()
+{
+    qDebug() << "Exit Timer finished!";
 }
 
 
@@ -287,6 +332,7 @@ void MainWindow::runCalibration(u32 seed){
     start = std::chrono::high_resolution_clock::now();
     totalTimer->start(totalTimerLimit); //Test this thoroughly.
     basicTimer->start(1);
+
 
 }
 
@@ -418,6 +464,8 @@ void MainWindow::on_startButton_clicked()
         ui->seedQFrame->setEnabled(false);
         ui->copyButton->setVisible(false);
         ui->copyButton->setEnabled(false);
+        ui->copyButton->setText("Copy");
+        ui->pasteButton->setText("Paste");
         ui->startButton->setText("STOP");
     } else {
         ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
@@ -574,6 +622,8 @@ void MainWindow::on_increaseBlinksButton_clicked()
 void MainWindow::on_slowerButton_clicked()
 {
     if (totalTimer->isActive()){
+        ui->outTable->clearFocus();
+        ui->arbTargetBox->clearFocus();
         nudgeCalibration(false);
     }
 }
@@ -581,6 +631,8 @@ void MainWindow::on_slowerButton_clicked()
 void MainWindow::on_fasterButton_clicked()
 {
     if (totalTimer->isActive()){
+        ui->outTable->clearFocus();
+        ui->arbTargetBox->clearFocus();
         nudgeCalibration(true);
     }
 }
