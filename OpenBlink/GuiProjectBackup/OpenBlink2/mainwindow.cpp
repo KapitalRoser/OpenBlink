@@ -5,15 +5,16 @@
 #include "soundsettingsdialogue.h"
 
 /*TODO:
-    -Seperate Exit Timer from Total Timer OR Start a new timer with a duration of the remaining exit time.
-    -Input cleansing on seed entry
+    -Test that the new ExitTimer system + fadeout ms remains accurate.
+    -Input cleansing on seed entry + input cleansing on all fields.
     -XD Dolphin bad frames indication
     -XD Modern bad frames indication
     -Settings file Read/Write
     -Windows and Mac Build testing.
      Then done!
 //Optional
-    -Retry QThread for performance reasons
+    -Allow gui to shrink for condensed screens like laptops.
+    -Retry QThread for performance reasons -- Only for searcher, calibration runs fine on toaster
     -Add century gothic font to resources??
     -Up/Down Arrow keys to adjust arbitrary_target?
     -Clean up the .h files
@@ -216,21 +217,21 @@ void MainWindow::timerGUIUpdate(){
     bool exitActive = exitTimer->isActive();
     int blinkTiming = setTimerLimit(iterExit+1,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate());
 
-    if (totalActive){
+    if (totalActive || exitActive){
         int mainTime = totalTimer->remainingTime();
 
 
         //Pre-convert the queue inside TS? Pass in the userPF values?
-        float msAdjustment = userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
-        float firstMS = userTS.offset() + msAdjustment;
-        float localMS = userTS.getTiming() + msAdjustment;
+        float firstMS = userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
+        float localMS = userTS.getTiming() + userPF.getFadeOutMS();
 
 
         if (mainTime <= firstMS){
             if (!exitActive&& userTS.checkState()){
-                exitTimer->start(firstMS);
+                exitTimer->start(userTS.offset());
                 sfxBlinkOccurs.setMuted(true); //mute the blinks to prevent distraction.
                 qDebug() << "ExitTimer Started: " << firstMS ;
+                qDebug() << "First LocalMS: " << localMS;
             }
             ui->arbTargetBox->setEnabled(false); //set these to false at maintime <= offset NOT INCL INPUT becaues otherwise user could fuck shit up on the last blink or two.
             ui->timerFrame->setEnabled(false);
@@ -240,7 +241,7 @@ void MainWindow::timerGUIUpdate(){
                 userTS.timingAdvance();
                 qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
                                              << " : "<< mainTime << totalTimer->remainingTime();
-                                sfxExitCue.play();
+                sfxExitCue.play();
             }
         }
 
