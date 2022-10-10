@@ -5,6 +5,7 @@
 #include "soundsettingsdialogue.h"
 
 /*TODO:
+    -Arb Target input box doesn't always get set to disabled
     -Test that the new ExitTimer system + fadeout ms remains accurate.
     -Input cleansing on seed entry + input cleansing on all fields.
     -XD Dolphin bad frames indication
@@ -222,8 +223,8 @@ void MainWindow::timerGUIUpdate(){
 
 
         //Pre-convert the queue inside TS? Pass in the userPF values?
-        float firstMS = userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
-        float localMS = userTS.getTiming() + userPF.getFadeOutMS();
+        float firstMS = userTS.offset(); + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
+        float localMS = userTS.getTiming(); + userPF.getFadeOutMS();
 
 
         if (mainTime <= firstMS){
@@ -234,9 +235,9 @@ void MainWindow::timerGUIUpdate(){
                 qDebug() << "First LocalMS: " << localMS;
             }
             ui->arbTargetBox->setEnabled(false); //set these to false at maintime <= offset NOT INCL INPUT becaues otherwise user could fuck shit up on the last blink or two.
-            ui->timerFrame->setEnabled(false);
             int exitTime = exitTimer->remainingTime();
             if (exitActive && exitTime <= localMS && userTS.checkState()){
+                ui->timerFrame->setEnabled(false);
                 qDebug() << "LocalMS:" << localMS;
                 userTS.timingAdvance();
                 qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
@@ -300,8 +301,10 @@ void MainWindow::runCalibration(u32 seed){
     highlightTableRow(0,tbl_currentBlink);
     highlightTableRow(userSP.arbitrary_Target-1,tbl_targetBlink);
 
-
-    totalTimerLimit = setTimerLimit(iterExit,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate()); //End of list.
+    const int DEFAULT_MS_ADJUST = 215; //This number accounts for: 1) Delay in user reaction time to blinks 2) any delay between search and calibration due to single-threading.
+    //Has no impact on exitTimer, and from the user's perspective this only affects how much they need to alter left and right. This is region independent I think. If not, reevaluate.
+    //Used here and only here for the initial timer amt.
+    totalTimerLimit = setTimerLimit(iterExit,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate()) - DEFAULT_MS_ADJUST; //End of list.
     qDebug() << "ttl: " << float(totalTimerLimit)/1000;
     start = std::chrono::high_resolution_clock::now();
     totalTimer->start(totalTimerLimit); //Test this thoroughly.
