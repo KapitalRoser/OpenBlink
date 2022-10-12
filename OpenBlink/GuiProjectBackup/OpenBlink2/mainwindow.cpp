@@ -68,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent)
     //loads defaults -- will read from file when done.
     keys = KeyCodes();
     userTS = TimerSettings();
+    userPF = collectPlatformInputs();
+    userSP = collectParamInputs();
 
     tbl_pastBlink = QColor(222,222,222); //gray
     tbl_currentBlink = QColor(255,236,116); //light green
@@ -107,9 +109,21 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 platform MainWindow::collectPlatformInputs(){
+    //This is basically just a constructor
     return platform( ui->gameBox->currentIndex(),
                     (ui->gameBox->currentIndex() == 2),
                      region(ui->regionBox->currentIndex()));
+}
+
+searchParameters MainWindow::collectParamInputs()
+{
+    //This is also just a constructor
+    return searchParameters({ui->seedEntry->text().toUInt(nullptr,16),
+                             ui->searchMaxBox->value(),
+                             ui->searchMinBox->value(),
+                             ui->flexValueBox->value(),
+                             10000,
+                             ui->arbTargetBox->value()});
 }
 
 
@@ -134,15 +148,24 @@ void MainWindow::writeAllSettings(){
     settingsW << keys.getBlinkKey() << "\n";
     settingsW << keys.getSlowerKey() << "\n";
     settingsW << keys.getFasterKey() << "\n";
+    settingsW << keys.getStartStopKey() << "\n";
     settingsW << delim << "\n";
 
     //Timer Settings
     settingsW << userTS.offset() << "\n";
     settingsW << userTS.gap() << "\n";
     settingsW << userTS.beeps() << "\n";
+    settingsW << userTS.input() << "\n";
     settingsW << delim << "\n";
 
     //Sound and Volume
+    std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
+    for (QSoundEffect* x: pkg) {
+        settingsW << x->source().toEncoded().toStdString() << "\n";
+        settingsW << x->volume() << "\n";
+        settingsW << x->isMuted() << "\n";
+    }
+    settingsW.close();
 }
 
 
@@ -310,13 +333,12 @@ void MainWindow::runCalibration(u32 seed){
     totalTimer->start(totalTimerLimit); //Test this thoroughly.
     basicTimer->start(1);
 
-
 }
 
 int MainWindow::performSearchPass(u32 &outSeed){
     if (!mainPool.empty()){
         std::vector<int> resultIndexes; //does not persist between searches -- for size(), null == 0
-            resultIndexes = searchPool(mainPool,blinkList,userSP.flexValue); //these inputs do persist between searches.
+            resultIndexes = searchPool(mainPool,blinkList,userSP.flexValue/2); //these inputs do persist between searches.
             postInterval(QString::number(resultIndexes.size()) + " seeds.",blinkList.back(),blinkList.size()-1); //TABLE UPDATE
             if (resultIndexes.size() > 1){
                 ui->statusLabel->setText("Searching... " + QString::number(resultIndexes.size()) + " result(s) found!");
@@ -415,14 +437,8 @@ void MainWindow::on_startButton_clicked()
 
         userPF = collectPlatformInputs(); //remember to disable/enable the inputs.
         userTS.buildQueue();
-
-        userSP.inputSeed =  ui->seedEntry->text().toUInt(nullptr,16);; //input cleanse
-        userSP.flexValue = ui->flexValueBox->value(); //FALSE -- FLEX IS THE +- VALUE, NOT TOTAL WINDOW!!! CHECK WITH COTOOL FOR ACCURACY
-        userSP.arbitrary_Target = ui->arbTargetBox->value();
-        userSP.maxCalibrate = 10000; //Roll this into target?;
-        userSP.maxSearch = ui->searchMaxBox->value();
-        userSP.minSearch = ui->searchMinBox->value(); //UNITS?
-
+        userSP = collectParamInputs();
+        //qDebug() << userSP.inputSeed << "," << userSP.flexValue << "," << userSP.arbitrary_Target << "," << userSP.maxCalibrate << "," << userSP.maxSearch;
         blinkList.clear();
         exitPool.clear();
         mainPool.clear();
@@ -619,6 +635,7 @@ void MainWindow::on_fasterButton_clicked()
 void MainWindow::on_flexValueBox_valueChanged(int arg1)
 {
     ui->flexValueHalfLabel->setText("+-" + QString::number(floor(arg1/2)) + "f");
+    writeAllSettings();
 }
 
 void MainWindow::on_actionHotkeys_triggered()
@@ -628,17 +645,19 @@ void MainWindow::on_actionHotkeys_triggered()
     keyChange.setKeyCodes(keys); //Data in
     if (keyChange.exec() == QDialog::Accepted){
         keys = keyChange.getKeyCodes(); //data out
+        writeAllSettings();
     }
 }
 
 void MainWindow::on_actionTimer_triggered()
 {
-     timerSettingsDialogue timeSet_d;
-     timeSet_d.setModal(true);
-     timeSet_d.setTs(userTS);
-     if (timeSet_d.exec() == QDialog::Accepted){
-        userTS = timeSet_d.getTs();
-     }
+    timerSettingsDialogue timeSet_d;
+    timeSet_d.setModal(true);
+    timeSet_d.setTs(userTS);
+    if (timeSet_d.exec() == QDialog::Accepted){
+    userTS = timeSet_d.getTs();
+    writeAllSettings();
+    }
      //qDebug() << "Results are: " << userTS.offset() << " | " << userTS.gap() << " | " << userTS.beeps();
 
 }
@@ -648,10 +667,10 @@ void MainWindow::on_actionSounds_triggered()
     soundSettingsDialogue setSound_d;
     setSound_d.setModal(true);
     std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
-    setSound_d.set_all_sfx(pkg); //DIRECTLY CONNECTS THE SFX OBJECTS TO THE DIALOGUE.
+    setSound_d.set_all_sfx(pkg); //Direct connection is nice but doesn't allow user to cancel changes?
     //IF WANT MORE SEPERATION THEN PASS A STRUCT OF VALUES (VOLUME, SOURCE, MUTE)
     setSound_d.exec();
-
+    writeAllSettings(); //ACCEPT? Allow cancel??
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -683,5 +702,35 @@ void MainWindow::on_seedEntry_textChanged(const QString &arg1)
 {
     //input validation?
     ui->pasteButton->setText("Paste");
+}
+
+
+void MainWindow::on_gameBox_currentIndexChanged(int index)
+{
+    writeAllSettings();
+}
+
+
+void MainWindow::on_regionBox_currentIndexChanged(int index)
+{
+    writeAllSettings();
+}
+
+
+void MainWindow::on_searchMinBox_valueChanged(int arg1)
+{
+    writeAllSettings();
+}
+
+
+void MainWindow::on_searchMaxBox_valueChanged(int arg1)
+{
+    writeAllSettings();
+}
+
+
+void MainWindow::on_arbTargetBox_editingFinished()
+{
+    writeAllSettings();
 }
 

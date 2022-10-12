@@ -1,6 +1,7 @@
 Game
 Emu5
 Region
+---
 flexVal (seed not recorded)
 minSearch
 maxSearch
@@ -9,10 +10,12 @@ arbTarget
 blinkKey
 slowerKey
 fasterKey
+startKey
 ---
 offset
 interval
 beeps
+exit
 ---
 sucessSoundFile
 sucessVolume
@@ -29,6 +32,7 @@ ACTUALLY LOOKS LIKE:
 0
 0
 0
+---
 10
 0
 20000

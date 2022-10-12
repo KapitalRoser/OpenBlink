@@ -89,6 +89,7 @@ public:
     void expandExitPool(int expandAmt);
     void nudgeCalibration(bool direction);
     platform collectPlatformInputs();
+    searchParameters collectParamInputs();
     void writeAllSettings();
 private slots:
     void on_startButton_clicked();
@@ -128,6 +129,16 @@ private slots:
     void on_pasteButton_clicked();
 
     void on_seedEntry_textChanged(const QString &arg1);
+
+    void on_gameBox_currentIndexChanged(int index);
+
+    void on_regionBox_currentIndexChanged(int index);
+
+    void on_searchMinBox_valueChanged(int arg1);
+
+    void on_searchMaxBox_valueChanged(int arg1);
+
+    void on_arbTargetBox_editingFinished();
 
 private:
     Ui::MainWindow *ui;
