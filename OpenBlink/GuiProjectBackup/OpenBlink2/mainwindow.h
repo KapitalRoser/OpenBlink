@@ -9,6 +9,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QDesktopServices>
 #include <QClipboard>
+#include <filesystem>
 #include "blinkbase.h"
 #include "keycodes.h"
 #include "timersettings.h" //not to be confused with the timersettingsdialogue class
@@ -42,7 +43,7 @@ public:
     bool resultsActiveView;
     u32 seedAfterMin;
 
-    bool settingsChanged;
+    bool initialWriteComplete;
 
     searchParameters userSP;
     platform userPF;
@@ -91,6 +92,7 @@ public:
     platform collectPlatformInputs();
     searchParameters collectParamInputs();
     void writeAllSettings();
+    bool applyAllSettings();
 private slots:
     void on_startButton_clicked();
 
@@ -146,5 +148,5 @@ private:
 //outside class
 void applyShadow(QWidget* obj,std::queue<QDropShadow>&set);
 std::queue<QDropShadow> fillShadowSet(int numShadows, QWidget* parent);
-
+std::vector<std::string> settingsFileRead();
 #endif // MAINWINDOW_H

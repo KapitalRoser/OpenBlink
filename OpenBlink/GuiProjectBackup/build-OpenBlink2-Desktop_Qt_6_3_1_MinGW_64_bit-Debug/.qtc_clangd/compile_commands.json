@@ -1554,10 +1554,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_hotkeysdialogue.h"
+        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_timersettingsdialogue.h"
     ],
     "directory": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/.qtc_clangd",
-    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_hotkeysdialogue.h"
+    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_timersettingsdialogue.h"
 },
 {
     "arguments": [
@@ -1632,9 +1632,9 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_timersettingsdialogue.h"
+        "C:\\Users\\greni\\OneDrive\\Documents\\GitHub\\OpenBlink\\OpenBlink\\GuiProjectBackup\\build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug\\ui_hotkeysdialogue.h"
     ],
     "directory": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/.qtc_clangd",
-    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_timersettingsdialogue.h"
+    "file": "C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/ui_hotkeysdialogue.h"
 }
 ]

@@ -1,32 +1,33 @@
 Game
 Emu5
 Region
----
 flexVal (seed not recorded)
 minSearch
 maxSearch
 arbTarget
----
 blinkKey
 slowerKey
 fasterKey
 startKey
----
 offset
 interval
 beeps
 exit
----
 sucessSoundFile
 sucessVolume
+successMute
 failureSoundFile
 failureVolume
+failureMute
 blinkSoundFile
 blinkVolume
+blinkMute
 completeSoundFile
 completeVolume
+completeMute
 exitCueSoundFile
 exitCueVolume
+exitCueMute
 
 ACTUALLY LOOKS LIKE:
 0
@@ -48,11 +49,16 @@ ACTUALLY LOOKS LIKE:
 ---
 :/resfix1/lvlup.wav
 0.2
+0
 :/resfix1/searchFailure.wav
 0.2
+0
 :/resfix1/blinkWoop.wav
 0.2
+0
 :/resfix1/snagSuccess
 0.2
+0
 :/resfix1/blinkBeep1.wav
 0.2
+0

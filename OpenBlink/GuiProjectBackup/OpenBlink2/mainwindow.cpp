@@ -10,8 +10,9 @@
     -Input cleansing on seed entry + input cleansing on all fields.
     -XD Dolphin bad frames indication
     -XD Modern bad frames indication
-    -Settings file Read/Write
     -Windows and Mac Build testing.
+    -Log Action
+    -Help Action
      Then done!
 //Optional
     -Allow gui to shrink for condensed screens like laptops.
@@ -43,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-
     QAction *logAction = ui->menubar->addAction("Log");
 
     QAction *githubAction = ui->menubar->addAction("GitHub");
@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QAction *exitAction = ui->menubar->addAction("Exit");
     connect(exitAction,&QAction::triggered,this,&MainWindow::on_actionExit_triggered);
+
     std::queue<QDropShadow> shadowSet;
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
     applyShadow(ui->statusFrame,shadowSet);
@@ -61,33 +62,16 @@ MainWindow::MainWindow(QWidget *parent)
     applyShadow(ui->platformFrame,shadowSet);
     applyShadow(ui->blinkTableFrame,shadowSet);
     //repeat as necessary for each object
-    resultsActiveView = false;
-    hotKeyLockState = INACTIVE;
-    ui->copyButton->setVisible(false);
-    ui->copyButton->setEnabled(false);
-    //loads defaults -- will read from file when done.
-    keys = KeyCodes();
-    userTS = TimerSettings();
-    userPF = collectPlatformInputs();
-    userSP = collectParamInputs();
 
     tbl_pastBlink = QColor(222,222,222); //gray
     tbl_currentBlink = QColor(255,236,116); //light green
     tbl_targetBlink = QColor(168,255,200); //Gold
     tbl_upcomingBlink = QColor(255,255,255); //White
 
-    sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
-    sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
-    //sfxSearchFailure.setSource(QUrl(""));
-    sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
-    sfxCalibrationComplete.setSource(QUrl::fromLocalFile(":/resfix1/snagSuccess.wav"));
-    sfxExitCue.setSource(QUrl::fromLocalFile(":/resfix1/blinkBeep1.wav"));
-
-    sfxSearchSuccess.setVolume(0.2);
-    sfxSearchFailure.setVolume(0.2);
-    sfxBlinkOccurs.setVolume(0.2);
-    sfxCalibrationComplete.setVolume(0.2);
-    sfxExitCue.setVolume(0.2);
+    resultsActiveView = false;
+    hotKeyLockState = INACTIVE;
+    ui->copyButton->setVisible(false);
+    ui->copyButton->setEnabled(false);
 
     totalTimer = new QTimer(this); //Governs the whole process
     basicTimer = new QTimer(this); //Repeats continuously. Purely to create events. Even if the sfx delays this on older pcs, the main timer remains accurate.
@@ -104,8 +88,30 @@ MainWindow::MainWindow(QWidget *parent)
     connect(totalTimer, &QTimer::timeout, this, &MainWindow::totalTimerUpdate);
     connect(exitTimer,&QTimer::timeout,this,&MainWindow::exitTimerUpdate);
 
+    //read settings file
+    if (applyAllSettings()){
+        return;
+    }
+    //loads defaults if file doesn't exist
+    keys = KeyCodes();
+    userTS = TimerSettings();
+    userPF = collectPlatformInputs();
+    userSP = collectParamInputs();
 
-    ui->arbTargetBox->setValue(15);
+
+    sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
+    sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
+    sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
+    sfxCalibrationComplete.setSource(QUrl::fromLocalFile(":/resfix1/snagSuccess.wav"));
+    sfxExitCue.setSource(QUrl::fromLocalFile(":/resfix1/blinkBeep1.wav"));
+
+    sfxSearchSuccess.setVolume(0.2);
+    sfxSearchFailure.setVolume(0.2);
+    sfxBlinkOccurs.setVolume(0.2);
+    sfxCalibrationComplete.setVolume(0.2);
+    sfxExitCue.setVolume(0.2);
+    writeAllSettings(); //creates new settings file.
+
 }
 
 platform MainWindow::collectPlatformInputs(){
@@ -128,44 +134,101 @@ searchParameters MainWindow::collectParamInputs()
 
 
 void MainWindow::writeAllSettings(){
+    //this is kinda inefficient, as it get's called every time the user changes a value. But not sure how else to do it. Maybe on window exit only?
+    if (!initialWriteComplete){
+        return;
+    }
     std::ofstream settingsW(settingsName);
-    std::string delim = "---";
-
+    userPF = collectPlatformInputs();
+    userSP = collectParamInputs();
     //platform
     settingsW << userPF.getXD() << "\n";
     settingsW << userPF.getEmu5() << "\n";
     settingsW << userPF.getRegion() << "\n";
-    settingsW << delim << "\n";
 
     //search parameters
     settingsW << userSP.flexValue << "\n";
     settingsW << userSP.minSearch << "\n"; //unit Converter?
     settingsW << userSP.maxSearch << "\n";
     settingsW << userSP.arbitrary_Target << "\n";
-    settingsW << delim << "\n";
 
     //hotkeys
     settingsW << keys.getBlinkKey() << "\n";
     settingsW << keys.getSlowerKey() << "\n";
     settingsW << keys.getFasterKey() << "\n";
     settingsW << keys.getStartStopKey() << "\n";
-    settingsW << delim << "\n";
 
     //Timer Settings
     settingsW << userTS.offset() << "\n";
     settingsW << userTS.gap() << "\n";
     settingsW << userTS.beeps() << "\n";
     settingsW << userTS.input() << "\n";
-    settingsW << delim << "\n";
 
     //Sound and Volume
     std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
     for (QSoundEffect* x: pkg) {
         settingsW << x->source().toEncoded().toStdString() << "\n";
+        qDebug() << "SFX NAME: " << QString::fromStdString(x->source().toEncoded().toStdString());
         settingsW << x->volume() << "\n";
         settingsW << x->isMuted() << "\n";
     }
+    //settingsW << "END";
     settingsW.close();
+}
+
+std::vector<std::string> settingsFileRead(){
+    std::ifstream settingsR(settingsName);
+    std::string line;
+    std::vector<std::string> settingsData;
+    if (settingsR.fail()){
+        //NO SETTINGS FILE
+        qDebug() << "FILE NOT FOUND!";
+        return {};
+    }
+    while (!settingsR.fail()){
+        settingsR >> line;
+        settingsData.push_back(line);
+    }
+    settingsData.pop_back();
+    return settingsData; //big string
+}
+
+bool MainWindow::applyAllSettings()
+{
+    initialWriteComplete = false;
+    std::vector<std::string> fileData = settingsFileRead();
+    if (fileData.empty()){
+        initialWriteComplete = true;
+        return 0;
+    }
+//    qDebug() << "FILE DATA: ";
+//    for(std::string x : fileData){
+//        qDebug() << QString::fromStdString(x);
+//    }
+    ui->gameBox->setCurrentIndex(std::stoi(fileData[1]) ? 2 : std::stoi(fileData[0])); //really should remove emu5 line and merge with game variable.
+    ui->regionBox->setCurrentIndex(std::stoi(fileData[2]));
+    ui->flexValueBox->setValue(std::stoi(fileData[3]));
+    ui->searchMinBox->setValue(std::stoi(fileData[4]));
+    ui->searchMaxBox->setValue(std::stoi(fileData[5]));
+    ui->arbTargetBox->setValue(std::stoi(fileData[6]));
+    keys.setBlink(std::stoi(fileData[7]));
+    keys.setSlower(std::stoi(fileData[8]));
+    keys.setFaster(std::stoi(fileData[9]));
+    keys.setStartStop(std::stoi(fileData[10]));
+
+    userTS.setOffset(std::stoi(fileData[11]));
+    userTS.setGap(std::stoi(fileData[12]));
+    userTS.setBeeps(std::stoi(fileData[13]));
+    userTS.setInput(std::stoi(fileData[14]));
+
+    std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
+    for (unsigned int i = 0; i < pkg.size(); i++){
+        pkg[i]->setSource(QUrl(QString::fromStdString(fileData[15+(i*3)])));
+        pkg[i]->setVolume(std::stof(fileData[16+(i*3)]));
+        pkg[i]->setMuted(std::stoi(fileData[17+(i*3)]));
+    }
+    initialWriteComplete = true;
+    return 1; //success?
 }
 
 
