@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>883</width>
-    <height>786</height>
+    <width>756</width>
+    <height>802</height>
    </rect>
   </property>
   <property name="font">
@@ -45,29 +45,32 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>50</y>
-      <width>688</width>
-      <height>667</height>
+      <width>736</width>
+      <height>687</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="BodyHoriz" stretch="3,2">
+    <layout class="QHBoxLayout" name="BodyHoriz">
+     <property name="spacing">
+      <number>20</number>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_5" stretch="2,2,0,2,3">
        <property name="spacing">
         <number>20</number>
-       </property>
-       <property name="leftMargin">
-        <number>10</number>
-       </property>
-       <property name="topMargin">
-        <number>10</number>
-       </property>
-       <property name="rightMargin">
-        <number>10</number>
-       </property>
-       <property name="bottomMargin">
-        <number>10</number>
        </property>
        <item>
         <widget class="QFrame" name="platformFrame">
@@ -847,7 +850,7 @@ color:grey;
             <item>
              <widget class="QPushButton" name="slowerButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -922,7 +925,7 @@ color:grey;
             <item>
              <widget class="QPushButton" name="fasterButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -1019,6 +1022,18 @@ color:grey;
      </item>
      <item>
       <widget class="QFrame" name="blinkTableFrame">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>240</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <family>Century Gothic</family>
@@ -1050,7 +1065,7 @@ border-radius: 20px;
          <number>20</number>
         </property>
         <property name="bottomMargin">
-         <number>15</number>
+         <number>17</number>
         </property>
         <item>
          <widget class="QLabel" name="label_9">
@@ -1072,14 +1087,14 @@ border-radius: 20px;
            <bool>false</bool>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>210</width>
             <height>40</height>
            </size>
           </property>
@@ -1109,6 +1124,12 @@ color:grey;
         </item>
         <item>
          <widget class="QFrame" name="frame">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -1202,7 +1223,7 @@ color:grey;
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1,2,0">
+         <layout class="QHBoxLayout" name="arbTargetLayout" stretch="0,1,2,0">
           <property name="rightMargin">
            <number>0</number>
           </property>
@@ -1324,7 +1345,7 @@ border-color: lightgrey;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>883</width>
+     <width>756</width>
      <height>27</height>
     </rect>
    </property>

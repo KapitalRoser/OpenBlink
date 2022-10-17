@@ -168,7 +168,6 @@ void MainWindow::writeAllSettings(){
     std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
     for (QSoundEffect* x: pkg) {
         settingsW << x->source().toEncoded().toStdString() << "\n";
-        qDebug() << "SFX NAME: " << QString::fromStdString(x->source().toEncoded().toStdString());
         settingsW << x->volume() << "\n";
         settingsW << x->isMuted() << "\n";
     }
@@ -321,6 +320,7 @@ void MainWindow::timerGUIUpdate(){
                 qDebug() << "First LocalMS: " << localMS;
             }
             ui->arbTargetBox->setEnabled(false); //set these to false at maintime <= offset NOT INCL INPUT becaues otherwise user could fuck shit up on the last blink or two.
+
             int exitTime = exitTimer->remainingTime();
             if (exitActive && exitTime <= localMS && userTS.checkState()){
                 ui->timerFrame->setEnabled(false);
@@ -528,6 +528,7 @@ void MainWindow::on_startButton_clicked()
         ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
         totalTimer->stop();
         basicTimer->stop();
+        sfxBlinkOccurs.setMuted(wasMuted);
         ui->TotalTimeLabel->setText("TIME REMAINING:");
         ui->localTimeLabel->setText("NEXT BLINK:");
         hotKeyLockState = INACTIVE;\
@@ -721,24 +722,27 @@ void MainWindow::on_actionTimer_triggered()
     userTS = timeSet_d.getTs();
     writeAllSettings();
     }
-     //qDebug() << "Results are: " << userTS.offset() << " | " << userTS.gap() << " | " << userTS.beeps();
-
 }
 
 void MainWindow::on_actionSounds_triggered()
 {
+    std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
     soundSettingsDialogue setSound_d;
     setSound_d.setModal(true);
-    std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
-    setSound_d.set_all_sfx(pkg); //Direct connection is nice but doesn't allow user to cancel changes?
-    //IF WANT MORE SEPERATION THEN PASS A STRUCT OF VALUES (VOLUME, SOURCE, MUTE)
-    setSound_d.exec();
-    writeAllSettings(); //ACCEPT? Allow cancel??
+    setSound_d.set_all_sfx(pkg); //Look, direct connection is cool but we gotta leave the agency up to the user.
+    if (setSound_d.exec() == QDialog::Accepted){
+        for (unsigned int i = 0; i < pkg.size(); i++){
+            pkg[i]->setVolume(setSound_d.bundle[i]->volume());
+            pkg[i]->setMuted(setSound_d.bundle[i]->isMuted());
+            pkg[i]->setSource(setSound_d.bundle[i]->source());
+        }
+        writeAllSettings();
+    }
 }
 
 void MainWindow::on_actionExit_triggered()
 {
-    QCoreApplication::quit();
+    QCoreApplication::quit(); //Tbh is this *really* needed?
 }
 
 void MainWindow::on_actionGithub_triggered()

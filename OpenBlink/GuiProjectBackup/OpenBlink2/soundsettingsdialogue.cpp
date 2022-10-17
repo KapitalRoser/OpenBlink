@@ -66,19 +66,23 @@ soundSettingsDialogue::~soundSettingsDialogue()
 
 void soundSettingsDialogue::set_all_sfx(std::vector<QSoundEffect*> in)
 {
-    bundle = in;
-    for (unsigned int i = 0; i < bundle.size(); ++i) {
+    //This function now copies the key parts of the object, rather than directly linking.
+    if (bundle.empty()){
+        for (QSoundEffect* x : in){
+            bundle.push_back(new QSoundEffect);
+            bundle.back()->setVolume(x->volume());
+            bundle.back()->setMuted(x->isMuted());
+            bundle.back()->setSource(x->source());
+        }
+    }
+    for (unsigned int i = 0; i < in.size(); i++){
         initialSetup(effects(i));
     }
 }
 
 std::vector<QSoundEffect*> soundSettingsDialogue::get_all_sfx()
 {
-    std::vector<QSoundEffect*> out;
-    for (QSoundEffect* i : bundle) {
-        out.push_back(i);
-    }
-    return out;
+    return bundle;
 }
 
 void soundSettingsDialogue::initialSetup(effects effect)
@@ -178,22 +182,14 @@ void soundSettingsDialogue::fileChange_clicked()
 
 void soundSettingsDialogue::buttonBox_reset()
 {
-
-    for (unsigned int i = 0; i < 5;i++) {
-        bundle[i] = new QSoundEffect;
-        bundle[i]->setVolume(0.2f);
-        bundle[i]->setMuted(false);
+    for (QSoundEffect* x : bundle){
+        x->setVolume(0.2f);
+        x->setMuted(false);
     }
     bundle[SUCCESS]->setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav"));
     bundle[FAILURE]->setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
     bundle[OCCURS]->setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
     bundle[COMPLETE]->setSource(QUrl::fromLocalFile(":/resfix1/snagSuccess.wav"));
     bundle[CUE]->setSource(QUrl::fromLocalFile(":/resfix1/blinkBeep1.wav"));
-    set_all_sfx(bundle);
+    set_all_sfx(bundle); //little redundant but kinda needed. Could split functions further.
 }
-
-//void soundSettingsDialogue::on_successMute_clicked()
-//{
-//    updateMute(!bundle[0]->isMuted(),ui->successMute); //flips mute status.
-//    bundle[0]->setMuted(!bundle[0]->isMuted());
-//}

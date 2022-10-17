@@ -92,7 +92,7 @@ public:
     QFrame *frame;
     QTableWidget *outTable;
     QPushButton *increaseBlinksButton;
-    QHBoxLayout *horizontalLayout_4;
+    QHBoxLayout *arbTargetLayout;
     QSpacerItem *horizontalSpacer_4;
     QLabel *label_2;
     QSpinBox *arbTargetBox;
@@ -104,7 +104,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(883, 786);
+        MainWindow->resize(756, 802);
         QFont font;
         font.setFamilies({QString::fromUtf8("Century Gothic")});
         MainWindow->setFont(font);
@@ -130,14 +130,14 @@ public:
         LogoLabel->setFont(font1);
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(20, 50, 688, 667));
+        horizontalLayoutWidget->setGeometry(QRect(10, 50, 736, 687));
         BodyHoriz = new QHBoxLayout(horizontalLayoutWidget);
+        BodyHoriz->setSpacing(20);
         BodyHoriz->setObjectName(QString::fromUtf8("BodyHoriz"));
-        BodyHoriz->setContentsMargins(0, 0, 0, 0);
+        BodyHoriz->setContentsMargins(10, 10, 10, 10);
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setSpacing(20);
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
-        verticalLayout_5->setContentsMargins(10, 10, 10, 10);
         platformFrame = new QFrame(horizontalLayoutWidget);
         platformFrame->setObjectName(QString::fromUtf8("platformFrame"));
         platformFrame->setStyleSheet(QString::fromUtf8("\n"
@@ -638,7 +638,7 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         slowerButton = new QPushButton(timerFrame);
         slowerButton->setObjectName(QString::fromUtf8("slowerButton"));
-        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy5.setHorizontalStretch(0);
         sizePolicy5.setVerticalStretch(0);
         sizePolicy5.setHeightForWidth(slowerButton->sizePolicy().hasHeightForWidth());
@@ -667,11 +667,8 @@ public:
 
         nudgeOffsetLabel = new QLabel(timerFrame);
         nudgeOffsetLabel->setObjectName(QString::fromUtf8("nudgeOffsetLabel"));
-        QSizePolicy sizePolicy6(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(nudgeOffsetLabel->sizePolicy().hasHeightForWidth());
-        nudgeOffsetLabel->setSizePolicy(sizePolicy6);
+        sizePolicy5.setHeightForWidth(nudgeOffsetLabel->sizePolicy().hasHeightForWidth());
+        nudgeOffsetLabel->setSizePolicy(sizePolicy5);
         nudgeOffsetLabel->setMinimumSize(QSize(40, 0));
         nudgeOffsetLabel->setFont(font10);
         nudgeOffsetLabel->setAlignment(Qt::AlignCenter);
@@ -736,6 +733,9 @@ public:
 
         blinkTableFrame = new QFrame(horizontalLayoutWidget);
         blinkTableFrame->setObjectName(QString::fromUtf8("blinkTableFrame"));
+        sizePolicy.setHeightForWidth(blinkTableFrame->sizePolicy().hasHeightForWidth());
+        blinkTableFrame->setSizePolicy(sizePolicy);
+        blinkTableFrame->setMinimumSize(QSize(240, 0));
         blinkTableFrame->setFont(font);
         blinkTableFrame->setStyleSheet(QString::fromUtf8("color: black;\n"
 "background-color: white;\n"
@@ -746,7 +746,7 @@ public:
         verticalLayout = new QVBoxLayout(blinkTableFrame);
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(20, 15, 20, 15);
+        verticalLayout->setContentsMargins(20, 15, 20, 17);
         label_9 = new QLabel(blinkTableFrame);
         label_9->setObjectName(QString::fromUtf8("label_9"));
         QFont font11;
@@ -760,12 +760,12 @@ public:
         seeInputButton = new QPushButton(blinkTableFrame);
         seeInputButton->setObjectName(QString::fromUtf8("seeInputButton"));
         seeInputButton->setEnabled(false);
-        QSizePolicy sizePolicy7(QSizePolicy::Minimum, QSizePolicy::Preferred);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(seeInputButton->sizePolicy().hasHeightForWidth());
-        seeInputButton->setSizePolicy(sizePolicy7);
-        seeInputButton->setMinimumSize(QSize(0, 40));
+        QSizePolicy sizePolicy6(QSizePolicy::Maximum, QSizePolicy::Preferred);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(seeInputButton->sizePolicy().hasHeightForWidth());
+        seeInputButton->setSizePolicy(sizePolicy6);
+        seeInputButton->setMinimumSize(QSize(210, 40));
         seeInputButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
 "color: white;\n"
@@ -788,6 +788,8 @@ public:
 
         frame = new QFrame(blinkTableFrame);
         frame->setObjectName(QString::fromUtf8("frame"));
+        sizePolicy5.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
+        frame->setSizePolicy(sizePolicy5);
         frame->setMinimumSize(QSize(0, 465));
         frame->setFrameShape(QFrame::NoFrame);
         frame->setFrameShadow(QFrame::Plain);
@@ -832,12 +834,12 @@ public:
 
         verticalLayout->addWidget(increaseBlinksButton);
 
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        horizontalLayout_4->setContentsMargins(-1, -1, 0, -1);
+        arbTargetLayout = new QHBoxLayout();
+        arbTargetLayout->setObjectName(QString::fromUtf8("arbTargetLayout"));
+        arbTargetLayout->setContentsMargins(-1, -1, 0, -1);
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer_4);
+        arbTargetLayout->addItem(horizontalSpacer_4);
 
         label_2 = new QLabel(blinkTableFrame);
         label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -847,15 +849,15 @@ public:
 "}"));
         label_2->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_4->addWidget(label_2);
+        arbTargetLayout->addWidget(label_2);
 
         arbTargetBox = new QSpinBox(blinkTableFrame);
         arbTargetBox->setObjectName(QString::fromUtf8("arbTargetBox"));
-        QSizePolicy sizePolicy8(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy8.setHorizontalStretch(0);
-        sizePolicy8.setVerticalStretch(0);
-        sizePolicy8.setHeightForWidth(arbTargetBox->sizePolicy().hasHeightForWidth());
-        arbTargetBox->setSizePolicy(sizePolicy8);
+        QSizePolicy sizePolicy7(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(arbTargetBox->sizePolicy().hasHeightForWidth());
+        arbTargetBox->setSizePolicy(sizePolicy7);
         arbTargetBox->setMinimumSize(QSize(0, 30));
         QFont font12;
         font12.setFamilies({QString::fromUtf8("Century Gothic")});
@@ -889,26 +891,24 @@ public:
         arbTargetBox->setMaximum(1000);
         arbTargetBox->setValue(15);
 
-        horizontalLayout_4->addWidget(arbTargetBox);
+        arbTargetLayout->addWidget(arbTargetBox);
 
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer_3);
+        arbTargetLayout->addItem(horizontalSpacer_3);
 
-        horizontalLayout_4->setStretch(1, 1);
-        horizontalLayout_4->setStretch(2, 2);
+        arbTargetLayout->setStretch(1, 1);
+        arbTargetLayout->setStretch(2, 2);
 
-        verticalLayout->addLayout(horizontalLayout_4);
+        verticalLayout->addLayout(arbTargetLayout);
 
 
         BodyHoriz->addWidget(blinkTableFrame);
 
-        BodyHoriz->setStretch(0, 3);
-        BodyHoriz->setStretch(1, 2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 883, 27));
+        menubar->setGeometry(QRect(0, 0, 756, 27));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);

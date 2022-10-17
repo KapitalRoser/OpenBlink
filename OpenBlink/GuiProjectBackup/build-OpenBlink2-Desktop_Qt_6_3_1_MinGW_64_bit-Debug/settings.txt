@@ -4,7 +4,7 @@
 20
 0
 10000
-5
+15
 16777248
 16777234
 16777236
@@ -14,7 +14,7 @@
 5
 0
 file::/resfix1/lvlup.wav
-0.2
+0.38
 0
 file::/resfix1/searchFailure.wav
 0.2

@@ -38,7 +38,7 @@ public:
     ~soundSettingsDialogue();
 
 
-    std::vector<QSoundEffect *> bundle;
+    std::vector<QSoundEffect*> bundle;
     std::map<effects, QString> m;
 //    std::vector<boundItems> set;
     void set_all_sfx(std::vector<QSoundEffect*>in);
