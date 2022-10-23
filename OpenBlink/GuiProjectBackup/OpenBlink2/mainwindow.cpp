@@ -3,11 +3,10 @@
 #include "hotkeysdialogue.h"
 #include "timersettingsdialogue.h"
 #include "soundsettingsdialogue.h"
+#include "logwindow.h"
 
 /*TODO:
-    -Arb Target input box doesn't always get set to disabled
     -Test that the new ExitTimer system + fadeout ms remains accurate.
-    -Input cleansing on seed entry + input cleansing on all fields.
     -XD Dolphin bad frames indication
     -XD Modern bad frames indication
     -Windows and Mac Build testing.
@@ -50,9 +49,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(githubAction,&QAction::triggered,this,&MainWindow::on_actionGithub_triggered);
     QAction *helpAction = ui->menubar->addAction("Help");
 
-    QAction *exitAction = ui->menubar->addAction("Exit");
-    connect(exitAction,&QAction::triggered,this,&MainWindow::on_actionExit_triggered);
-
     std::queue<QDropShadow> shadowSet;
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
     applyShadow(ui->statusFrame,shadowSet);
@@ -64,9 +60,11 @@ MainWindow::MainWindow(QWidget *parent)
     //repeat as necessary for each object
 
     tbl_pastBlink = QColor(222,222,222); //gray
-    tbl_currentBlink = QColor(255,236,116); //light green
-    tbl_targetBlink = QColor(168,255,200); //Gold
+    tbl_currentBlink = QColor(168,255,200); //light green
+    tbl_targetBlink = QColor(255,236,116);//Gold
     tbl_upcomingBlink = QColor(255,255,255); //White
+
+    tbl_warningBlink = QColor(255,148,169);
 
     resultsActiveView = false;
     hotKeyLockState = INACTIVE;
@@ -228,6 +226,26 @@ bool MainWindow::applyAllSettings()
     }
     initialWriteComplete = true;
     return 1; //success?
+}
+
+QString MainWindow::createLog()
+{
+    //First platform and parameter data
+    QString logAdd;
+    logAdd = "ENTRY____";
+    logAdd += "GAME: " + QString::number(userPF.getXD()) + " emu? " + QString::number(userPF.getEmu5()) + " Region: " + QString::number(userPF.getRegion()) + "\n";
+    logAdd += "PARAM: min/max: ("+ QString::number(userSP.minSearch)+ "," + QString::number(userSP.maxSearch) + " flex: " + QString::number(userSP.flexValue) + " target: " + QString::number(userSP.arbitrary_Target);
+    logAdd += "Timer: " + QString::number(userTS.offset()) + "//" + QString::number(userTS.gap()) + "//" + QString::number(userTS.beeps()) + "//" + QString::number(userTS.input());
+    logAdd += "SEED: " + QString::number(userSP.inputSeed,16) + " AfterMin: " + QString::number(seedAfterMin,16);
+    logAdd += "InputBlinks:";
+    logAdd += "SearchResult: " + QString::number(foundIdx);
+    logAdd += foundIdx >= 0 ? "SeedFound: " + QString::number(mainPool[foundIdx].seed,16) + " pos: " + QString::number(foundIdx) + "\n" : " : SEARCH_FAILURE\n";
+    logAdd += "Input List: ";
+    for (int x : blinkList){
+        logAdd += QString::number(x);
+    }
+    logAdd += "\n";
+
 }
 
 
@@ -400,8 +418,7 @@ void MainWindow::runCalibration(u32 seed){
 
 int MainWindow::performSearchPass(u32 &outSeed){
     if (!mainPool.empty()){
-        std::vector<int> resultIndexes; //does not persist between searches -- for size(), null == 0
-            resultIndexes = searchPool(mainPool,blinkList,userSP.flexValue/2); //these inputs do persist between searches.
+        std::vector<int> resultIndexes = searchPool(mainPool,blinkList,userSP.flexValue/2); //does not persist between searches -- for size(), null == 0
             postInterval(QString::number(resultIndexes.size()) + " seeds.",blinkList.back(),blinkList.size()-1); //TABLE UPDATE
             if (resultIndexes.size() > 1){
                 ui->statusLabel->setText("Searching... " + QString::number(resultIndexes.size()) + " result(s) found!");
@@ -420,6 +437,7 @@ int MainWindow::performSearchPass(u32 &outSeed){
                 return 1;
             } else { //Size == 0
                 //Failure case
+                foundIdx = -1;
                 return 0;
             }
 
@@ -436,6 +454,11 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
         fTime->setTextAlignment(Qt::AlignCenter);
         ui->outTable->setItem(rowCurrent,0,tblSeed);
         ui->outTable->setItem(rowCurrent,1,fTime);
+        //RE-TEST THIS CONDITION, THERES MORE TO IT THAN THIS
+        if (userPF.getXD() && setP->blink == 180){
+            highlightTableRow(rowCurrent,tbl_warningBlink);
+            //Add hoverable icon?
+        }
         rowCurrent++;
         setP++;
     }
@@ -572,6 +595,8 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         int status = performSearchPass(seed); //returns status: -1 error, 0 failure, 1 success, 2 continue search
         if (status < 2){
             //LOG NOW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~********************!!!!!!!!!!!!!!!!!!!!!!!!!******************!!!!!!!!!!!!!!!!!!!!!!!*************!!!!!!!!!!!!!!
+
+
             if (status == 1){
                 hotKeyLockState = CALIBRATE;
 
@@ -740,14 +765,17 @@ void MainWindow::on_actionSounds_triggered()
     }
 }
 
-void MainWindow::on_actionExit_triggered()
-{
-    QCoreApplication::quit(); //Tbh is this *really* needed?
-}
-
 void MainWindow::on_actionGithub_triggered()
 {
     QDesktopServices::openUrl(QUrl("https://github.com/KapitalRoser/OpenBlink"));
+}
+
+void MainWindow::on_actionLog_triggered()
+{
+    LogWindow logWin;
+    logWin.setModal(true);
+    logWin.displayStr = logStr;
+    logWin.exec();
 }
 
 void MainWindow::on_copyButton_clicked()
@@ -767,7 +795,7 @@ void MainWindow::on_pasteButton_clicked()
 
 void MainWindow::on_seedEntry_textChanged(const QString &arg1)
 {
-    //input validation?
+    ui->startButton->setEnabled(arg1.toUInt(nullptr,16)); //if arg1.toUint fails it returns false
     ui->pasteButton->setText("Paste");
 }
 

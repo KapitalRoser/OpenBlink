@@ -12,6 +12,7 @@ SOURCES += \
     blinkbase.cpp \
     hotkeysdialogue.cpp \
     keycodes.cpp \
+    logwindow.cpp \
     main.cpp \
     mainwindow.cpp \
     processcoreblink.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     blinkbase.h \
     hotkeysdialogue.h \
     keycodes.h \
+    logwindow.h \
     mainwindow.h \
     processcoreblink.h \
     soundsettingsdialogue.h \
@@ -31,6 +33,7 @@ HEADERS += \
 
 FORMS += \
     hotkeysdialogue.ui \
+    logwindow.ui \
     mainwindow.ui \
     soundsettingsdialogue.ui \
     timersettingsdialogue.ui

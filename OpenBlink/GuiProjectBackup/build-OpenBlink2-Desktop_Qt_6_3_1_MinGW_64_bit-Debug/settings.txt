@@ -4,7 +4,7 @@
 20
 0
 10000
-15
+11
 16777248
 16777234
 16777236
@@ -21,7 +21,7 @@ file::/resfix1/searchFailure.wav
 0
 file::/resfix1/blinkWoop.wav
 0.2
-0
+1
 file::/resfix1/snagSuccess.wav
 0.2
 0

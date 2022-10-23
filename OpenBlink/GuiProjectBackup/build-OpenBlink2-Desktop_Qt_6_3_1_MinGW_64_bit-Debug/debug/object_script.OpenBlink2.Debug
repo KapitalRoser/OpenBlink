@@ -1,6 +1,7 @@
 debug/blinkbase.o
 debug/hotkeysdialogue.o
 debug/keycodes.o
+debug/logwindow.o
 debug/main.o
 debug/mainwindow.o
 debug/processcoreblink.o
@@ -9,6 +10,7 @@ debug/timersettings.o
 debug/timersettingsdialogue.o
 debug/qrc_res.o
 debug/moc_hotkeysdialogue.o
+debug/moc_logwindow.o
 debug/moc_mainwindow.o
 debug/moc_soundsettingsdialogue.o
 debug/moc_timersettingsdialogue.o

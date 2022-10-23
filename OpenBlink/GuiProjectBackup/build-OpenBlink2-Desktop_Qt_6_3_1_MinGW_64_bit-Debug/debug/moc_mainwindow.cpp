@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     const uint offsetsAndSize[56];
-    char stringdata0[622];
+    char stringdata0[621];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_MainWindow_t, stringdata0) + ofs), len 
@@ -46,17 +46,17 @@ QT_MOC_LITERAL(235, 28), // "on_flexValueBox_valueChanged"
 QT_MOC_LITERAL(264, 26), // "on_actionHotkeys_triggered"
 QT_MOC_LITERAL(291, 24), // "on_actionTimer_triggered"
 QT_MOC_LITERAL(316, 25), // "on_actionSounds_triggered"
-QT_MOC_LITERAL(342, 23), // "on_actionExit_triggered"
-QT_MOC_LITERAL(366, 25), // "on_actionGithub_triggered"
-QT_MOC_LITERAL(392, 21), // "on_copyButton_clicked"
-QT_MOC_LITERAL(414, 22), // "on_pasteButton_clicked"
-QT_MOC_LITERAL(437, 24), // "on_seedEntry_textChanged"
-QT_MOC_LITERAL(462, 30), // "on_gameBox_currentIndexChanged"
-QT_MOC_LITERAL(493, 5), // "index"
-QT_MOC_LITERAL(499, 32), // "on_regionBox_currentIndexChanged"
-QT_MOC_LITERAL(532, 28), // "on_searchMinBox_valueChanged"
-QT_MOC_LITERAL(561, 28), // "on_searchMaxBox_valueChanged"
-QT_MOC_LITERAL(590, 31) // "on_arbTargetBox_editingFinished"
+QT_MOC_LITERAL(342, 25), // "on_actionGithub_triggered"
+QT_MOC_LITERAL(368, 22), // "on_actionLog_triggered"
+QT_MOC_LITERAL(391, 21), // "on_copyButton_clicked"
+QT_MOC_LITERAL(413, 22), // "on_pasteButton_clicked"
+QT_MOC_LITERAL(436, 24), // "on_seedEntry_textChanged"
+QT_MOC_LITERAL(461, 30), // "on_gameBox_currentIndexChanged"
+QT_MOC_LITERAL(492, 5), // "index"
+QT_MOC_LITERAL(498, 32), // "on_regionBox_currentIndexChanged"
+QT_MOC_LITERAL(531, 28), // "on_searchMinBox_valueChanged"
+QT_MOC_LITERAL(560, 28), // "on_searchMaxBox_valueChanged"
+QT_MOC_LITERAL(589, 31) // "on_arbTargetBox_editingFinished"
 
     },
     "MainWindow\0on_startButton_clicked\0\0"
@@ -69,10 +69,9 @@ QT_MOC_LITERAL(590, 31) // "on_arbTargetBox_editingFinished"
     "on_actionHotkeys_triggered\0"
     "on_actionTimer_triggered\0"
     "on_actionSounds_triggered\0"
-    "on_actionExit_triggered\0"
     "on_actionGithub_triggered\0"
-    "on_copyButton_clicked\0on_pasteButton_clicked\0"
-    "on_seedEntry_textChanged\0"
+    "on_actionLog_triggered\0on_copyButton_clicked\0"
+    "on_pasteButton_clicked\0on_seedEntry_textChanged\0"
     "on_gameBox_currentIndexChanged\0index\0"
     "on_regionBox_currentIndexChanged\0"
     "on_searchMinBox_valueChanged\0"
@@ -169,8 +168,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->on_actionHotkeys_triggered(); break;
         case 12: _t->on_actionTimer_triggered(); break;
         case 13: _t->on_actionSounds_triggered(); break;
-        case 14: _t->on_actionExit_triggered(); break;
-        case 15: _t->on_actionGithub_triggered(); break;
+        case 14: _t->on_actionGithub_triggered(); break;
+        case 15: _t->on_actionLog_triggered(); break;
         case 16: _t->on_copyButton_clicked(); break;
         case 17: _t->on_pasteButton_clicked(); break;
         case 18: _t->on_seedEntry_textChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;

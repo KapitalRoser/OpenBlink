@@ -59,6 +59,8 @@ public:
     QColor tbl_targetBlink;
     QColor tbl_upcomingBlink;
 
+    QColor tbl_warningBlink;
+
     //QGraphicsDropShadowEffect* std_Shadow;
 
     //Timers
@@ -79,6 +81,10 @@ public:
 
     //lots of these things are declared inside mainWindow to make logging easier
     int foundIdx;
+
+    QString logStr; //VERY IMPORTANT
+
+
     void postInterval(QString results, int f, int row);
     void postPool(iterP setP, iterP limitP, int rowCurrent);
     void keyPressEvent(QKeyEvent* event);
@@ -93,6 +99,8 @@ public:
     searchParameters collectParamInputs();
     void writeAllSettings();
     bool applyAllSettings();
+    QString createLog();
+
 private slots:
     void on_startButton_clicked();
 
@@ -122,9 +130,9 @@ private slots:
 
     void on_actionSounds_triggered();
 
-    void on_actionExit_triggered();
-
     void on_actionGithub_triggered();
+
+    void on_actionLog_triggered();
 
     void on_copyButton_clicked();
 
