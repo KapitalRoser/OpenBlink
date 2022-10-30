@@ -69,6 +69,8 @@ public:
     int localBlinkMs;
     QTimer *basicTimer; //Updates Gui
     QTimer *exitTimer; //Need to test if this can completely replace.
+
+    QIcon xdWarning;
     //sfx
     QSoundEffect sfxSearchSuccess;
     QSoundEffect sfxSearchFailure;
@@ -131,6 +133,8 @@ private slots:
     void on_actionSounds_triggered();
 
     void on_actionGithub_triggered();
+
+    void on_actionHelp_triggered();
 
     void on_actionLog_triggered();
 

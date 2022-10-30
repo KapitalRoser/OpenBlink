@@ -46,6 +46,26 @@
      <height>35</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:12px;
+padding:10px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+   </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
@@ -53,13 +73,13 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>70</y>
+     <y>50</y>
      <width>261</width>
-     <height>213</height>
+     <height>248</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="inputGrid">
@@ -72,6 +92,26 @@
     </item>
     <item row="1" column="1">
      <widget class="QPushButton" name="slowerKeyButton">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:12px;
+padding:10px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+      </property>
       <property name="text">
        <string>Left Arrow</string>
       </property>
@@ -96,6 +136,26 @@
     </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="blinkKeyButton">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:12px;
+padding:10px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+      </property>
       <property name="text">
        <string>Shift</string>
       </property>
@@ -106,6 +166,26 @@
     </item>
     <item row="3" column="1">
      <widget class="QPushButton" name="startStopKeyButton">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:12px;
+padding:10px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+      </property>
       <property name="text">
        <string>Enter</string>
       </property>
@@ -116,6 +196,26 @@
     </item>
     <item row="4" column="0" colspan="2">
      <widget class="QPushButton" name="defaultResetButton">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:12px;
+padding:10px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+      </property>
       <property name="text">
        <string>Reset to Defaults</string>
       </property>
@@ -123,6 +223,26 @@
     </item>
     <item row="2" column="1">
      <widget class="QPushButton" name="fasterKeyButton">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{background-color: #004080;
+font: 9pt &quot;Century Gothic&quot;;
+color: white;
+font-weight: bold;
+border-radius:12px;
+padding:10px;
+}
+QPushButton:hover{
+background-color: #265d93;
+}
+QPushButton:pressed{
+background-color: #004080;
+}
+QPushButton:disabled{
+background-color:#e0e0e0;
+font-weight:normal;
+color:grey;
+}</string>
+      </property>
       <property name="text">
        <string>Right Arrow</string>
       </property>

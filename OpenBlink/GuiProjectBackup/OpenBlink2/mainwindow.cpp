@@ -6,12 +6,10 @@
 #include "logwindow.h"
 
 /*TODO:
-    -Test that the new ExitTimer system + fadeout ms remains accurate.
-    -XD Dolphin bad frames indication
-    -XD Modern bad frames indication
+    -Redo exit fadeout timing for JPN and PAL50, PAL60/NTSCU is Ok.
+    -XD bad frames symbol + hover
+    -XD Testing, something is wrong in the processing, is moving too quickly.
     -Windows and Mac Build testing.
-    -Log Action
-    -Help Action
      Then done!
 //Optional
     -Allow gui to shrink for condensed screens like laptops.
@@ -44,11 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     QAction *logAction = ui->menubar->addAction("Log");
-
+    connect(logAction,&QAction::triggered,this,&MainWindow::on_actionLog_triggered);
     QAction *githubAction = ui->menubar->addAction("GitHub");
     connect(githubAction,&QAction::triggered,this,&MainWindow::on_actionGithub_triggered);
     QAction *helpAction = ui->menubar->addAction("Help");
-
+    connect(helpAction,&QAction::triggered,this,&MainWindow::on_actionHelp_triggered);
     std::queue<QDropShadow> shadowSet;
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
     applyShadow(ui->statusFrame,shadowSet);
@@ -96,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
     userPF = collectPlatformInputs();
     userSP = collectParamInputs();
 
-
+    xdWarning = QIcon(":/resfix1/sign-warning-icon.png");
     sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
     sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
     sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
@@ -109,6 +107,7 @@ MainWindow::MainWindow(QWidget *parent)
     sfxCalibrationComplete.setVolume(0.2);
     sfxExitCue.setVolume(0.2);
     writeAllSettings(); //creates new settings file.
+
 
 }
 
@@ -230,22 +229,28 @@ bool MainWindow::applyAllSettings()
 
 QString MainWindow::createLog()
 {
+    //philosophy: Store only most recent amt of data. If user spends a long time in a session it may create too much data.
+    //If users are forgetful and don't log right after the bug, then consider recording for the whole session. May need a file.
+    //Shouldn't need to preserve between sessions for any reason.
+    //Therefore can even avoid writing to file, and keep log in ram.
+
     //First platform and parameter data
     QString logAdd;
-    logAdd = "ENTRY____";
+    logAdd = "ENTRY____\n";
     logAdd += "GAME: " + QString::number(userPF.getXD()) + " emu? " + QString::number(userPF.getEmu5()) + " Region: " + QString::number(userPF.getRegion()) + "\n";
-    logAdd += "PARAM: min/max: ("+ QString::number(userSP.minSearch)+ "," + QString::number(userSP.maxSearch) + " flex: " + QString::number(userSP.flexValue) + " target: " + QString::number(userSP.arbitrary_Target);
-    logAdd += "Timer: " + QString::number(userTS.offset()) + "//" + QString::number(userTS.gap()) + "//" + QString::number(userTS.beeps()) + "//" + QString::number(userTS.input());
-    logAdd += "SEED: " + QString::number(userSP.inputSeed,16) + " AfterMin: " + QString::number(seedAfterMin,16);
-    logAdd += "InputBlinks:";
-    logAdd += "SearchResult: " + QString::number(foundIdx);
+    logAdd += "PARAM: min/max: ("+ QString::number(userSP.minSearch)+ "," + QString::number(userSP.maxSearch) + " flex: " + QString::number(userSP.flexValue) + " target: " + QString::number(userSP.arbitrary_Target)+ "\n";
+    logAdd += "Timer: " + QString::number(userTS.offset()) + "/" + QString::number(userTS.gap()) + "/" + QString::number(userTS.beeps()) + "/" + QString::number(userTS.input()) + "\n";
+    logAdd += "SEED: " + QString::number(userSP.inputSeed,16) + " AfterMin: " + QString::number(seedAfterMin,16)+ "\n";
+    logAdd += "SearchResult: " + QString::number(foundIdx) + " ... ";
     logAdd += foundIdx >= 0 ? "SeedFound: " + QString::number(mainPool[foundIdx].seed,16) + " pos: " + QString::number(foundIdx) + "\n" : " : SEARCH_FAILURE\n";
-    logAdd += "Input List: ";
+    logAdd += "Input blinks: ";
     for (int x : blinkList){
-        logAdd += QString::number(x);
+        logAdd += QString::number(x) + ", ";
     }
     logAdd += "\n";
-
+    logAdd += "firstMS: " + QString::number(userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate())) + "\n";
+    logAdd += "END______";
+    return logAdd;
 }
 
 
@@ -324,16 +329,16 @@ void MainWindow::timerGUIUpdate(){
     if (totalActive || exitActive){
         int mainTime = totalTimer->remainingTime();
 
-
         //Pre-convert the queue inside TS? Pass in the userPF values?
-        float firstMS = userTS.offset(); + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
-        float localMS = userTS.getTiming(); + userPF.getFadeOutMS();
+        float firstMS = userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
+        float localMS = userTS.getTiming() + userPF.getFadeOutMS();
+        //Oh no, was local and first ms not getting adjusted???
 
 
         if (mainTime <= firstMS){
             if (!exitActive&& userTS.checkState()){
                 exitTimer->start(userTS.offset());
-                sfxBlinkOccurs.setMuted(true); //mute the blinks to prevent distraction.
+
                 qDebug() << "ExitTimer Started: " << firstMS ;
                 qDebug() << "First LocalMS: " << localMS;
             }
@@ -341,6 +346,7 @@ void MainWindow::timerGUIUpdate(){
 
             int exitTime = exitTimer->remainingTime();
             if (exitActive && exitTime <= localMS && userTS.checkState()){
+                sfxBlinkOccurs.setMuted(true); //mute the blinks to prevent distraction.
                 ui->timerFrame->setEnabled(false);
                 qDebug() << "LocalMS:" << localMS;
                 userTS.timingAdvance();
@@ -452,13 +458,15 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
         QTableWidgetItem *fTime = new QTableWidgetItem(QString::number(setP->blink));
         tblSeed->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         fTime->setTextAlignment(Qt::AlignCenter);
-        ui->outTable->setItem(rowCurrent,0,tblSeed);
-        ui->outTable->setItem(rowCurrent,1,fTime);
         //RE-TEST THIS CONDITION, THERES MORE TO IT THAN THIS
         if (userPF.getXD() && setP->blink == 180){
             highlightTableRow(rowCurrent,tbl_warningBlink);
+            tblSeed->setIcon(xdWarning);
             //Add hoverable icon?
         }
+        ui->outTable->setItem(rowCurrent,0,tblSeed);
+        ui->outTable->setItem(rowCurrent,1,fTime);
+
         rowCurrent++;
         setP++;
     }
@@ -595,8 +603,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         int status = performSearchPass(seed); //returns status: -1 error, 0 failure, 1 success, 2 continue search
         if (status < 2){
             //LOG NOW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~********************!!!!!!!!!!!!!!!!!!!!!!!!!******************!!!!!!!!!!!!!!!!!!!!!!!*************!!!!!!!!!!!!!!
-
-
+            logStr = createLog(); //If this creates too much lag then move it into the
             if (status == 1){
                 hotKeyLockState = CALIBRATE;
 
@@ -770,11 +777,16 @@ void MainWindow::on_actionGithub_triggered()
     QDesktopServices::openUrl(QUrl("https://github.com/KapitalRoser/OpenBlink"));
 }
 
+void MainWindow::on_actionHelp_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://gist.github.com/KapitalRoser/08423a6e7173570677c35390ee6a6593"));
+}
+
 void MainWindow::on_actionLog_triggered()
 {
     LogWindow logWin;
     logWin.setModal(true);
-    logWin.displayStr = logStr;
+    logWin.setLogDisplay(logStr);
     logWin.exec();
 }
 

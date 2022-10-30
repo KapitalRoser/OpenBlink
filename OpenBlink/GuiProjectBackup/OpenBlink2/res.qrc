@@ -7,6 +7,7 @@
         <file>searchFailure.wav</file>
         <file>arrow1.jpg</file>
         <file>arrow2.jpg</file>
+        <file>sign-warning-icon.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

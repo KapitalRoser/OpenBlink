@@ -1,7 +1,7 @@
+1
 0
 0
-0
-20
+2
 0
 10000
 11
@@ -14,14 +14,14 @@
 5
 0
 file::/resfix1/lvlup.wav
-0.38
+0.2
 0
 file::/resfix1/searchFailure.wav
 0.2
 0
 file::/resfix1/blinkWoop.wav
 0.2
-1
+0
 file::/resfix1/snagSuccess.wav
 0.2
 0

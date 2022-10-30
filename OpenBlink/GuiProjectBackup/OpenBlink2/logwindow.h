@@ -2,6 +2,7 @@
 #define LOGWINDOW_H
 
 #include <QDialog>
+#include <QClipboard>
 
 namespace Ui {
 class LogWindow;
@@ -16,6 +17,12 @@ public:
     ~LogWindow();
 
     QString displayStr;
+    void setLogDisplay(QString str);
+
+private slots:
+    void on_okButton_clicked();
+
+    void on_copyButton_clicked();
 
 private:
     Ui::LogWindow *ui;

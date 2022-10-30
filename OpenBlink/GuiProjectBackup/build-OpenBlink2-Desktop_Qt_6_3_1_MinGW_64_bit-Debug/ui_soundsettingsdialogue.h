@@ -19,85 +19,65 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSpinBox>
-#include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_soundSettingsDialogue
 {
 public:
-    QVBoxLayout *verticalLayout;
-    QGridLayout *gridMain;
-    QSpinBox *cueBox;
-    QLabel *label_4;
-    QPushButton *occursChange;
-    QPushButton *completeChange;
+    QGridLayout *gridLayout;
     QLabel *label;
     QSlider *successSlide;
-    QSlider *cueSlide;
-    QPushButton *cueChange;
-    QSlider *failureSlide;
-    QPushButton *failureMute;
-    QSlider *completeSlide;
-    QLabel *completeFileLabel;
-    QLabel *label_8;
-    QSpinBox *occursBox;
-    QPushButton *successMute;
-    QPushButton *failureChange;
     QSpinBox *successBox;
-    QLabel *label_10;
-    QSpinBox *failureBox;
-    QPushButton *occursMute;
-    QPushButton *successChange;
-    QSpinBox *completeBox;
+    QPushButton *successMute;
     QLabel *successFileLabel;
+    QPushButton *successChange;
+    QLabel *label_4;
+    QSlider *failureSlide;
+    QSpinBox *failureBox;
+    QPushButton *failureMute;
     QLabel *failureFileLabel;
+    QPushButton *failureChange;
     QLabel *label_6;
-    QLabel *cueFileLabel;
     QSlider *occursSlide;
+    QSpinBox *occursBox;
+    QPushButton *occursMute;
     QLabel *occursFileLabel;
-    QPushButton *cueMute;
+    QPushButton *occursChange;
+    QLabel *label_8;
+    QSlider *completeSlide;
+    QSpinBox *completeBox;
     QPushButton *completeMute;
+    QLabel *completeFileLabel;
+    QPushButton *completeChange;
+    QLabel *label_10;
+    QSlider *cueSlide;
+    QSpinBox *cueBox;
+    QPushButton *cueMute;
+    QLabel *cueFileLabel;
+    QPushButton *cueChange;
     QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *soundSettingsDialogue)
     {
         if (soundSettingsDialogue->objectName().isEmpty())
             soundSettingsDialogue->setObjectName(QString::fromUtf8("soundSettingsDialogue"));
-        soundSettingsDialogue->resize(803, 347);
+        soundSettingsDialogue->resize(736, 258);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(soundSettingsDialogue->sizePolicy().hasHeightForWidth());
+        soundSettingsDialogue->setSizePolicy(sizePolicy);
         QFont font;
         font.setFamilies({QString::fromUtf8("Century Gothic")});
         soundSettingsDialogue->setFont(font);
-        verticalLayout = new QVBoxLayout(soundSettingsDialogue);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        gridMain = new QGridLayout();
-        gridMain->setObjectName(QString::fromUtf8("gridMain"));
-        cueBox = new QSpinBox(soundSettingsDialogue);
-        cueBox->setObjectName(QString::fromUtf8("cueBox"));
-        cueBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-        cueBox->setMaximum(100);
-
-        gridMain->addWidget(cueBox, 4, 2, 1, 1);
-
-        label_4 = new QLabel(soundSettingsDialogue);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        gridMain->addWidget(label_4, 1, 0, 1, 1);
-
-        occursChange = new QPushButton(soundSettingsDialogue);
-        occursChange->setObjectName(QString::fromUtf8("occursChange"));
-
-        gridMain->addWidget(occursChange, 2, 5, 1, 1);
-
-        completeChange = new QPushButton(soundSettingsDialogue);
-        completeChange->setObjectName(QString::fromUtf8("completeChange"));
-
-        gridMain->addWidget(completeChange, 3, 5, 1, 1);
-
+        gridLayout = new QGridLayout(soundSettingsDialogue);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setVerticalSpacing(3);
         label = new QLabel(soundSettingsDialogue);
         label->setObjectName(QString::fromUtf8("label"));
 
-        gridMain->addWidget(label, 0, 0, 1, 1);
+        gridLayout->addWidget(label, 0, 0, 1, 1);
 
         successSlide = new QSlider(soundSettingsDialogue);
         successSlide->setObjectName(QString::fromUtf8("successSlide"));
@@ -108,153 +88,195 @@ public:
         successSlide->setOrientation(Qt::Horizontal);
         successSlide->setTickPosition(QSlider::NoTicks);
 
-        gridMain->addWidget(successSlide, 0, 1, 1, 1);
-
-        cueSlide = new QSlider(soundSettingsDialogue);
-        cueSlide->setObjectName(QString::fromUtf8("cueSlide"));
-        cueSlide->setPageStep(1);
-        cueSlide->setOrientation(Qt::Horizontal);
-
-        gridMain->addWidget(cueSlide, 4, 1, 1, 1);
-
-        cueChange = new QPushButton(soundSettingsDialogue);
-        cueChange->setObjectName(QString::fromUtf8("cueChange"));
-
-        gridMain->addWidget(cueChange, 4, 5, 1, 1);
-
-        failureSlide = new QSlider(soundSettingsDialogue);
-        failureSlide->setObjectName(QString::fromUtf8("failureSlide"));
-        failureSlide->setPageStep(1);
-        failureSlide->setOrientation(Qt::Horizontal);
-
-        gridMain->addWidget(failureSlide, 1, 1, 1, 1);
-
-        failureMute = new QPushButton(soundSettingsDialogue);
-        failureMute->setObjectName(QString::fromUtf8("failureMute"));
-
-        gridMain->addWidget(failureMute, 1, 3, 1, 1);
-
-        completeSlide = new QSlider(soundSettingsDialogue);
-        completeSlide->setObjectName(QString::fromUtf8("completeSlide"));
-        completeSlide->setPageStep(1);
-        completeSlide->setOrientation(Qt::Horizontal);
-
-        gridMain->addWidget(completeSlide, 3, 1, 1, 1);
-
-        completeFileLabel = new QLabel(soundSettingsDialogue);
-        completeFileLabel->setObjectName(QString::fromUtf8("completeFileLabel"));
-
-        gridMain->addWidget(completeFileLabel, 3, 4, 1, 1);
-
-        label_8 = new QLabel(soundSettingsDialogue);
-        label_8->setObjectName(QString::fromUtf8("label_8"));
-
-        gridMain->addWidget(label_8, 3, 0, 1, 1);
-
-        occursBox = new QSpinBox(soundSettingsDialogue);
-        occursBox->setObjectName(QString::fromUtf8("occursBox"));
-        occursBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-        occursBox->setMaximum(100);
-
-        gridMain->addWidget(occursBox, 2, 2, 1, 1);
-
-        successMute = new QPushButton(soundSettingsDialogue);
-        successMute->setObjectName(QString::fromUtf8("successMute"));
-
-        gridMain->addWidget(successMute, 0, 3, 1, 1);
-
-        failureChange = new QPushButton(soundSettingsDialogue);
-        failureChange->setObjectName(QString::fromUtf8("failureChange"));
-
-        gridMain->addWidget(failureChange, 1, 5, 1, 1);
+        gridLayout->addWidget(successSlide, 0, 1, 1, 1);
 
         successBox = new QSpinBox(soundSettingsDialogue);
         successBox->setObjectName(QString::fromUtf8("successBox"));
         successBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
         successBox->setMaximum(100);
 
-        gridMain->addWidget(successBox, 0, 2, 1, 1);
+        gridLayout->addWidget(successBox, 0, 2, 1, 1);
 
-        label_10 = new QLabel(soundSettingsDialogue);
-        label_10->setObjectName(QString::fromUtf8("label_10"));
+        successMute = new QPushButton(soundSettingsDialogue);
+        successMute->setObjectName(QString::fromUtf8("successMute"));
 
-        gridMain->addWidget(label_10, 4, 0, 1, 1);
+        gridLayout->addWidget(successMute, 0, 3, 1, 1);
+
+        successFileLabel = new QLabel(soundSettingsDialogue);
+        successFileLabel->setObjectName(QString::fromUtf8("successFileLabel"));
+
+        gridLayout->addWidget(successFileLabel, 0, 4, 1, 1);
+
+        successChange = new QPushButton(soundSettingsDialogue);
+        successChange->setObjectName(QString::fromUtf8("successChange"));
+
+        gridLayout->addWidget(successChange, 0, 5, 1, 1);
+
+        label_4 = new QLabel(soundSettingsDialogue);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        gridLayout->addWidget(label_4, 1, 0, 1, 1);
+
+        failureSlide = new QSlider(soundSettingsDialogue);
+        failureSlide->setObjectName(QString::fromUtf8("failureSlide"));
+        failureSlide->setPageStep(1);
+        failureSlide->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(failureSlide, 1, 1, 1, 1);
 
         failureBox = new QSpinBox(soundSettingsDialogue);
         failureBox->setObjectName(QString::fromUtf8("failureBox"));
         failureBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
         failureBox->setMaximum(100);
 
-        gridMain->addWidget(failureBox, 1, 2, 1, 1);
+        gridLayout->addWidget(failureBox, 1, 2, 1, 1);
 
-        occursMute = new QPushButton(soundSettingsDialogue);
-        occursMute->setObjectName(QString::fromUtf8("occursMute"));
+        failureMute = new QPushButton(soundSettingsDialogue);
+        failureMute->setObjectName(QString::fromUtf8("failureMute"));
 
-        gridMain->addWidget(occursMute, 2, 3, 1, 1);
-
-        successChange = new QPushButton(soundSettingsDialogue);
-        successChange->setObjectName(QString::fromUtf8("successChange"));
-
-        gridMain->addWidget(successChange, 0, 5, 1, 1);
-
-        completeBox = new QSpinBox(soundSettingsDialogue);
-        completeBox->setObjectName(QString::fromUtf8("completeBox"));
-        completeBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-        completeBox->setMaximum(100);
-
-        gridMain->addWidget(completeBox, 3, 2, 1, 1);
-
-        successFileLabel = new QLabel(soundSettingsDialogue);
-        successFileLabel->setObjectName(QString::fromUtf8("successFileLabel"));
-
-        gridMain->addWidget(successFileLabel, 0, 4, 1, 1);
+        gridLayout->addWidget(failureMute, 1, 3, 1, 1);
 
         failureFileLabel = new QLabel(soundSettingsDialogue);
         failureFileLabel->setObjectName(QString::fromUtf8("failureFileLabel"));
 
-        gridMain->addWidget(failureFileLabel, 1, 4, 1, 1);
+        gridLayout->addWidget(failureFileLabel, 1, 4, 1, 1);
+
+        failureChange = new QPushButton(soundSettingsDialogue);
+        failureChange->setObjectName(QString::fromUtf8("failureChange"));
+
+        gridLayout->addWidget(failureChange, 1, 5, 1, 1);
 
         label_6 = new QLabel(soundSettingsDialogue);
         label_6->setObjectName(QString::fromUtf8("label_6"));
 
-        gridMain->addWidget(label_6, 2, 0, 1, 1);
-
-        cueFileLabel = new QLabel(soundSettingsDialogue);
-        cueFileLabel->setObjectName(QString::fromUtf8("cueFileLabel"));
-
-        gridMain->addWidget(cueFileLabel, 4, 4, 1, 1);
+        gridLayout->addWidget(label_6, 2, 0, 1, 1);
 
         occursSlide = new QSlider(soundSettingsDialogue);
         occursSlide->setObjectName(QString::fromUtf8("occursSlide"));
         occursSlide->setPageStep(1);
         occursSlide->setOrientation(Qt::Horizontal);
 
-        gridMain->addWidget(occursSlide, 2, 1, 1, 1);
+        gridLayout->addWidget(occursSlide, 2, 1, 1, 1);
+
+        occursBox = new QSpinBox(soundSettingsDialogue);
+        occursBox->setObjectName(QString::fromUtf8("occursBox"));
+        occursBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        occursBox->setMaximum(100);
+
+        gridLayout->addWidget(occursBox, 2, 2, 1, 1);
+
+        occursMute = new QPushButton(soundSettingsDialogue);
+        occursMute->setObjectName(QString::fromUtf8("occursMute"));
+
+        gridLayout->addWidget(occursMute, 2, 3, 1, 1);
 
         occursFileLabel = new QLabel(soundSettingsDialogue);
         occursFileLabel->setObjectName(QString::fromUtf8("occursFileLabel"));
 
-        gridMain->addWidget(occursFileLabel, 2, 4, 1, 1);
+        gridLayout->addWidget(occursFileLabel, 2, 4, 1, 1);
 
-        cueMute = new QPushButton(soundSettingsDialogue);
-        cueMute->setObjectName(QString::fromUtf8("cueMute"));
+        occursChange = new QPushButton(soundSettingsDialogue);
+        occursChange->setObjectName(QString::fromUtf8("occursChange"));
 
-        gridMain->addWidget(cueMute, 4, 3, 1, 1);
+        gridLayout->addWidget(occursChange, 2, 5, 1, 1);
+
+        label_8 = new QLabel(soundSettingsDialogue);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        gridLayout->addWidget(label_8, 3, 0, 1, 1);
+
+        completeSlide = new QSlider(soundSettingsDialogue);
+        completeSlide->setObjectName(QString::fromUtf8("completeSlide"));
+        completeSlide->setPageStep(1);
+        completeSlide->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(completeSlide, 3, 1, 1, 1);
+
+        completeBox = new QSpinBox(soundSettingsDialogue);
+        completeBox->setObjectName(QString::fromUtf8("completeBox"));
+        completeBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        completeBox->setMaximum(100);
+
+        gridLayout->addWidget(completeBox, 3, 2, 1, 1);
 
         completeMute = new QPushButton(soundSettingsDialogue);
         completeMute->setObjectName(QString::fromUtf8("completeMute"));
 
-        gridMain->addWidget(completeMute, 3, 3, 1, 1);
+        gridLayout->addWidget(completeMute, 3, 3, 1, 1);
 
+        completeFileLabel = new QLabel(soundSettingsDialogue);
+        completeFileLabel->setObjectName(QString::fromUtf8("completeFileLabel"));
 
-        verticalLayout->addLayout(gridMain);
+        gridLayout->addWidget(completeFileLabel, 3, 4, 1, 1);
+
+        completeChange = new QPushButton(soundSettingsDialogue);
+        completeChange->setObjectName(QString::fromUtf8("completeChange"));
+
+        gridLayout->addWidget(completeChange, 3, 5, 1, 1);
+
+        label_10 = new QLabel(soundSettingsDialogue);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        gridLayout->addWidget(label_10, 4, 0, 1, 1);
+
+        cueSlide = new QSlider(soundSettingsDialogue);
+        cueSlide->setObjectName(QString::fromUtf8("cueSlide"));
+        cueSlide->setPageStep(1);
+        cueSlide->setOrientation(Qt::Horizontal);
+
+        gridLayout->addWidget(cueSlide, 4, 1, 1, 1);
+
+        cueBox = new QSpinBox(soundSettingsDialogue);
+        cueBox->setObjectName(QString::fromUtf8("cueBox"));
+        cueBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+        cueBox->setMaximum(100);
+
+        gridLayout->addWidget(cueBox, 4, 2, 1, 1);
+
+        cueMute = new QPushButton(soundSettingsDialogue);
+        cueMute->setObjectName(QString::fromUtf8("cueMute"));
+
+        gridLayout->addWidget(cueMute, 4, 3, 1, 1);
+
+        cueFileLabel = new QLabel(soundSettingsDialogue);
+        cueFileLabel->setObjectName(QString::fromUtf8("cueFileLabel"));
+
+        gridLayout->addWidget(cueFileLabel, 4, 4, 1, 1);
+
+        cueChange = new QPushButton(soundSettingsDialogue);
+        cueChange->setObjectName(QString::fromUtf8("cueChange"));
+
+        gridLayout->addWidget(cueChange, 4, 5, 1, 1);
 
         buttonBox = new QDialogButtonBox(soundSettingsDialogue);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(buttonBox->sizePolicy().hasHeightForWidth());
+        buttonBox->setSizePolicy(sizePolicy1);
+        buttonBox->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:15px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults);
 
-        verticalLayout->addWidget(buttonBox);
+        gridLayout->addWidget(buttonBox, 5, 0, 1, 6);
 
         QWidget::setTabOrder(successSlide, successBox);
         QWidget::setTabOrder(successBox, successMute);
@@ -286,26 +308,26 @@ public:
     void retranslateUi(QDialog *soundSettingsDialogue)
     {
         soundSettingsDialogue->setWindowTitle(QCoreApplication::translate("soundSettingsDialogue", "Dialog", nullptr));
-        label_4->setText(QCoreApplication::translate("soundSettingsDialogue", "Search Failure", nullptr));
-        occursChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
-        completeChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
         label->setText(QCoreApplication::translate("soundSettingsDialogue", "Search Success", nullptr));
-        cueChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
-        failureMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
-        completeFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
-        label_8->setText(QCoreApplication::translate("soundSettingsDialogue", "Calibration Complete", nullptr));
         successMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
-        failureChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
-        label_10->setText(QCoreApplication::translate("soundSettingsDialogue", "Exit Cue", nullptr));
-        occursMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
-        successChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
         successFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
+        successChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
+        label_4->setText(QCoreApplication::translate("soundSettingsDialogue", "Search Failure", nullptr));
+        failureMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
         failureFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
+        failureChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
         label_6->setText(QCoreApplication::translate("soundSettingsDialogue", "Blink Occurs", nullptr));
-        cueFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
+        occursMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
         occursFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
-        cueMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
+        occursChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
+        label_8->setText(QCoreApplication::translate("soundSettingsDialogue", "Calibration Complete", nullptr));
         completeMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
+        completeFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
+        completeChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
+        label_10->setText(QCoreApplication::translate("soundSettingsDialogue", "Exit Cue", nullptr));
+        cueMute->setText(QCoreApplication::translate("soundSettingsDialogue", "\360\237\224\212\360\237\224\210", nullptr));
+        cueFileLabel->setText(QCoreApplication::translate("soundSettingsDialogue", "snag_success.wav", nullptr));
+        cueChange->setText(QCoreApplication::translate("soundSettingsDialogue", "change...", nullptr));
     } // retranslateUi
 
 };

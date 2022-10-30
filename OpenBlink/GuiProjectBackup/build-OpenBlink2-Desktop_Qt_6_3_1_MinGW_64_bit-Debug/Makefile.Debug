@@ -146,6 +146,7 @@ debug/qrc_res.cpp: ../OpenBlink2/res.qrc \
 		C:/Qt/6.3.1/mingw_64/bin/rcc.exe \
 		../OpenBlink2/searchFailure.wav \
 		../OpenBlink2/blinkWoop.wav \
+		../OpenBlink2/sign-warning-icon.png \
 		../OpenBlink2/arrow1.jpg \
 		../OpenBlink2/snagSuccess.wav \
 		../OpenBlink2/arrow2.jpg \
@@ -436,6 +437,8 @@ debug/moc_logwindow.cpp: ../OpenBlink2/logwindow.h \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/QSizeF \
 		C:/Qt/6.3.1/mingw_64/include/QtGui/QTransform \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/qnativeinterface.h \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/QClipboard \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qclipboard.h \
 		debug/moc_predefs.h \
 		C:/Qt/6.3.1/mingw_64/bin/moc.exe
 	C:\Qt\6.3.1\mingw_64\bin\moc.exe $(DEFINES) --include C:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/build-OpenBlink2-Desktop_Qt_6_3_1_MinGW_64_bit-Debug/debug/moc_predefs.h -IC:/Qt/6.3.1/mingw_64/mkspecs/win32-g++ -IC:/Users/greni/OneDrive/Documents/GitHub/OpenBlink/OpenBlink/GuiProjectBackup/OpenBlink2 -IC:/Qt/6.3.1/mingw_64/include -IC:/Qt/6.3.1/mingw_64/include/QtWidgets -IC:/Qt/6.3.1/mingw_64/include/QtMultimedia -IC:/Qt/6.3.1/mingw_64/include/QtGui -IC:/Qt/6.3.1/mingw_64/include/QtNetwork -IC:/Qt/6.3.1/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IC:/Qt/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IC:/Qt/Tools/mingw1120_64/x86_64-w64-mingw32/include ..\OpenBlink2\logwindow.h -o debug\moc_logwindow.cpp
@@ -1374,7 +1377,44 @@ debug/logwindow.o: ../OpenBlink2/logwindow.cpp ../OpenBlink2/logwindow.h \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/QSizeF \
 		C:/Qt/6.3.1/mingw_64/include/QtGui/QTransform \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/qnativeinterface.h \
-		ui_logwindow.h
+		C:/Qt/6.3.1/mingw_64/include/QtGui/QClipboard \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qclipboard.h \
+		ui_logwindow.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/QVariant \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QApplication \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qapplication.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qcoreapplication.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qeventloop.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qcoreapplication_platform.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qfuture.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qfutureinterface.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qmutex.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qresultstore.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qfuture_impl.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qthreadpool.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qthread.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qrunnable.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qexception.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qpromise.h \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qguiapplication.h \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qinputmethod.h \
+		C:/Qt/6.3.1/mingw_64/include/QtCore/qlocale.h \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qguiapplication_platform.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QGridLayout \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qlayout.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QLabel \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qlabel.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qframe.h \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qpicture.h \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/qtextdocument.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QPushButton \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qabstractbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\logwindow.o ..\OpenBlink2\logwindow.cpp
 
 debug/main.o: ../OpenBlink2/main.cpp ../OpenBlink2/mainwindow.h \
@@ -1804,7 +1844,8 @@ debug/mainwindow.o: ../OpenBlink2/mainwindow.cpp ../OpenBlink2/mainwindow.h \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qdialog.h \
 		../OpenBlink2/timersettingsdialogue.h \
 		../OpenBlink2/soundsettingsdialogue.h \
-		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QSlider
+		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QSlider \
+		../OpenBlink2/logwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o ..\OpenBlink2\mainwindow.cpp
 
 debug/processcoreblink.o: ../OpenBlink2/processcoreblink.cpp ../OpenBlink2/processcoreblink.h
@@ -1997,7 +2038,6 @@ debug/soundsettingsdialogue.o: ../OpenBlink2/soundsettingsdialogue.cpp ../OpenBl
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qboxlayout.h \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QPushButton \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qpushbutton.h \
-		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QVBoxLayout \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QFileDialog \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qfiledialog.h \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/qdir.h \
@@ -2190,7 +2230,6 @@ debug/timersettingsdialogue.o: ../OpenBlink2/timersettingsdialogue.cpp ../OpenBl
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qabstractspinbox.h \
 		C:/Qt/6.3.1/mingw_64/include/QtGui/qvalidator.h \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/qregularexpression.h \
-		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QWidget \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QPushButton \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qpushbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\timersettingsdialogue.o ..\OpenBlink2\timersettingsdialogue.cpp

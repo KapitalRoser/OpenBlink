@@ -26,7 +26,7 @@ class Ui_HotkeysDialogue
 public:
     QLabel *label_9;
     QDialogButtonBox *buttonBox;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QGridLayout *inputGrid;
     QLabel *label_13;
     QPushButton *slowerKeyButton;
@@ -57,59 +57,167 @@ public:
         buttonBox = new QDialogButtonBox(HotkeysDialogue);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setGeometry(QRect(150, 320, 169, 35));
+        buttonBox->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-        widget = new QWidget(HotkeysDialogue);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(40, 70, 261, 213));
-        inputGrid = new QGridLayout(widget);
+        layoutWidget = new QWidget(HotkeysDialogue);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(40, 50, 261, 248));
+        inputGrid = new QGridLayout(layoutWidget);
         inputGrid->setObjectName(QString::fromUtf8("inputGrid"));
         inputGrid->setContentsMargins(0, 0, 0, 0);
-        label_13 = new QLabel(widget);
+        label_13 = new QLabel(layoutWidget);
         label_13->setObjectName(QString::fromUtf8("label_13"));
 
         inputGrid->addWidget(label_13, 3, 0, 1, 1);
 
-        slowerKeyButton = new QPushButton(widget);
+        slowerKeyButton = new QPushButton(layoutWidget);
         slowerKeyButton->setObjectName(QString::fromUtf8("slowerKeyButton"));
+        slowerKeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
         slowerKeyButton->setCheckable(true);
 
         inputGrid->addWidget(slowerKeyButton, 1, 1, 1, 1);
 
-        label_10 = new QLabel(widget);
+        label_10 = new QLabel(layoutWidget);
         label_10->setObjectName(QString::fromUtf8("label_10"));
 
         inputGrid->addWidget(label_10, 0, 0, 1, 1);
 
-        label_12 = new QLabel(widget);
+        label_12 = new QLabel(layoutWidget);
         label_12->setObjectName(QString::fromUtf8("label_12"));
 
         inputGrid->addWidget(label_12, 2, 0, 1, 1);
 
-        blinkKeyButton = new QPushButton(widget);
+        blinkKeyButton = new QPushButton(layoutWidget);
         blinkKeyButton->setObjectName(QString::fromUtf8("blinkKeyButton"));
+        blinkKeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
         blinkKeyButton->setCheckable(true);
 
         inputGrid->addWidget(blinkKeyButton, 0, 1, 1, 1);
 
-        startStopKeyButton = new QPushButton(widget);
+        startStopKeyButton = new QPushButton(layoutWidget);
         startStopKeyButton->setObjectName(QString::fromUtf8("startStopKeyButton"));
+        startStopKeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
         startStopKeyButton->setCheckable(true);
 
         inputGrid->addWidget(startStopKeyButton, 3, 1, 1, 1);
 
-        defaultResetButton = new QPushButton(widget);
+        defaultResetButton = new QPushButton(layoutWidget);
         defaultResetButton->setObjectName(QString::fromUtf8("defaultResetButton"));
+        defaultResetButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
 
         inputGrid->addWidget(defaultResetButton, 4, 0, 1, 2);
 
-        fasterKeyButton = new QPushButton(widget);
+        fasterKeyButton = new QPushButton(layoutWidget);
         fasterKeyButton->setObjectName(QString::fromUtf8("fasterKeyButton"));
+        fasterKeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
         fasterKeyButton->setCheckable(true);
 
         inputGrid->addWidget(fasterKeyButton, 2, 1, 1, 1);
 
-        label_11 = new QLabel(widget);
+        label_11 = new QLabel(layoutWidget);
         label_11->setObjectName(QString::fromUtf8("label_11"));
 
         inputGrid->addWidget(label_11, 1, 0, 1, 1);
