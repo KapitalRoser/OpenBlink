@@ -8,6 +8,6 @@
         <file>arrow1.jpg</file>
         <file>arrow2.jpg</file>
         <file>sign-warning-icon.png</file>
+        <file>eye6.png</file>
     </qresource>
-    <qresource prefix="/"/>
 </RCC>

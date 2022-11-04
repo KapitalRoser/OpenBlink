@@ -145,11 +145,12 @@ compiler_rcc_clean:
 release/qrc_res.cpp: ../OpenBlink2/res.qrc \
 		C:/Qt/6.3.1/mingw_64/bin/rcc.exe \
 		../OpenBlink2/searchFailure.wav \
-		../OpenBlink2/blinkWoop.wav \
-		../OpenBlink2/sign-warning-icon.png \
-		../OpenBlink2/arrow1.jpg \
 		../OpenBlink2/snagSuccess.wav \
 		../OpenBlink2/arrow2.jpg \
+		../OpenBlink2/blinkWoop.wav \
+		../OpenBlink2/sign-warning-icon.png \
+		../OpenBlink2/eye6.png \
+		../OpenBlink2/arrow1.jpg \
 		../OpenBlink2/lvlup.wav \
 		../OpenBlink2/blinkBeep1.wav
 	C:\Qt\6.3.1\mingw_64\bin\rcc.exe -name res ..\OpenBlink2\res.qrc -o release\qrc_res.cpp
@@ -1768,6 +1769,7 @@ release/mainwindow.o: ../OpenBlink2/mainwindow.cpp ../OpenBlink2/mainwindow.h \
 		ui_mainwindow.h \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/QVariant \
 		C:/Qt/6.3.1/mingw_64/include/QtGui/QAction \
+		C:/Qt/6.3.1/mingw_64/include/QtGui/QIcon \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.3.1/mingw_64/include/QtWidgets/qapplication.h \
 		C:/Qt/6.3.1/mingw_64/include/QtCore/qcoreapplication.h \

@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
@@ -38,7 +39,6 @@ public:
     QAction *actionSounds;
     QAction *actionTimer;
     QWidget *centralwidget;
-    QLabel *LogoLabel;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *BodyHoriz;
     QVBoxLayout *verticalLayout_5;
@@ -104,10 +104,13 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(756, 802);
+        MainWindow->resize(700, 729);
         QFont font;
         font.setFamilies({QString::fromUtf8("Century Gothic")});
         MainWindow->setFont(font);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/resfix1/eye6.png"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
         MainWindow->setAutoFillBackground(false);
         actionHotkeys = new QAction(MainWindow);
         actionHotkeys->setObjectName(QString::fromUtf8("actionHotkeys"));
@@ -120,17 +123,9 @@ public:
         actionTimer->setFont(font);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        LogoLabel = new QLabel(centralwidget);
-        LogoLabel->setObjectName(QString::fromUtf8("LogoLabel"));
-        LogoLabel->setGeometry(QRect(20, 10, 221, 51));
-        QFont font1;
-        font1.setFamilies({QString::fromUtf8("Century Gothic")});
-        font1.setPointSize(20);
-        font1.setBold(true);
-        LogoLabel->setFont(font1);
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(10, 50, 736, 687));
+        horizontalLayoutWidget->setGeometry(QRect(30, 10, 641, 671));
         BodyHoriz = new QHBoxLayout(horizontalLayoutWidget);
         BodyHoriz->setSpacing(20);
         BodyHoriz->setObjectName(QString::fromUtf8("BodyHoriz"));
@@ -162,12 +157,12 @@ public:
         sizePolicy.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
         label_7->setSizePolicy(sizePolicy);
         label_7->setMinimumSize(QSize(74, 0));
-        QFont font2;
-        font2.setFamilies({QString::fromUtf8("Century Gothic")});
-        font2.setPointSize(11);
-        font2.setBold(true);
-        font2.setItalic(false);
-        label_7->setFont(font2);
+        QFont font1;
+        font1.setFamilies({QString::fromUtf8("Century Gothic")});
+        font1.setPointSize(11);
+        font1.setBold(true);
+        font1.setItalic(false);
+        label_7->setFont(font1);
 
         gameHorizLayout->addWidget(label_7);
 
@@ -176,12 +171,12 @@ public:
         gameBox->addItem(QString());
         gameBox->addItem(QString());
         gameBox->setObjectName(QString::fromUtf8("gameBox"));
-        QFont font3;
-        font3.setFamilies({QString::fromUtf8("Century Gothic")});
-        font3.setPointSize(11);
-        font3.setBold(false);
-        font3.setItalic(false);
-        gameBox->setFont(font3);
+        QFont font2;
+        font2.setFamilies({QString::fromUtf8("Century Gothic")});
+        font2.setPointSize(11);
+        font2.setBold(false);
+        font2.setItalic(false);
+        gameBox->setFont(font2);
         gameBox->setStyleSheet(QString::fromUtf8("QComboBox{\n"
 "border: 2px solid #828282;\n"
 "padding-left: 15px;\n"
@@ -214,7 +209,7 @@ public:
         label_8->setObjectName(QString::fromUtf8("label_8"));
         sizePolicy.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
         label_8->setSizePolicy(sizePolicy);
-        label_8->setFont(font2);
+        label_8->setFont(font1);
 
         regionHorzLayout->addWidget(label_8);
 
@@ -224,10 +219,10 @@ public:
         regionBox->addItem(QString());
         regionBox->addItem(QString());
         regionBox->setObjectName(QString::fromUtf8("regionBox"));
-        QFont font4;
-        font4.setFamilies({QString::fromUtf8("Century Gothic")});
-        font4.setPointSize(11);
-        regionBox->setFont(font4);
+        QFont font3;
+        font3.setFamilies({QString::fromUtf8("Century Gothic")});
+        font3.setPointSize(11);
+        regionBox->setFont(font3);
         regionBox->setStyleSheet(QString::fromUtf8("QComboBox{\n"
 "border: 2px solid #828282;\n"
 "padding-left: 15px;\n"
@@ -280,11 +275,11 @@ public:
 
         flexValueBox = new QSpinBox(paramsFrame);
         flexValueBox->setObjectName(QString::fromUtf8("flexValueBox"));
-        QFont font5;
-        font5.setFamilies({QString::fromUtf8("Century Gothic")});
-        font5.setPointSize(9);
-        font5.setBold(false);
-        flexValueBox->setFont(font5);
+        QFont font4;
+        font4.setFamilies({QString::fromUtf8("Century Gothic")});
+        font4.setPointSize(9);
+        font4.setBold(false);
+        flexValueBox->setFont(font4);
         flexValueBox->setStyleSheet(QString::fromUtf8("QSpinBox{\n"
 "border: 2px solid #828282;\n"
 "border-radius: 10px;\n"
@@ -434,12 +429,12 @@ public:
         seedLabelEntry->setObjectName(QString::fromUtf8("seedLabelEntry"));
         sizePolicy.setHeightForWidth(seedLabelEntry->sizePolicy().hasHeightForWidth());
         seedLabelEntry->setSizePolicy(sizePolicy);
-        QFont font6;
-        font6.setFamilies({QString::fromUtf8("Century Gothic")});
-        font6.setPointSize(11);
-        font6.setBold(true);
-        font6.setKerning(false);
-        seedLabelEntry->setFont(font6);
+        QFont font5;
+        font5.setFamilies({QString::fromUtf8("Century Gothic")});
+        font5.setPointSize(11);
+        font5.setBold(true);
+        font5.setKerning(false);
+        seedLabelEntry->setFont(font5);
 
         horizontalLayout_2->addWidget(seedLabelEntry);
 
@@ -450,10 +445,10 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(seedEntry->sizePolicy().hasHeightForWidth());
         seedEntry->setSizePolicy(sizePolicy3);
-        QFont font7;
-        font7.setFamilies({QString::fromUtf8("Segoe UI")});
-        font7.setPointSize(11);
-        seedEntry->setFont(font7);
+        QFont font6;
+        font6.setFamilies({QString::fromUtf8("Segoe UI")});
+        font6.setPointSize(11);
+        seedEntry->setFont(font6);
         seedEntry->setStyleSheet(QString::fromUtf8("padding:10px;"));
         seedEntry->setMaxLength(8);
         seedEntry->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
@@ -469,12 +464,12 @@ public:
         pasteButton->setSizePolicy(sizePolicy4);
         pasteButton->setMinimumSize(QSize(0, 0));
         pasteButton->setMaximumSize(QSize(600, 100));
-        QFont font8;
-        font8.setFamilies({QString::fromUtf8("Century Gothic")});
-        font8.setPointSize(9);
-        font8.setBold(true);
-        font8.setItalic(false);
-        pasteButton->setFont(font8);
+        QFont font7;
+        font7.setFamilies({QString::fromUtf8("Century Gothic")});
+        font7.setPointSize(9);
+        font7.setBold(true);
+        font7.setItalic(false);
+        pasteButton->setFont(font7);
         pasteButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
 "color: white;\n"
@@ -524,11 +519,11 @@ public:
         verticalLayout_4->setContentsMargins(0, 0, 0, 0);
         statusLabel = new QLabel(statusFrame);
         statusLabel->setObjectName(QString::fromUtf8("statusLabel"));
-        QFont font9;
-        font9.setFamilies({QString::fromUtf8("Century Gothic")});
-        font9.setPointSize(11);
-        font9.setBold(true);
-        statusLabel->setFont(font9);
+        QFont font8;
+        font8.setFamilies({QString::fromUtf8("Century Gothic")});
+        font8.setPointSize(11);
+        font8.setBold(true);
+        statusLabel->setFont(font8);
         statusLabel->setAlignment(Qt::AlignCenter);
         statusLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse);
 
@@ -542,7 +537,7 @@ public:
         startButton->setObjectName(QString::fromUtf8("startButton"));
         sizePolicy1.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
         startButton->setSizePolicy(sizePolicy1);
-        startButton->setFont(font2);
+        startButton->setFont(font1);
         startButton->setStyleSheet(QString::fromUtf8("QPushButton{\n"
 "background-color: #004080;\n"
 "font: 11pt \"Century Gothic\";\n"
@@ -620,11 +615,11 @@ public:
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         nudgeMSLabel = new QLabel(timerFrame);
         nudgeMSLabel->setObjectName(QString::fromUtf8("nudgeMSLabel"));
-        QFont font10;
-        font10.setFamilies({QString::fromUtf8("Century Gothic")});
-        font10.setBold(false);
-        font10.setItalic(false);
-        nudgeMSLabel->setFont(font10);
+        QFont font9;
+        font9.setFamilies({QString::fromUtf8("Century Gothic")});
+        font9.setBold(false);
+        font9.setItalic(false);
+        nudgeMSLabel->setFont(font9);
         nudgeMSLabel->setAlignment(Qt::AlignCenter);
 
         gridLayout->addWidget(nudgeMSLabel, 0, 2, 1, 1);
@@ -644,7 +639,7 @@ public:
         sizePolicy5.setHeightForWidth(slowerButton->sizePolicy().hasHeightForWidth());
         slowerButton->setSizePolicy(sizePolicy5);
         slowerButton->setMinimumSize(QSize(115, 0));
-        slowerButton->setFont(font8);
+        slowerButton->setFont(font7);
         slowerButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
 "color: white;\n"
@@ -670,7 +665,7 @@ public:
         sizePolicy5.setHeightForWidth(nudgeOffsetLabel->sizePolicy().hasHeightForWidth());
         nudgeOffsetLabel->setSizePolicy(sizePolicy5);
         nudgeOffsetLabel->setMinimumSize(QSize(40, 0));
-        nudgeOffsetLabel->setFont(font10);
+        nudgeOffsetLabel->setFont(font9);
         nudgeOffsetLabel->setAlignment(Qt::AlignCenter);
 
         horizontalLayout->addWidget(nudgeOffsetLabel);
@@ -680,7 +675,7 @@ public:
         sizePolicy5.setHeightForWidth(fasterButton->sizePolicy().hasHeightForWidth());
         fasterButton->setSizePolicy(sizePolicy5);
         fasterButton->setMinimumSize(QSize(115, 0));
-        fasterButton->setFont(font8);
+        fasterButton->setFont(font7);
         fasterButton->setAutoFillBackground(false);
         fasterButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
@@ -707,13 +702,13 @@ public:
 
         TotalTimeLabel = new QLabel(timerFrame);
         TotalTimeLabel->setObjectName(QString::fromUtf8("TotalTimeLabel"));
-        TotalTimeLabel->setFont(font3);
+        TotalTimeLabel->setFont(font2);
 
         gridLayout->addWidget(TotalTimeLabel, 0, 0, 1, 1);
 
         localTimeLabel = new QLabel(timerFrame);
         localTimeLabel->setObjectName(QString::fromUtf8("localTimeLabel"));
-        localTimeLabel->setFont(font10);
+        localTimeLabel->setFont(font9);
 
         gridLayout->addWidget(localTimeLabel, 1, 0, 1, 1);
 
@@ -749,11 +744,11 @@ public:
         verticalLayout->setContentsMargins(20, 15, 20, 17);
         label_9 = new QLabel(blinkTableFrame);
         label_9->setObjectName(QString::fromUtf8("label_9"));
-        QFont font11;
-        font11.setFamilies({QString::fromUtf8("Century Gothic")});
-        font11.setPointSize(14);
-        font11.setBold(true);
-        label_9->setFont(font11);
+        QFont font10;
+        font10.setFamilies({QString::fromUtf8("Century Gothic")});
+        font10.setPointSize(14);
+        font10.setBold(true);
+        label_9->setFont(font10);
 
         verticalLayout->addWidget(label_9);
 
@@ -859,10 +854,10 @@ public:
         sizePolicy7.setHeightForWidth(arbTargetBox->sizePolicy().hasHeightForWidth());
         arbTargetBox->setSizePolicy(sizePolicy7);
         arbTargetBox->setMinimumSize(QSize(0, 30));
-        QFont font12;
-        font12.setFamilies({QString::fromUtf8("Century Gothic")});
-        font12.setPointSize(9);
-        arbTargetBox->setFont(font12);
+        QFont font11;
+        font11.setFamilies({QString::fromUtf8("Century Gothic")});
+        font11.setPointSize(9);
+        arbTargetBox->setFont(font11);
         arbTargetBox->setStyleSheet(QString::fromUtf8("QSpinBox{\n"
 "border: 2px solid #828282;\n"
 "border-radius: 10px;\n"
@@ -908,7 +903,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 756, 27));
+        menubar->setGeometry(QRect(0, 0, 700, 27));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);
@@ -927,11 +922,10 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "OpenBlink", nullptr));
         actionHotkeys->setText(QCoreApplication::translate("MainWindow", "Hotkeys", nullptr));
         actionSounds->setText(QCoreApplication::translate("MainWindow", "Sounds", nullptr));
         actionTimer->setText(QCoreApplication::translate("MainWindow", "Timer", nullptr));
-        LogoLabel->setText(QCoreApplication::translate("MainWindow", "OpenBlink", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Game:", nullptr));
         gameBox->setItemText(0, QCoreApplication::translate("MainWindow", "Colosseum", nullptr));
         gameBox->setItemText(1, QCoreApplication::translate("MainWindow", "XD", nullptr));

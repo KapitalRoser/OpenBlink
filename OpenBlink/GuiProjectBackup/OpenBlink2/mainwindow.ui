@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>756</width>
-    <height>802</height>
+    <width>700</width>
+    <height>729</height>
    </rect>
   </property>
   <property name="font">
@@ -16,39 +16,23 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>OpenBlink</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/resfix1/eye6.png</normaloff>:/resfix1/eye6.png</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="LogoLabel">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>221</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Century Gothic</family>
-      <pointsize>20</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>OpenBlink</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>736</width>
-      <height>687</height>
+      <x>30</x>
+      <y>10</y>
+      <width>641</width>
+      <height>671</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="BodyHoriz">
@@ -1345,7 +1329,7 @@ border-color: lightgrey;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>756</width>
+     <width>700</width>
      <height>27</height>
     </rect>
    </property>
@@ -1395,6 +1379,8 @@ border-color: lightgrey;
   <tabstop>arbTargetBox</tabstop>
   <tabstop>seeInputButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

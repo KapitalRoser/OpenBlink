@@ -8,7 +8,6 @@
 /*TODO:
     -Redo exit fadeout timing for JPN and PAL50, PAL60/NTSCU is Ok.
     -XD bad frames symbol + hover
-    -XD Testing, something is wrong in the processing, is moving too quickly.
     -Windows and Mac Build testing.
      Then done!
 //Optional
