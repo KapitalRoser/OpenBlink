@@ -5,7 +5,7 @@ typedef std::vector<int>::iterator iterI;
 
 //Blink functions
 std::vector<pool> generateBlinks(u32 seed, platform &userPlatform, int limit){
-    blinkVars blinkState = blinkVars(userPlatform.getRegion()); //Heck yea, found a way to declare here.
+    blinkVars blinkState = blinkVars(userPlatform.getRegion(),userPlatform.getXD()); //Heck yea, found a way to declare here.
     std::vector<pool>outPool;
     int vFrames = 0, prev_blink = 0;
     for (int i = 0; i < limit; i++)

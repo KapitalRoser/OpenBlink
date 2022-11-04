@@ -62,7 +62,8 @@ MainWindow::MainWindow(QWidget *parent)
     tbl_targetBlink = QColor(255,236,116);//Gold
     tbl_upcomingBlink = QColor(255,255,255); //White
 
-    tbl_warningBlink = QColor(255,148,169);
+    tbl_warningBlink = QColor(255,148,169); //xd warning, not too strong.
+    //More warnings?
 
     resultsActiveView = false;
     hotKeyLockState = INACTIVE;
@@ -392,7 +393,7 @@ void MainWindow::runCalibration(u32 seed){
     sfxSearchSuccess.play();
     //populate table with blinks
     exitPool = generateBlinks(seed,userPF,userSP.maxCalibrate);
-    qDebug() << exitPool.size() << " blinks generated";
+    qDebug() << exitPool.size() << "exit blinks generated";
     ui->outTable->setRowCount(userSP.arbitrary_Target);
     ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Frames");
     iterExit = exitPool.begin();
@@ -458,15 +459,15 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
         QTableWidgetItem *fTime = new QTableWidgetItem(QString::number(setP->blink));
         tblSeed->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         fTime->setTextAlignment(Qt::AlignCenter);
-        //RE-TEST THIS CONDITION, THERES MORE TO IT THAN THIS
-        if (userPF.getXD() && setP->blink == 180){
-            highlightTableRow(rowCurrent,tbl_warningBlink);
-            tblSeed->setIcon(xdWarning);
-            //Add hoverable icon?
-        }
         ui->outTable->setItem(rowCurrent,0,tblSeed);
         ui->outTable->setItem(rowCurrent,1,fTime);
-
+        //RE-TEST THIS CONDITION, THERES MORE TO IT THAN THIS
+        const int MAX_DUR_BLINK = 196;
+        if (userPF.getXD() && setP->blink == MAX_DUR_BLINK){
+            highlightTableRow(rowCurrent,tbl_warningBlink);
+            tblSeed->setIcon(xdWarning); //Doesn't do anything.
+            //Add hoverable icon?
+        }
         rowCurrent++;
         setP++;
     }

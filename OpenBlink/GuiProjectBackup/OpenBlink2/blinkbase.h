@@ -24,6 +24,8 @@ private:
     int m_breakTime = 0;
     int m_sinceLastBlink = 0;
     int m_interval = 0;
+    //Add frames per 60 here with a constructor dependent on platform,
+    //or make this a child object of platform?
 
     //internal functions
     float getThreshold(int SLB){
@@ -43,11 +45,13 @@ public:
     blinkVars(){
         m_interval = 5;
     }
-    blinkVars(region platformRegion){
+    blinkVars(region platformRegion, bool xd){
         m_interval = (platformRegion == NTSCJ) ? 4 : 5;
+        if (xd){
+            m_interval = 13; //console may be higher.
+        }
     }
 
-    //honestly framesPer60 should be in this class but I had a good reason why it shouldn't that I don't remember.
     int next (u32 &seed, int framesPer60){ //these params come from external source
         if (m_breakTime > 0){
             m_breakTime--;
@@ -103,8 +107,8 @@ class platform{
         m_is_xd = is_xd;
         m_is_emu5 = is_emu5;
         m_gameRegion = gameRegion;
-        m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60. Redundant??
-        m_framerate = gameRegion == PAL50 ? is_xd ? 40/2:40 : is_xd ? 33.373/2:33.373; //xd halves the framerate.
+        m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60.
+        m_framerate = gameRegion == PAL50 ? is_xd ? 40/2 : 40 : is_xd ? 33.373/2 : 33.373; //xd halves the framerate.
         m_fadeFrames = gameRegion == PAL50 ? is_xd ? 19:11 : is_xd ? 21:13;
         //FADE FRAMES SHOULD BE USER ADJSUTABLE TOO, THE SAME WAY YOU WOULD IN THE MAIN TOOL.
         //Interestingly, flowtimer doesn't account for this, is left to the user to adjust
@@ -124,9 +128,10 @@ class platform{
     int m_framesPer60 = 0; //The only variable that changes often --really should be part of blinkState but not sure how to write it.
     //why is this zero????
     void verifyFP60(int vFrames){
-        if (m_is_xd){
-            m_framesPer60 = m_is_emu5 ? vFrames % 2 : (vFrames % HEURISTIC);
+        if (!m_is_xd){
+            return;
         }
+        m_framesPer60 = m_is_emu5 ? vFrames % 2 : bool(vFrames % HEURISTIC);
     }
 
     //technically these could be defined in .cpp rather than here in the .h

@@ -421,7 +421,7 @@ int main (){
     userInputs.maxSearch = stoi(setupL[2]);
     userInputs.flexValue = stoi(setupL[3]);
     userInputs.arbitrary_Target = stoi(setupL[4]);
-    platform userPlatform = platform(false,false,region(stoi(setupL[5])));
+    platform userPlatform = platform(true,true,region(stoi(setupL[5])));
     int msAdjust = stoi(setupL[6]);
     userInputs.maxCalibrate = 200*userInputs.arbitrary_Target; //Will need to change with QT.
     u32 resultSeed = 0;

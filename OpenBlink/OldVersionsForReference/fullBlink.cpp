@@ -1,4 +1,4 @@
-#include "../../processCore.h"
+#include "../processCore.h"
 
 float getThreshold(int SLB){
     return static_cast<float>((-SLB+110)*(SLB-10))/150000;
@@ -36,14 +36,17 @@ int next(u32 &seed,int& break_time, int &sinceLastBlink, int interval, int frame
 
 
 int main(){
-    u32 inputSeed = 0xBA17A99E; //0x353A8F38
+    u32 inputSeed = 0xDEADBEEF; //0x353A8F38 - oxBA17A99E
     u32 seed = inputSeed;
     bool is_jpn = 0;
-    bool is_emu5 = 0; //Dolphin 5.0 behaviour
-    bool is_xd = 0;
+    bool is_emu5 = 1; //Dolphin 5.0 behaviour
+    bool is_xd = 1;
     int min_adv = 0;
     int max_adv = 1000;
     int interval = is_jpn ? 4 : 5;  
+    if (is_xd && is_emu5){
+        interval = interval*2;
+    }
     int advance = min_adv;
     int vFrames = 0;
     int prev_blink = 0;
