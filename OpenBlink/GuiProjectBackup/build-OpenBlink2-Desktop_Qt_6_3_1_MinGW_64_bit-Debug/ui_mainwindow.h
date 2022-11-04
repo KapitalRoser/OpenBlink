@@ -125,7 +125,7 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(30, 10, 641, 671));
+        horizontalLayoutWidget->setGeometry(QRect(20, 10, 641, 687));
         BodyHoriz = new QHBoxLayout(horizontalLayoutWidget);
         BodyHoriz->setSpacing(20);
         BodyHoriz->setObjectName(QString::fromUtf8("BodyHoriz"));

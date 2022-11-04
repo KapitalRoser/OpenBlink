@@ -11,6 +11,7 @@
     -Windows and Mac Build testing.
      Then done!
 //Optional
+    -xd warning seeds are visually cut-off, still copyable
     -Allow gui to shrink for condensed screens like laptops.
     -Retry QThread for performance reasons -- Only for searcher, calibration runs fine on toaster
     -Add century gothic font to resources??
@@ -61,7 +62,8 @@ MainWindow::MainWindow(QWidget *parent)
     tbl_targetBlink = QColor(255,236,116);//Gold
     tbl_upcomingBlink = QColor(255,255,255); //White
 
-    tbl_warningBlink = QColor(255,148,169); //xd warning, not too strong.
+    tbl_warningBlink = QColor(255,153,102); //xd warning, not too strong.
+    xdWarningIcon = QIcon(":/resfix1/sign-warning-icon.png");
     //More warnings?
 
     resultsActiveView = false;
@@ -94,7 +96,6 @@ MainWindow::MainWindow(QWidget *parent)
     userPF = collectPlatformInputs();
     userSP = collectParamInputs();
 
-    xdWarning = QIcon(":/resfix1/sign-warning-icon.png");
     sfxSearchSuccess.setSource(QUrl::fromLocalFile(":/resfix1/lvlup.wav")); //Allow user to mute or adjust volume
     sfxSearchFailure.setSource(QUrl::fromLocalFile(":/resfix1/searchFailure.wav"));
     sfxBlinkOccurs.setSource(QUrl::fromLocalFile(":/resfix1/blinkWoop.wav"));
@@ -460,12 +461,13 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
         fTime->setTextAlignment(Qt::AlignCenter);
         ui->outTable->setItem(rowCurrent,0,tblSeed);
         ui->outTable->setItem(rowCurrent,1,fTime);
+
         //RE-TEST THIS CONDITION, THERES MORE TO IT THAN THIS
         const int MAX_DUR_BLINK = 196;
         if (userPF.getXD() && setP->blink == MAX_DUR_BLINK){
             highlightTableRow(rowCurrent,tbl_warningBlink);
-            tblSeed->setIcon(xdWarning); //Doesn't do anything.
-            //Add hoverable icon?
+            tblSeed->setIcon(xdWarningIcon);
+            tblSeed->setToolTip("This blink has a 1/5000 chance to fail!");
         }
         rowCurrent++;
         setP++;

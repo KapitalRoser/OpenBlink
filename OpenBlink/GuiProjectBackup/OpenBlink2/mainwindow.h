@@ -70,7 +70,7 @@ public:
     QTimer *basicTimer; //Updates Gui
     QTimer *exitTimer; //Need to test if this can completely replace.
 
-    QIcon xdWarning;
+    QIcon xdWarningIcon;
     //sfx
     QSoundEffect sfxSearchSuccess;
     QSoundEffect sfxSearchFailure;

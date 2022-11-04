@@ -29,10 +29,10 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>20</x>
       <y>10</y>
       <width>641</width>
-      <height>671</height>
+      <height>687</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="BodyHoriz">
