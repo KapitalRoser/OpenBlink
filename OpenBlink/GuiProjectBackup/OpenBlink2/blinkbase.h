@@ -13,17 +13,28 @@
 struct pool {
     int blink = 0;
     u32 seed = 0;
+    float TCFailureChance = 0;
 };
 
 typedef std::vector<pool>::iterator iterP;
 typedef std::vector<int>::iterator iterI;
 
+struct searchParameters {
+    u32 inputSeed = 0;
+    int maxSearch = 0; //Have different units possible like frames, seconds, advances, and blinks. -- maybe in the future
+    int minSearch = 0;
+    int flexValue = 0;
+    int maxCalibrate = 0;
+    int arbitrary_Target = 0;
+};
 
 class blinkVars {
 private:
     int m_breakTime = 0;
     int m_sinceLastBlink = 0;
     int m_interval = 0;
+    int m_framesPer60 = 0;
+    const int HEURISTIC = 70;
     //Add frames per 60 here with a constructor dependent on platform,
     //or make this a child object of platform?
 
@@ -32,23 +43,25 @@ private:
         return static_cast<float>((-SLB+110)*(SLB-10))/150000;
     }
     float blinkLogic(int SLB){
-        if (SLB < 60){
+        if (SLB < 60){ //Rising rate
             return getThreshold(SLB);
         }
-        else if (SLB < 180){
+        else if (SLB < 180){ //Fixed rate
             return 1.0/60;
-        } else {
+        } else { //Guaranteed rate
             return 1;
         }
     }
 public:
     blinkVars(){
         m_interval = 5;
+        m_framesPer60 = 2;
     }
     blinkVars(region platformRegion, bool xd){
         m_interval = (platformRegion == NTSCJ) ? 4 : 5;
         if (xd){
             m_interval = 13; //console may be higher.
+            m_framesPer60 = 1;
         }
     }
 
@@ -59,15 +72,19 @@ public:
         }
         m_sinceLastBlink += framesPer60;
         if (m_sinceLastBlink < 10){
-            return false;
+            return false; //use this to indicate rising rate?
+            //maybe return negative(SLB) to indicate where in rising rate they are??
         }
-        if (LCGPercentage(seed) <= blinkLogic(m_sinceLastBlink)){
+        float percent = LCGPercentage(seed);
+        if (percent <= blinkLogic(m_sinceLastBlink)){
             m_breakTime = m_interval;
             int result = m_sinceLastBlink;
             m_sinceLastBlink = 0;
             return result;
+        } else if (m_sinceLastBlink < 60 && percent <= getThreshold(m_sinceLastBlink+1)){ //180??
+            return -(m_sinceLastBlink); //return SLB for slots calculation
         }
-        return true; //I don't think this triggers in normal operation
+        return true; //This triggers when SLB > 10 but fails the condition -- should this be 0?
     }
 
     //getters
@@ -150,14 +167,7 @@ class platform{
 };
 
 
-struct searchParameters {
-    u32 inputSeed = 0;
-    int maxSearch = 0; //Have different units possible like frames, seconds, advances, and blinks. -- maybe in the future
-    int minSearch = 0;
-    int flexValue = 0;
-    int maxCalibrate = 0;
-    int arbitrary_Target = 0;
-};
+
 
 std::vector<pool> generateBlinks(u32 seed, platform &userPlatform, int limit);
 std::vector<int> searchPool(std::vector<pool> pool, std::vector<int>inputs, int flexValue);

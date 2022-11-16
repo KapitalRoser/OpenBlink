@@ -264,17 +264,20 @@ void MainWindow::nudgeCalibration(bool direction){
 }
 
 void MainWindow::expandExitPool(int expandAmt){
-    //Currentl adds in sets of ~10 blinks. Should this be changed to a set desired # of blinks? Not sure what the best thing for performance overall is here.
-    std::vector<pool>add10 = generateBlinks(exitPool.end()->seed,userPF,expandAmt*100); //remember to adjust for blinks vs advances
+    std::vector<pool>add10 = generateBlinks(exitPool.back().seed,userPF,10000); //10,000 is heuristic, should generate extras.
     int iterPos = iterExit - exitPool.begin(); //save iterExit's spot
     exitPool.insert(exitPool.end(),add10.begin(),add10.end()); //expand exit pool, may expand capacity at 2^x values, changes memory address
     iterExit = exitPool.begin()+iterPos; //redeclare iterator with potentially new address.
-    //could do this iterator restoration thing closer to 2^x values but that is only a tiny performance saving.
+    //Expand amt doesn't currently do anything meaningful because I have yet to allow generateBlinks to be limited by blinks as opposed to advances.
+    //CRASH fixed after 2^x elements the vector is moved to a different place in memory, therefore the iterator points somewhere incorrect and a segfault occurs
+    //This is basically just a stale reference problem
+    //Second Crash fixed: .end()->seed does not get you the value of seed, it returns the address of seed, you need .back().seed.
+    //What works for iterators doesn't always work for values.
 }
 
 
 void MainWindow::restoreResults(){
-    postPool(exitPool.begin(),exitPool.end(),0);
+    postPool(exitPool.begin(),exitPool.begin()+ui->outTable->rowCount(),0); //Note that not entire pool is posted for safety reasons
     highlightTableRow(iterExit-exitPool.begin(),tbl_currentBlink);
     highlightTableRow(userSP.arbitrary_Target-1,tbl_targetBlink);
     for(int i = 0; i < iterExit-exitPool.begin(); i++){
@@ -462,12 +465,22 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
         ui->outTable->setItem(rowCurrent,0,tblSeed);
         ui->outTable->setItem(rowCurrent,1,fTime);
 
-        //RE-TEST THIS CONDITION, THERES MORE TO IT THAN THIS
-        const int MAX_DUR_BLINK = 196;
-        if (userPF.getXD() && setP->blink == MAX_DUR_BLINK){
-            highlightTableRow(rowCurrent,tbl_warningBlink);
+        QTableWidgetItem*debug = ui->outTable->item(rowCurrent,0);
+        if (debug == 0 && ui->outTable->item(rowCurrent,0) == 0){
+            qDebug() << "ERROR: ROW:" << QString::number(rowCurrent) << " DOES NOT EXIST";
+        }
+
+        if (setP->TCFailureChance > 0){
+
             tblSeed->setIcon(xdWarningIcon);
-            tblSeed->setToolTip("This blink has a 1/5000 chance to fail!");
+            highlightTableRow(rowCurrent,tbl_warningBlink);// WHY CRASH????????
+            if (setP->TCFailureChance == float(91.0/150)){//Magic number -- 180 frame odds. `150 slots, 90 valid + 1 for the 98/99 slot.
+                u32 backSeed = setP->seed;
+                LCG_BACK(backSeed);
+                tblSeed->setToolTip("This blink has a 60.67% chance to be early by 1 advancement. If so, the seed would will be: " + QString::number(backSeed,16));
+            } else if (setP->TCFailureChance > 0){
+                tblSeed->setToolTip("This blink has a " + QString::number(setP->TCFailureChance*100) + "% chance to be interrupted by an extra blink. It should return to normal after a few blinks");
+            }
         }
         rowCurrent++;
         setP++;
@@ -697,18 +710,15 @@ void MainWindow::on_arbTargetBox_valueChanged(int arg1)
 
 void MainWindow::on_increaseBlinksButton_clicked()
 {
+
     const int ARBITRARY_10_ADD = 10; //may one day use the user scrolling to automatically add more.
     ui->outTable->setRowCount(ui->outTable->rowCount()+ARBITRARY_10_ADD);
-
-    //CRASH fixed after 2^x elements the vector is moved to a different place in memory, therefore the iterator points somewhere incorrect and a segfault occurs
-    //This is basically just a stale reference problem
     if (uint(ui->outTable->rowCount()) > exitPool.size()){
+        qDebug() << "EXPANDED EXITPOOL";
         expandExitPool(ARBITRARY_10_ADD);
+        qDebug() << exitPool.size() << " blinks now.";
     }
-
     restoreResults();
-    qDebug() << exitPool.size() << " blinks now.";
-
 }
 
 void MainWindow::on_slowerButton_clicked()

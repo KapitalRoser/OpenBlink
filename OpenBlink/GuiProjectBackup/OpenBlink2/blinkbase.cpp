@@ -14,13 +14,23 @@ std::vector<pool> generateBlinks(u32 seed, platform &userPlatform, int limit){
             userPlatform.verifyFP60(vFrames);
             vFrames++;
 
+            float TCFChance = 0; //As per Emu5 odds, still WIP for console/modern
+            if (userPlatform.getXD()){
+                //verify fp60
+                if (flag < 0){
+                    TCFChance = float(-(flag) + 1)/150;
+                }
+                if(flag == 180){
+                    TCFChance = 91.0/150; //90 valid slots of 150, + 1 for the 98/99 slot.
+                }
+            }
             if (flag > 1){ //meaning we blinked.
                 int blink = vFrames - prev_blink;
-                outPool.push_back({blink,seed});
+                outPool.push_back({blink,seed,TCFChance});
                 prev_blink = vFrames;
             }
             if (!flag){
-                limit++;
+                limit++;  //does not increment when slb > 10? Includes break time and negative brackets.
             }
         }
     return outPool;
