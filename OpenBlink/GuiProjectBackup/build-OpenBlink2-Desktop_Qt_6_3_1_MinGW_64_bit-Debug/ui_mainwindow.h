@@ -76,15 +76,13 @@ public:
     QPushButton *copyButton;
     QFrame *timerFrame;
     QGridLayout *gridLayout;
-    QLabel *nudgeMSLabel;
-    QSpacerItem *horizontalSpacer_2;
     QHBoxLayout *horizontalLayout;
     QPushButton *slowerButton;
     QLabel *nudgeOffsetLabel;
     QPushButton *fasterButton;
+    QLabel *nudgeMSLabel;
     QLabel *TotalTimeLabel;
     QLabel *localTimeLabel;
-    QSpacerItem *horizontalSpacer;
     QFrame *blinkTableFrame;
     QVBoxLayout *verticalLayout;
     QLabel *label_9;
@@ -125,7 +123,7 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(20, 10, 641, 687));
+        horizontalLayoutWidget->setGeometry(QRect(20, 10, 661, 687));
         BodyHoriz = new QHBoxLayout(horizontalLayoutWidget);
         BodyHoriz->setSpacing(20);
         BodyHoriz->setObjectName(QString::fromUtf8("BodyHoriz"));
@@ -613,21 +611,6 @@ public:
         timerFrame->setFrameShadow(QFrame::Raised);
         gridLayout = new QGridLayout(timerFrame);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        nudgeMSLabel = new QLabel(timerFrame);
-        nudgeMSLabel->setObjectName(QString::fromUtf8("nudgeMSLabel"));
-        QFont font9;
-        font9.setFamilies({QString::fromUtf8("Century Gothic")});
-        font9.setBold(false);
-        font9.setItalic(false);
-        nudgeMSLabel->setFont(font9);
-        nudgeMSLabel->setAlignment(Qt::AlignCenter);
-
-        gridLayout->addWidget(nudgeMSLabel, 0, 2, 1, 1);
-
-        horizontalSpacer_2 = new QSpacerItem(10, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_2, 0, 3, 1, 1);
-
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -665,6 +648,10 @@ public:
         sizePolicy5.setHeightForWidth(nudgeOffsetLabel->sizePolicy().hasHeightForWidth());
         nudgeOffsetLabel->setSizePolicy(sizePolicy5);
         nudgeOffsetLabel->setMinimumSize(QSize(40, 0));
+        QFont font9;
+        font9.setFamilies({QString::fromUtf8("Century Gothic")});
+        font9.setBold(false);
+        font9.setItalic(false);
         nudgeOffsetLabel->setFont(font9);
         nudgeOffsetLabel->setAlignment(Qt::AlignCenter);
 
@@ -698,7 +685,14 @@ public:
         horizontalLayout->addWidget(fasterButton);
 
 
-        gridLayout->addLayout(horizontalLayout, 2, 0, 1, 4);
+        gridLayout->addLayout(horizontalLayout, 2, 0, 1, 3);
+
+        nudgeMSLabel = new QLabel(timerFrame);
+        nudgeMSLabel->setObjectName(QString::fromUtf8("nudgeMSLabel"));
+        nudgeMSLabel->setFont(font9);
+        nudgeMSLabel->setAlignment(Qt::AlignCenter);
+
+        gridLayout->addWidget(nudgeMSLabel, 0, 2, 1, 1);
 
         TotalTimeLabel = new QLabel(timerFrame);
         TotalTimeLabel->setObjectName(QString::fromUtf8("TotalTimeLabel"));
@@ -711,10 +705,6 @@ public:
         localTimeLabel->setFont(font9);
 
         gridLayout->addWidget(localTimeLabel, 1, 0, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer, 0, 1, 1, 1);
 
 
         verticalLayout_5->addWidget(timerFrame);
@@ -900,6 +890,8 @@ public:
 
         BodyHoriz->addWidget(blinkTableFrame);
 
+        BodyHoriz->setStretch(0, 1);
+        BodyHoriz->setStretch(1, 3);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -948,10 +940,10 @@ public:
         statusLabel->setText(QCoreApplication::translate("MainWindow", "STATUS", nullptr));
         startButton->setText(QCoreApplication::translate("MainWindow", "START", nullptr));
         copyButton->setText(QCoreApplication::translate("MainWindow", "Copy", nullptr));
-        nudgeMSLabel->setText(QCoreApplication::translate("MainWindow", "+0f", nullptr));
         slowerButton->setText(QCoreApplication::translate("MainWindow", "\342\206\220  Slower", nullptr));
         nudgeOffsetLabel->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
         fasterButton->setText(QCoreApplication::translate("MainWindow", "Faster \342\206\222", nullptr));
+        nudgeMSLabel->setText(QCoreApplication::translate("MainWindow", "+0f", nullptr));
         TotalTimeLabel->setText(QCoreApplication::translate("MainWindow", "TIME REMAINING:", nullptr));
         localTimeLabel->setText(QCoreApplication::translate("MainWindow", "Next blink:", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "Blinks", nullptr));
