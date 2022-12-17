@@ -148,7 +148,7 @@ class platform{
         if (!m_is_xd){
             return;
         }
-        m_framesPer60 = m_is_emu5 ? vFrames % 2 : bool(vFrames % HEURISTIC);
+        m_framesPer60 = m_is_emu5 ? vFrames % 2 : 1;
     }
 
     //technically these could be defined in .cpp rather than here in the .h

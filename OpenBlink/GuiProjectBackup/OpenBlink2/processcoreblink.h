@@ -61,11 +61,6 @@ u32 LCGn_BACK(u32&seed, const u32 n);
 double LCG_PullHi16 (uint32_t &seed);
 float LCGPercentage(u32& seed);
 
-//File Reading
-std::vector<int> decimalReadNumbersFromFile(std::string fileName);
-std::vector<u32> hexReadNumbersFromFile(std::string fileName);
-std::vector<std::string> readStringFromFile(std::string fileName);
-
 //Debugging
 int findGap(u32 behind, u32 ahead, bool forward);
 void debugPrint2DVec(std::vector<std::vector<int>>set);

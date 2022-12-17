@@ -6,6 +6,12 @@
 #include "logwindow.h"
 
 /*TODO:
+
+# 9.65% chance of 4 calls
+# 56.78% chance of 3 calls
+# 33.57% chance of 2 calls
+
+
     -Redo exit fadeout timing for JPN and PAL50, PAL60/NTSCU is Ok.
     -XD bad frames symbol + hover
     -Windows and Mac Build testing.
@@ -470,16 +476,19 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
             qDebug() << "ERROR: ROW:" << QString::number(rowCurrent) << " DOES NOT EXIST";
         }
 
-        if (setP->TCFailureChance > 0){
-
+        if (setP->TCFailureChance > 0){ //only affects Gales
             tblSeed->setIcon(xdWarningIcon);
-            highlightTableRow(rowCurrent,tbl_warningBlink);// WHY CRASH????????
-            if (setP->TCFailureChance == float(91.0/150)){//Magic number -- 180 frame odds. `150 slots, 90 valid + 1 for the 98/99 slot.
-                u32 backSeed = setP->seed;
-                LCG_BACK(backSeed);
-                tblSeed->setToolTip("This blink has a 60.67% chance to be early by 1 advancement. If so, the seed would will be: " + QString::number(backSeed,16));
-            } else if (setP->TCFailureChance > 0){
-                tblSeed->setToolTip("This blink has a " + QString::number(setP->TCFailureChance*100) + "% chance to be interrupted by an extra blink. It should return to normal after a few blinks");
+            highlightTableRow(rowCurrent,tbl_warningBlink);
+            if (userPF.getEmu5()){
+                if (setP->TCFailureChance == float(91.0/150)){//Magic number -- 180 frame odds. `150 slots, 90 valid + 1 for the 98/99 slot.
+                    u32 backSeed = setP->seed;
+                    LCG_BACK(backSeed);
+                    tblSeed->setToolTip("This blink has a 60.67% chance to be early by 1 advancement. If so, the seed would will be: " + QString::number(backSeed,16));
+                } else if (setP->TCFailureChance > 0){
+                    tblSeed->setToolTip("This blink has a " + QString::number(setP->TCFailureChance*100) + "% chance to be interrupted by an extra blink. It should return to normal after a few blinks");
+                }
+            } else { //Modern Emu or Retail
+
             }
         }
         rowCurrent++;

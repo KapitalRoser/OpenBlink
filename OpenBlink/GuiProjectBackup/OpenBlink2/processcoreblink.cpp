@@ -75,73 +75,7 @@ float LCGPercentage(u32 &seed){
     //return static_cast<float>(static_cast<u32>(LCG(seed) >> 16)/65536); // one liner - possibly cryptic
 }
 
-std::vector<int> decimalReadNumbersFromFile(std::string fileName)
-{
-    int lineRead = 0;
-    std::vector<int> data; //Setup
-    std::ifstream file(fileName);
-    std::cout << "Read some data! \n";
-    if (file.fail())
-    {
-        std::cout << "File inaccessible";
-        exit(EXIT_FAILURE);
-    }
-    while (!(file.fail()))
-    {
-        file >> lineRead;
-        data.push_back(lineRead);
-    }
-    file.close();
-    std::cout << "Read: " << data.size() << " items.\n";
-    return data;
-}
-std::vector<u32> hexReadNumbersFromFile(std::string fileName)
-{
-    u32 value;
-    std::string lineRead = "";
-    std::stringstream hexConvert;
-    std::vector<u32> data; //Setup
-    std::ifstream file(fileName);
-    std::cout << "Read some data! \n";
-    if (file.fail())
-    {
-        std::cout << "File inaccessible";
-        exit(EXIT_FAILURE);
-    }
-    while (!(file.fail()))
-    {
-        getline(file,lineRead);
-        hexConvert << std::hex << lineRead; //cuz i just HAD to have my docs in hexa and not int...;
-        hexConvert >> value;
-        hexConvert.clear();
-        hexConvert.str("");
-        data.push_back(value);
-        // std::cout << "Lines read: " << data.size() << endl;
-    }
-    file.close();
-    return data;
-}
-std::vector<std::string> readStringFromFile(std::string fileName)
-{
-    std::vector<std::string> data; //Setup
-    std::string lineRead = "";
-    std::ifstream file(fileName);
-    if (file.fail())
-    {
-        std::cout << "File inaccessible";
-        exit(EXIT_FAILURE);
-    }
-    while (!(file.fail()))
-    {
-        getline(file,lineRead);
-        data.push_back(lineRead);
-    }
-    file.close();
-    std::cout << "lines from " + fileName + " read: " << data.size() << std::endl;
-    return data;
-}
-
-int findGap(u32 behind, u32 ahead, bool forward){
+int findGap(u32 behind, u32 ahead, bool forward = 0){
     int counter = 0;
     if (forward){ //what happens when the origin/behind is actually ahead of target/ahead? infinite loop?
         while(behind != ahead){
