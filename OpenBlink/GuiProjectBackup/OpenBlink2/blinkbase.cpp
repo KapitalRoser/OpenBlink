@@ -10,40 +10,23 @@ std::vector<pool> generateBlinks(u32 seed, platform &userPlatform, int limit){
     int vFrames = 0, prev_blink = 0;
     for (int i = 0; i < limit; i++)
         {
-            int flag = blinkState.next(seed,userPlatform.m_framesPer60); //trying to resist the urge to make a full blink class because it'll get ambiguous quickly. --??????????
+            int flag = blinkState.next(seed,userPlatform.getFramesPer60()); //trying to resist the urge to make a full blink class because it'll get ambiguous quickly. --??????????
             vFrames++;
-
-            float TCFChance = 0; //As per Emu5 odds, still WIP for console/modern
-            if (userPlatform.getXD()){
-                userPlatform.verifyFP60(vFrames);
-                if (userPlatform.getEmu5()){
-                    if (flag < 0){
-                        TCFChance = float(-(flag) + 1)/150;
-                    }
-                    if(flag == 180){
-                        TCFChance = 91.0/150; //90 valid slots of 150, + 1 for the 98/99 slot.
-                    }
-                } else {
-                    if (flag < 0){
-                        TCFChance = float(-(flag)/56); //At worst. Values of 59 and 115 are also possible, along with other glitchy and unlikely scenarios.
-                    }
-                    if (flag == 180){
-                        //Seed is at least 1 or two above where it should be.
-                        //Call LCG(seed) here?? Or leave that to the warning.
-                        //I don't think it's possible to have the 180 frame be not at least 1 call affected.
-                        //guarantee at least 1 call. No recorded evidence of a 180 gap.
-                        //If assume only 56's, then:
-                    }
-                }
-
-            }
             if (flag > 1){ //meaning we blinked.
                 int blink = vFrames - prev_blink;
-                outPool.push_back({blink,seed,TCFChance});
+                outPool.push_back({blink,seed,0});
                 prev_blink = vFrames;
             }
             if (!flag){
-                limit++;  //does not increment when slb > 10? Includes break time and negative brackets.
+                limit++;
+            }
+
+            if (!userPlatform.getXD()){
+                continue;
+            }
+            userPlatform.verifyFP60(vFrames);
+            if(flag == 180){
+                outPool.back().TCFailureChance = 1;
             }
         }
     return outPool;
@@ -263,6 +246,8 @@ std::vector<int> searchPool(std::vector<pool> pool, std::vector<int>inputs, int 
 4: 56*1 + 59*3: 76.82% :: not recorded
 4: 56*3 + 115 :: 63.25% :: 2000, 0200, 0020,
 */
+
+
 
 
 

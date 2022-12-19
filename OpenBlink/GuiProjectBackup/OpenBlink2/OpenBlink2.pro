@@ -1,7 +1,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+RC_ICONS = eye6.ico
 CONFIG += c++11
 QT += multimedia
 #make sure the icon stuff works on mac too.
@@ -47,6 +47,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
 
 DISTFILES += \
     settings.txt

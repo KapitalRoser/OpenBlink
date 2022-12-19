@@ -6,14 +6,10 @@
 #include "logwindow.h"
 
 /*TODO:
-
-# 9.65% chance of 4 calls
-# 56.78% chance of 3 calls
-# 33.57% chance of 2 calls
-
-
-    -Redo exit fadeout timing for JPN and PAL50, PAL60/NTSCU is Ok.
-    -XD bad frames symbol + hover
+    -BUGS:
+    -Arrow keys on ArbBox
+    -Bad fadeout timing for all regions
+    -Final seed getting lost when arbTarget = 10 -- but only sometimes.
     -Windows and Mac Build testing.
      Then done!
 //Optional
@@ -23,9 +19,10 @@
     -Add century gothic font to resources??
     -Up/Down Arrow keys to adjust arbitrary_target?
     -Clean up the .h files
-    -Tidy up in general
-    -If the JPN devs discover battle blink in time then I suppose I'll add that
+    -Tidy up blink class structure to allow a parent battleblink timeline object to be used. Would replace generateBlinks()
 */
+
+//GLOBALS
 QString tableStyle =
         "QTableWidget {font: 9pt \"Century Gothic\";max-width:210px;}"
         "QTableWidget QScrollBar:vertical{background: white;border:1px solid white;border-radius:5px;}"
@@ -40,13 +37,14 @@ QString tableStyle =
         ;
 auto start = std::chrono::high_resolution_clock::now(); //super useful, leave as global
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->arbTargetBox->installEventFilter(this);
     QAction *logAction = ui->menubar->addAction("Log");
     connect(logAction,&QAction::triggered,this,&MainWindow::on_actionLog_triggered);
     QAction *githubAction = ui->menubar->addAction("GitHub");
@@ -70,7 +68,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     tbl_warningBlink = QColor(255,153,102); //xd warning, not too strong.
     xdWarningIcon = QIcon(":/resfix1/sign-warning-icon.png");
-    //More warnings?
 
     resultsActiveView = false;
     hotKeyLockState = INACTIVE;
@@ -255,22 +252,40 @@ QString MainWindow::createLog()
         logAdd += QString::number(x) + ", ";
     }
     logAdd += "\n";
-    logAdd += "firstMS: " + QString::number(userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate())) + "\n";
+    logAdd += "firstMS: " + QString::number(userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFrameRate())) + "\n";
     logAdd += "END______";
     return logAdd;
+}
+
+bool MainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    //Can use this function for other goodies as well.
+    if ( object == ui->arbTargetBox &&  ( event->type() == QEvent::KeyPress)  ) {
+
+        }
+
+
+        if ( object == ui->arbTargetBox &&  (event->type() == QEvent::HoverLeave )  ) {
+            ui->arbTargetBox->setValue(1);
+        }
+
+        // false means it should be send to target also. as in , we dont remove it.
+        // if you return true , you will take the event and widget never sees it so be carefull with that.
+        return false;
 }
 
 
 void MainWindow::nudgeCalibration(bool direction){
     //direction 0 == slower, 1 == faster
     const int NUDGE_FACTOR = direction ? -1 : 1; //Frames
-    int nudgeBy = NUDGE_FACTOR*userPF.getFramerate(); //in MS.
+    int nudgeBy = NUDGE_FACTOR*userPF.getFrameRate(); //in MS.
     totalTimer->setInterval(totalTimer->remainingTime()+nudgeBy);
     ui->nudgeOffsetLabel->setText(QString::number(ui->nudgeOffsetLabel->text().toInt() + NUDGE_FACTOR));
 }
 
 void MainWindow::expandExitPool(int expandAmt){
-    std::vector<pool>add10 = generateBlinks(exitPool.back().seed,userPF,10000); //10,000 is heuristic, should generate extras.
+    expandAmt = 10000;
+    std::vector<pool>add10 = generateBlinks(exitPool.back().seed,userPF,expandAmt); //10,000 is heuristic, should generate extras.
     int iterPos = iterExit - exitPool.begin(); //save iterExit's spot
     exitPool.insert(exitPool.end(),add10.begin(),add10.end()); //expand exit pool, may expand capacity at 2^x values, changes memory address
     iterExit = exitPool.begin()+iterPos; //redeclare iterator with potentially new address.
@@ -292,7 +307,7 @@ void MainWindow::restoreResults(){
 }
 
 
-int setTimerLimit(iterP setI,iterP limiterI, int framerate){
+int setTimerLimit(iterP setI,iterP limiterI, float framerate){
     int timerLimit = 0;
         while(setI != limiterI){ //since setI passed by value, shouldn't affect original exitIter...right?
             if (setI < limiterI){
@@ -334,15 +349,14 @@ void MainWindow::totalTimerUpdate(){
 void MainWindow::timerGUIUpdate(){
     bool totalActive = totalTimer->isActive();
     bool exitActive = exitTimer->isActive();
-    int blinkTiming = setTimerLimit(iterExit+1,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate());
+    int blinkTiming = setTimerLimit(iterExit+1,exitPool.begin()+userSP.arbitrary_Target,userPF.getFrameRate());
 
     if (totalActive || exitActive){
         int mainTime = totalTimer->remainingTime();
 
         //Pre-convert the queue inside TS? Pass in the userPF values?
-        float firstMS = userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFramerate());
+        float firstMS = userTS.offset() + userPF.getFadeOutMS() + (float(userTS.input())*userPF.getFrameRate());
         float localMS = userTS.getTiming() + userPF.getFadeOutMS();
-        //Oh no, was local and first ms not getting adjusted???
 
 
         if (mainTime <= firstMS){
@@ -360,7 +374,7 @@ void MainWindow::timerGUIUpdate(){
                 ui->timerFrame->setEnabled(false);
                 qDebug() << "LocalMS:" << localMS;
                 userTS.timingAdvance();
-                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFramerate())
+                qDebug() << userTS.getTiming() + userPF.getFadeOutMS() + (userTS.input()*userPF.getFrameRate())
                                              << " : "<< mainTime << totalTimer->remainingTime();
                 sfxExitCue.play();
             }
@@ -384,6 +398,7 @@ void MainWindow::timerGUIUpdate(){
         sfxBlinkOccurs.setMuted(wasMuted);
         sfxCalibrationComplete.play();
         ui->arbTargetBox->setEnabled(true);
+        //ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
         ui->copyButton->setVisible(true);
         ui->copyButton->setEnabled(true);
     }
@@ -424,7 +439,7 @@ void MainWindow::runCalibration(u32 seed){
     const int DEFAULT_MS_ADJUST = 215; //This number accounts for: 1) Delay in user reaction time to blinks 2) any delay between search and calibration due to single-threading.
     //Has no impact on exitTimer, and from the user's perspective this only affects how much they need to alter left and right. This is region independent I think. If not, reevaluate.
     //Used here and only here for the initial timer amt.
-    totalTimerLimit = setTimerLimit(iterExit,exitPool.begin()+userSP.arbitrary_Target,userPF.getFramerate()) - DEFAULT_MS_ADJUST; //End of list.
+    totalTimerLimit = setTimerLimit(iterExit,exitPool.begin()+userSP.arbitrary_Target,userPF.getFrameRate()) - DEFAULT_MS_ADJUST; //End of list.
     qDebug() << "ttl: " << float(totalTimerLimit)/1000;
     start = std::chrono::high_resolution_clock::now();
     totalTimer->start(totalTimerLimit); //Test this thoroughly.
@@ -475,20 +490,20 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
         if (debug == 0 && ui->outTable->item(rowCurrent,0) == 0){
             qDebug() << "ERROR: ROW:" << QString::number(rowCurrent) << " DOES NOT EXIST";
         }
-
-        if (setP->TCFailureChance > 0){ //only affects Gales
+        if (setP->TCFailureChance == 1){
             tblSeed->setIcon(xdWarningIcon);
             highlightTableRow(rowCurrent,tbl_warningBlink);
+            u32 ttSeed = setP->seed;
             if (userPF.getEmu5()){
-                if (setP->TCFailureChance == float(91.0/150)){//Magic number -- 180 frame odds. `150 slots, 90 valid + 1 for the 98/99 slot.
-                    u32 backSeed = setP->seed;
-                    LCG_BACK(backSeed);
-                    tblSeed->setToolTip("This blink has a 60.67% chance to be early by 1 advancement. If so, the seed would will be: " + QString::number(backSeed,16));
-                } else if (setP->TCFailureChance > 0){
-                    tblSeed->setToolTip("This blink has a " + QString::number(setP->TCFailureChance*100) + "% chance to be interrupted by an extra blink. It should return to normal after a few blinks");
-                }
-            } else { //Modern Emu or Retail
-
+                tblSeed->setToolTip("This blink has a ~60.67% chance to be early by 1 advancement.\nIf so, the seed would be: " + QString::number(LCG(ttSeed),16));
+            } else {
+                tblSeed->setToolTip("This blink has a ~56.78% chance of delaying 1 advancement, and a ~9.65% chance of delaying 2 advancements.\nThe seed would be: "
+                                    + QString::number(LCG(ttSeed),16) + " and " + QString::number(LCG(ttSeed),16) + " respectively.");
+                /*
+                # 9.65% chance of 4 calls
+                # 56.78% chance of 3 calls
+                # 33.57% chance of 2 calls (default)
+                */
             }
         }
         rowCurrent++;
@@ -578,6 +593,8 @@ void MainWindow::on_startButton_clicked()
         ui->copyButton->setText("Copy");
         ui->pasteButton->setText("Paste");
         ui->startButton->setText("STOP");
+       // ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
+        ui->startButton->clearFocus();
         wasMuted = sfxBlinkOccurs.isMuted();
     } else {
         ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
@@ -589,6 +606,7 @@ void MainWindow::on_startButton_clicked()
         hotKeyLockState = INACTIVE;\
         ui->timerFrame->setEnabled(false);
         ui->arbTargetBox->setEnabled(true);
+        //ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
         ui->paramsFrame->setEnabled(true);
         ui->platformFrame->setEnabled(true);
         ui->seedQFrame->setEnabled(true);
@@ -620,7 +638,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
         start = std::chrono::high_resolution_clock::now();
         const int LAG_REDUCTION = 10; //holdover, seemed to better align my code with sinapoke's. Accounts for some difference in hardware timing used.
-        blinkList.push_back((duration.count()-LAG_REDUCTION)/userPF.getFramerate());
+        blinkList.push_back((duration.count()-LAG_REDUCTION)/userPF.getFrameRate());
 
         //Debug blink list?
         u32 seed = 0; //result of searching
@@ -662,7 +680,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
                 on_fasterButton_clicked();
             }
         }
-        ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFramerate()) + "ms");
+        ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFrameRate()) + "ms");
         break;
     default:
         QWidget::keyPressEvent(event);
@@ -704,7 +722,7 @@ void MainWindow::on_arbTargetBox_valueChanged(int arg1)
             adjustedTarget = exitPool.begin() + arg1; //refresh reference
         }
 
-        int targetOffset = setTimerLimit(exitPool.begin()+userSP.arbitrary_Target,adjustedTarget,userPF.getFramerate());
+        int targetOffset = setTimerLimit(exitPool.begin()+userSP.arbitrary_Target,adjustedTarget,userPF.getFrameRate());
         qDebug() << totalTimer->remainingTime() << "ms +  " << targetOffset << " = " << totalTimer->remainingTime()+targetOffset;
         //this is strictly the positive or negative adjustment from the current target to the next, not a time-point.
 

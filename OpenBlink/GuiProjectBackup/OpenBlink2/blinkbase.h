@@ -34,7 +34,6 @@ private:
     int m_sinceLastBlink = 0;
     int m_interval = 0;
     int m_framesPer60 = 0;
-    const int HEURISTIC = 70;
     //Add frames per 60 here with a constructor dependent on platform,
     //or make this a child object of platform?
 
@@ -81,8 +80,6 @@ public:
             int result = m_sinceLastBlink;
             m_sinceLastBlink = 0;
             return result;
-        } else if (m_sinceLastBlink < 60 && percent <= getThreshold(m_sinceLastBlink+1)){ //180??
-            return -(m_sinceLastBlink); //return SLB for slots calculation
         }
         return true; //This triggers when SLB > 10 but fails the condition -- should this be 0?
     }
@@ -97,23 +94,15 @@ public:
     void setInterval(int input){m_interval = input;}
 };
 
-
-struct incBlinkMsg{ //maybe not necessary for qt implementation?
-    int targetIdx = 0;
-    float framerate = 0;
-    std::vector<int> blinksMS; //This is already in MS to save on timer computing resources.
-    std::vector<int> blinksF; //may morph into pool if desired.
-};
-
 class platform{
     private: //define here or export to .cpp?
-    int HEURISTIC = 69; //Nice - XD, rate of Time Compensation failures. ~68.138 or until a better number is found.
     bool m_is_xd = 0, m_is_emu5 = 0;
     region m_gameRegion = NTSCU;
-    float m_framerate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer.
-    int m_fadeFrames = 5; //overwritten
-    int m_fadeOutMS = round(m_framerate*m_fadeFrames); //will need to find rate acrosss all regions/games.
+    float m_frameRate = 33.373; //as used by CoTool, other sites report 33.375 but this is closer.
+    int m_fadeFrames = 0; //overwritten
+    int m_fadeOutMS = round(m_frameRate*m_fadeFrames); //will need to find rate acrosss all regions/games.
     //FadeOutMS gets added to the exit timer beeps, making them occur EARLIER.
+    int m_framesPer60 = 0; //also overwritten
     public:
     platform(){
         m_is_xd = 0;
@@ -125,25 +114,14 @@ class platform{
         m_is_emu5 = is_emu5;
         m_gameRegion = gameRegion;
         m_framesPer60 = is_xd ? 1 : 2; //used for SLB purposes. at 30fps its 2, at 60 is 1, and for xd it is slightly less than 60.
-        m_framerate = gameRegion == PAL50 ? is_xd ? 40/2 : 40 : is_xd ? 33.373/2 : 33.373; //xd halves the framerate.
-        m_fadeFrames = gameRegion == PAL50 ? is_xd ? 19:11 : is_xd ? 21:13;
-        //FADE FRAMES SHOULD BE USER ADJSUTABLE TOO, THE SAME WAY YOU WOULD IN THE MAIN TOOL.
-        //Interestingly, flowtimer doesn't account for this, is left to the user to adjust
-        //PAL50 < OTHERS
-        //Why did I feel the need to alter this.
-        //?? either restore to old cli numbers OR peek at what cotool does?
-        //Gonna assume smallest number for now.
-           //PAL60 == 22, sometimes 21?
-           //PAL50 == 19, sometimes 20?
-           //NTSCU == 21 to 23?
-           //JPN == 22, sometimes 21?
-            //Emu5 seems to be the same as modern here.
+        m_frameRate = gameRegion == PAL50 ? is_xd ? 40/2 : 40 : is_xd ? 33.373/2 : 33.373; //xd halves the framerate.
+        //m_fadeFrames = gameRegion == PAL50 ? is_xd ? 19:11 : is_xd ? 21:13;
+        //For whatever reason, attempting to account for the blink fadeout actually causes the user to be really early. I don't really know why.
+        //Just leave it at zero unless you have a good reason and your testing supports it.
         m_fadeFrames += 5; //Target center of blink instead of beginning.
-        m_fadeOutMS = round(m_framerate*m_fadeFrames);
+        m_fadeOutMS = round(m_frameRate*m_fadeFrames);
     }
 
-    int m_framesPer60 = 0; //The only variable that changes often --really should be part of blinkState but not sure how to write it.
-    //why is this zero????
     void verifyFP60(int vFrames){
         if (!m_is_xd){
             return;
@@ -155,17 +133,18 @@ class platform{
     bool getXD(){return m_is_xd;}
     bool getEmu5(){return m_is_emu5;}
     region getRegion(){return m_gameRegion;}
-    float getFramerate(){return m_framerate;}
+    float getFrameRate(){return m_frameRate;}
     int getFadeOutMS(){return m_fadeOutMS;}
+    int getFramesPer60(){return m_framesPer60;}
     //can add a getter/setter function for framesPer60 if I really wanted to keep all vars private.
 
     void setXD(bool input){m_is_xd = input;}
     void setEmu5(bool input){m_is_emu5 = input;}
     void setRegion(region input){m_gameRegion = input;}
-    void setFramerate(float input){m_framerate = input;}
+    void setFrameRate(float input){m_frameRate = input;}
     void setFadeOutMS(int input){m_fadeOutMS = input;} //should this really exist? Or should this only be set by constructor?
+    void setFramesPer60(int input){m_framesPer60 = input;}
 };
-
 
 
 
