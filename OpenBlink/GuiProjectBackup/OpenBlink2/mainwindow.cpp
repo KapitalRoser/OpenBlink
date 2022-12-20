@@ -257,24 +257,6 @@ QString MainWindow::createLog()
     return logAdd;
 }
 
-bool MainWindow::eventFilter(QObject *object, QEvent *event)
-{
-    //Can use this function for other goodies as well.
-    if ( object == ui->arbTargetBox &&  ( event->type() == QEvent::KeyPress)  ) {
-
-        }
-
-
-        if ( object == ui->arbTargetBox &&  (event->type() == QEvent::HoverLeave )  ) {
-            ui->arbTargetBox->setValue(1);
-        }
-
-        // false means it should be send to target also. as in , we dont remove it.
-        // if you return true , you will take the event and widget never sees it so be carefull with that.
-        return false;
-}
-
-
 void MainWindow::nudgeCalibration(bool direction){
     //direction 0 == slower, 1 == faster
     const int NUDGE_FACTOR = direction ? -1 : 1; //Frames
@@ -398,7 +380,7 @@ void MainWindow::timerGUIUpdate(){
         sfxBlinkOccurs.setMuted(wasMuted);
         sfxCalibrationComplete.play();
         ui->arbTargetBox->setEnabled(true);
-        //ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
+        ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
         ui->copyButton->setVisible(true);
         ui->copyButton->setEnabled(true);
     }
@@ -593,7 +575,7 @@ void MainWindow::on_startButton_clicked()
         ui->copyButton->setText("Copy");
         ui->pasteButton->setText("Paste");
         ui->startButton->setText("STOP");
-       // ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
+        ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
         ui->startButton->clearFocus();
         wasMuted = sfxBlinkOccurs.isMuted();
     } else {
@@ -603,10 +585,10 @@ void MainWindow::on_startButton_clicked()
         sfxBlinkOccurs.setMuted(wasMuted);
         ui->TotalTimeLabel->setText("TIME REMAINING:");
         ui->localTimeLabel->setText("NEXT BLINK:");
-        hotKeyLockState = INACTIVE;\
+        hotKeyLockState = INACTIVE;
         ui->timerFrame->setEnabled(false);
         ui->arbTargetBox->setEnabled(true);
-        //ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
+        ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
         ui->paramsFrame->setEnabled(true);
         ui->platformFrame->setEnabled(true);
         ui->seedQFrame->setEnabled(true);
@@ -623,6 +605,16 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     if (event->key() == keys.getStartStopKey()){ //valid across all states
         on_startButton_clicked();
     }
+    //not in our keys class:
+    if(ui->arbTargetBox->isEnabled()){
+        if(event->key() == Qt::Key_Up){
+            ui->arbTargetBox->setValue(ui->arbTargetBox->value()+1);
+        }
+        if (event->key() == Qt::Key_Down){
+            ui->arbTargetBox->setValue(ui->arbTargetBox->value()-1);
+        }
+    }
+
 
     switch (hotKeyLockState) {
     case PRESEARCH:

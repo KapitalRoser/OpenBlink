@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1046</width>
+    <width>709</width>
     <height>729</height>
    </rect>
   </property>
@@ -1294,23 +1294,13 @@ border-color: lightgrey;
      </item>
     </layout>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>340</y>
-      <width>113</width>
-      <height>24</height>
-     </rect>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1046</width>
+     <width>709</width>
      <height>20</height>
     </rect>
    </property>

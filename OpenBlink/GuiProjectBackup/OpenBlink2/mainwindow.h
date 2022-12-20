@@ -103,8 +103,6 @@ public:
     bool applyAllSettings();
     QString createLog();
 
-    bool eventFilter(QObject *object, QEvent *event);
-
 private slots:
     void on_startButton_clicked();
 

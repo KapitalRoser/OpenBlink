@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
+    <width>297</width>
     <height>208</height>
    </rect>
   </property>
@@ -22,6 +22,47 @@
    <property name="verticalSpacing">
     <number>3</number>
    </property>
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="exitBeepsBox">
+     <property name="maximum">
+      <number>10000</number>
+     </property>
+     <property name="value">
+      <number>5</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="exitOffsetBox">
+     <property name="maximum">
+      <number>10000000</number>
+     </property>
+     <property name="value">
+      <number>5000</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Countdown begins at: (ms) </string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Total # of beeps:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Beeps occur in intervals of: (ms)</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="1">
     <widget class="QSpinBox" name="exitIntervalBox">
      <property name="maximum">
@@ -32,20 +73,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QSpinBox" name="exitInputBox">
-     <property name="minimum">
-      <number>-10000</number>
-     </property>
-     <property name="maximum">
-      <number>10000</number>
-     </property>
-     <property name="value">
-      <number>0</number>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
+   <item row="5" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="enabled">
       <bool>true</bool>
@@ -87,51 +115,30 @@ color:grey;
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Beeps occur in intervals of: (ms)</string>
+   <item row="4" column="1">
+    <widget class="QSpinBox" name="exitInputBox">
+     <property name="minimum">
+      <number>-10000</number>
+     </property>
+     <property name="maximum">
+      <number>10000</number>
+     </property>
+     <property name="value">
+      <number>0</number>
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>Countdown begins at: (ms) </string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Exit Offset: (frames)</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>Total # of beeps:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QSpinBox" name="exitOffsetBox">
-     <property name="maximum">
-      <number>10000000</number>
-     </property>
-     <property name="value">
-      <number>5000</number>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QSpinBox" name="exitBeepsBox">
-     <property name="maximum">
-      <number>10000</number>
-     </property>
-     <property name="value">
-      <number>5</number>
+   <item row="3" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>

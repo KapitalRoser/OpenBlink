@@ -2,10 +2,10 @@
 
 KeyCodes::KeyCodes()
 {
-    m_blink = 0x01000020;
-    m_slower = 0x01000012;
-    m_faster = 0x01000014;
-    m_startStop = 0x01000004;
+    m_blink = Qt::Key_Shift;
+    m_slower = Qt::Key_Left;
+    m_faster = Qt::Key_Right;
+    m_startStop = Qt::Key_Return;
 }
 KeyCodes::KeyCodes(int b, int s, int f, int p)
 {
