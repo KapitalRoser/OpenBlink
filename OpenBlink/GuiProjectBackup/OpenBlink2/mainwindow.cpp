@@ -7,7 +7,6 @@
 
 /*TODO:
     -BUGS:
-    -Arrow keys on ArbBox
     -Bad fadeout timing for all regions
     -Final seed getting lost when arbTarget = 10 -- but only sometimes.
     -Windows and Mac Build testing.
@@ -55,11 +54,13 @@ MainWindow::MainWindow(QWidget *parent)
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
     applyShadow(ui->statusFrame,shadowSet);
     applyShadow(ui->seedQFrame,shadowSet);
+    applyShadow(ui->targetSeedQFrame,shadowSet);
     applyShadow(ui->timerFrame,shadowSet);
     applyShadow(ui->paramsFrame,shadowSet);
     applyShadow(ui->platformFrame,shadowSet);
     applyShadow(ui->blinkTableFrame,shadowSet);
     //repeat as necessary for each object
+    ui->targetSeedQFrame->setVisible(false);
 
     tbl_pastBlink = QColor(222,222,222); //gray
     tbl_currentBlink = QColor(168,255,200); //light green
@@ -124,8 +125,7 @@ platform MainWindow::collectPlatformInputs(){
 
 searchParameters MainWindow::collectParamInputs()
 {
-    //This is also just a constructor
-    return searchParameters({ui->seedEntry->text().toUInt(nullptr,16),
+        return searchParameters({ui->seedEntry->text().toUInt(nullptr,16),
                              ui->searchMaxBox->value(),
                              ui->searchMinBox->value(),
                              ui->flexValueBox->value(),
@@ -156,7 +156,9 @@ void MainWindow::writeAllSettings(){
     //hotkeys
     settingsW << keys.getBlinkKey() << "\n";
     settingsW << keys.getSlowerKey() << "\n";
+    settingsW << keys.getSlowerX5Key() << "\n";
     settingsW << keys.getFasterKey() << "\n";
+    settingsW << keys.getFasterX5Key() << "\n";
     settingsW << keys.getStartStopKey() << "\n";
 
     //Timer Settings
@@ -205,6 +207,7 @@ bool MainWindow::applyAllSettings()
 //    for(std::string x : fileData){
 //        qDebug() << QString::fromStdString(x);
 //    }
+
     ui->gameBox->setCurrentIndex(std::stoi(fileData[1]) ? 2 : std::stoi(fileData[0])); //really should remove emu5 line and merge with game variable.
     ui->regionBox->setCurrentIndex(std::stoi(fileData[2]));
     ui->flexValueBox->setValue(std::stoi(fileData[3]));
@@ -213,19 +216,21 @@ bool MainWindow::applyAllSettings()
     ui->arbTargetBox->setValue(std::stoi(fileData[6]));
     keys.setBlink(std::stoi(fileData[7]));
     keys.setSlower(std::stoi(fileData[8]));
-    keys.setFaster(std::stoi(fileData[9]));
-    keys.setStartStop(std::stoi(fileData[10]));
+    keys.setSlowerX5(std::stoi(fileData[9]));
+    keys.setFaster(std::stoi(fileData[10]));
+    keys.setFasterX5((std::stoi(fileData[11])));
+    keys.setStartStop(std::stoi(fileData[12]));
 
-    userTS.setOffset(std::stoi(fileData[11]));
-    userTS.setGap(std::stoi(fileData[12]));
-    userTS.setBeeps(std::stoi(fileData[13]));
-    userTS.setInput(std::stoi(fileData[14]));
+    userTS.setOffset(std::stoi(fileData[13]));
+    userTS.setGap(std::stoi(fileData[14]));
+    userTS.setBeeps(std::stoi(fileData[15]));
+    userTS.setInput(std::stoi(fileData[16]));
 
     std::vector<QSoundEffect*> pkg = {&sfxSearchSuccess,&sfxSearchFailure,&sfxBlinkOccurs,&sfxCalibrationComplete,&sfxExitCue};
     for (unsigned int i = 0; i < pkg.size(); i++){
-        pkg[i]->setSource(QUrl(QString::fromStdString(fileData[15+(i*3)])));
-        pkg[i]->setVolume(std::stof(fileData[16+(i*3)]));
-        pkg[i]->setMuted(std::stoi(fileData[17+(i*3)]));
+        pkg[i]->setSource(QUrl(QString::fromStdString(fileData[17+(i*3)])));
+        pkg[i]->setVolume(std::stof(fileData[18+(i*3)]));
+        pkg[i]->setMuted(std::stoi(fileData[19+(i*3)]));
     }
     initialWriteComplete = true;
     return 1; //success?
@@ -373,9 +378,11 @@ void MainWindow::timerGUIUpdate(){
     if (!totalActive && !exitActive){
         qDebug() << "BasicTimer stopped!";
         ui->TotalTimeLabel->setText("Complete!");
-        u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
+        //u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
+        u32 seedFinal = exitPool[userSP.arbitrary_Target-1].seed;
         ui->statusLabel->setText("FINISHED! New seed: 0x" + QString::number(seedFinal,16).toUpper()
-                                 + "\nTotal Advancements: " + QString::number(findGap(seedAfterMin,seedFinal,1)));
+                                 + "\nTotal Advancements: " + QString::number(findGap(seedAfterMin,seedFinal)));
+        qDebug() << "Seed: " << QString::number(seedFinal,16);
         basicTimer->stop(); //set this to be after both totalTimer and exitTimer finish
         sfxBlinkOccurs.setMuted(wasMuted);
         sfxCalibrationComplete.play();
@@ -400,6 +407,11 @@ void MainWindow::runCalibration(u32 seed){
     //populate table with blinks
     exitPool = generateBlinks(seed,userPF,userSP.maxCalibrate);
     qDebug() << exitPool.size() << "exit blinks generated";
+    // if (userSP.maxCalibrate == 10000){
+    //     //use arb target
+    // } else {
+    //     userSP.arbitrary_Target = exitPool.size()-1; //right?
+    // }
     ui->outTable->setRowCount(userSP.arbitrary_Target);
     ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Frames");
     iterExit = exitPool.begin();
@@ -668,8 +680,18 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
             if (event->key() == keys.getSlowerKey()) {
                 on_slowerButton_clicked();
             }
+            if (event->key() == keys.getSlowerX5Key()){
+                for (int x = 0; x < 5; ++x) {
+                    on_slowerButton_clicked();
+                }
+            }
             if (event->key() == keys.getFasterKey()){
                 on_fasterButton_clicked();
+            }
+            if (event->key() == keys.getFasterX5Key()){
+                for (int x = 0; x < 5; ++x) { //slightly slower but can modify the function to take an argument n
+                    on_fasterButton_clicked();
+                }
             }
         }
         ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFrameRate()) + "ms");
@@ -838,8 +860,23 @@ void MainWindow::on_pasteButton_clicked()
 
 void MainWindow::on_seedEntry_textChanged(const QString &arg1)
 {
-    ui->startButton->setEnabled(arg1.toUInt(nullptr,16)); //if arg1.toUint fails it returns false
     ui->pasteButton->setText("Paste");
+    ui->startButton->setEnabled(arg1.toUInt(nullptr,16));
+    //validation: seed must be a valid 32 bit hex number,
+
+    // u32 s1 = arg1.toUInt(nullptr,16); //if arg1.toUint fails it returns false
+    // u32 s2 = ui->targetSeedEntry->text().toUInt(nullptr,16);
+    // if (!(s1 && s2)){
+    //     ui->startButton->setEnabled(false);
+    //     return;
+    // }
+    // //should perform this upon editing finished?
+    // int gap = findGap(LCGn(s1,ui->searchMinBox->value()),s2); //causes performance issues when seed isn't finished being entered.
+    // if (gap <180 || gap >= 100000000 || gap > ui->searchMaxBox->value()){
+    //     ui->startButton->setEnabled(false);
+    //     return;
+    // }
+    // ui->startButton->setEnabled(true);
 }
 
 
@@ -871,4 +908,19 @@ void MainWindow::on_arbTargetBox_editingFinished()
 {
     writeAllSettings();
 }
+
+
+// void MainWindow::on_targetPasteButton_clicked()
+// {
+//     ui->targetSeedEntry->setText("");
+//     ui->targetSeedEntry->paste();
+//     ui->targetPasteButton->setText("Pasted!");
+// }
+
+
+// void MainWindow::on_targetSeedEntry_textChanged(const QString &arg1)
+// {
+//     on_seedEntry_textChanged(ui->seedEntry->text());
+//     ui->targetPasteButton->setText("Paste");
+// }
 

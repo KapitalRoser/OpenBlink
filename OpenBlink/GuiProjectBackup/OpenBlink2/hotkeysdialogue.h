@@ -19,7 +19,7 @@ public:
     explicit HotkeysDialogue(QWidget *parent = nullptr);
     ~HotkeysDialogue();
 
-    int blinkKey, slowerKey,fasterKey,startStopKey; //short, easy to work with. Packaged into keyCodes() object to be sent to MainWindow().
+    int blinkKey, slowerKey,slower5Key,fasterKey,faster5Key,startStopKey; //short, easy to work with. Packaged into keyCodes() object to be sent to MainWindow().
     QList<QPushButton*> keyList;
     KeyCodes keys;
     //Could store these as a keyCodes object directly, but watch out for the verbosity.
@@ -38,7 +38,7 @@ public:
 private slots:
     void input_clicked();
 
-    void defaultResetButton_clicked();
+    void on_defaultResetButton_clicked();
 
 private:
     Ui::HotkeysDialogue *ui;

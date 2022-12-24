@@ -62,7 +62,7 @@ double LCG_PullHi16 (uint32_t &seed);
 float LCGPercentage(u32& seed);
 
 //Debugging
-int findGap(u32 behind, u32 ahead, bool forward);
+int findGap(u32 behind, u32 ahead, bool forward = 1);
 void debugPrint2DVec(std::vector<std::vector<int>>set);
 void debugPrintVec(std::vector<int>set);
 

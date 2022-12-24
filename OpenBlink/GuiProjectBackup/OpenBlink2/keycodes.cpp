@@ -4,14 +4,18 @@ KeyCodes::KeyCodes()
 {
     m_blink = Qt::Key_Shift;
     m_slower = Qt::Key_Left;
+    m_slowerX5 = Qt::Key_Q;
     m_faster = Qt::Key_Right;
+    m_fasterX5 = Qt::Key_E;
     m_startStop = Qt::Key_Return;
 }
-KeyCodes::KeyCodes(int b, int s, int f, int p)
+KeyCodes::KeyCodes(int b, int s, int sx5, int f, int fx5, int p)
 {
     m_blink = b;
     m_slower = s;
+    m_slowerX5 = sx5;
     m_faster = f;
+    m_fasterX5 = fx5;
     m_startStop = p;
 }
 
@@ -86,9 +90,19 @@ int KeyCodes::getSlowerKey() const
     return m_slower;
 }
 
+int KeyCodes::getSlowerX5Key() const
+{
+    return m_slowerX5;
+}
+
 void KeyCodes::setSlower(int slower)
 {
     m_slower = slower;
+}
+
+void KeyCodes::setSlowerX5(int sx5)
+{
+    m_slowerX5 = sx5;
 }
 
 int KeyCodes::getFasterKey() const
@@ -96,9 +110,19 @@ int KeyCodes::getFasterKey() const
     return m_faster;
 }
 
+int KeyCodes::getFasterX5Key() const
+{
+    return m_fasterX5;
+}
+
 void KeyCodes::setFaster(int faster)
 {
     m_faster = faster;
+}
+
+void KeyCodes::setFasterX5(int fx5)
+{
+    m_fasterX5 = fx5;
 }
 
 int KeyCodes::getStartStopKey() const
@@ -112,16 +136,29 @@ void KeyCodes::setStartStop(int startStop)
 }
 
 void KeyCodes::markActive(blinkKeyTypes type){
-    if (type == eBLINK_bkt){
+    //replace this with a map at some point.
+    switch (type) {
+    case eBLINK_bkt:
         activeKey = &m_blink;
-    } else if (type == eSLOWER_bkt){
+        break;
+    case eSLOWER_bkt:
         activeKey = &m_slower;
-    } else if (type == eFASTER_bkt){
+        break;
+    case eSLOWERX5_bkt:
+        activeKey = &m_slowerX5;
+        break;
+    case eFASTER_bkt:
         activeKey = &m_faster;
-    } else if (type == eSTARTSTOP_bkt){
+        break;
+    case eFASTERX5_bkt:
+        activeKey = &m_fasterX5;
+        break;
+    case eSTARTSTOP_bkt:
         activeKey = &m_startStop;
-    } else {
-        qDebug() << "ERROR: invalid blinkKeyType enum";
+        break;
+    default:
+        qDebug() << "ERROR: invalid blinkKeyTypeEnum, check markActive()";
+        break;
     }
 }
 

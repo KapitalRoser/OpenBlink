@@ -25,6 +25,9 @@ u32 LCG(u32 &seed){
 }
 u32 LCGn(u32 &seed, const u32 n)
 {
+    if (!n){
+        return seed;
+    }
     u32 ex = n - 1;
     u32 q = 0x343fd;
     u32 factor = 1;
@@ -75,9 +78,12 @@ float LCGPercentage(u32 &seed){
     //return static_cast<float>(static_cast<u32>(LCG(seed) >> 16)/65536); // one liner - possibly cryptic
 }
 
-int findGap(u32 behind, u32 ahead, bool forward = 0){
+int findGap(u32 behind, u32 ahead, bool forward){
     int counter = 0;
-    if (forward){ //what happens when the origin/behind is actually ahead of target/ahead? infinite loop?
+    if (behind == ahead){
+        return 0;
+    }
+    if (forward){ //what should happen when the origin/behind is actually ahead of target/ahead?
         while(behind != ahead){
             LCG(behind);
             counter++;
@@ -89,7 +95,7 @@ int findGap(u32 behind, u32 ahead, bool forward = 0){
     } else { //do i need to swap the params here? I just want to prevent an infinite loop.
         while(behind != ahead){
             LCG_BACK(behind);
-            counter++;
+            counter++; //should we return this as a negative number?
             if (counter > 100000000){
                 std::cout <<"Error!";
                 break;
