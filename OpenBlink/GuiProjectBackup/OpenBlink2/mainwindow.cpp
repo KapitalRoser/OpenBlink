@@ -6,17 +6,13 @@
 #include "logwindow.h"
 
 /*TODO:
-    -BUGS:
-    -Bad fadeout timing for all regions
-    -Final seed getting lost when arbTarget = 10 -- but only sometimes.
-    -Windows and Mac Build testing.
+     Mac Build testing.
      Then done!
 //Optional
     -xd warning seeds are visually cut-off, still copyable
     -Allow gui to shrink for condensed screens like laptops.
     -Retry QThread for performance reasons -- Only for searcher, calibration runs fine on toaster
     -Add century gothic font to resources??
-    -Up/Down Arrow keys to adjust arbitrary_target?
     -Clean up the .h files
     -Tidy up blink class structure to allow a parent battleblink timeline object to be used. Would replace generateBlinks()
 */
@@ -59,8 +55,9 @@ MainWindow::MainWindow(QWidget *parent)
     applyShadow(ui->paramsFrame,shadowSet);
     applyShadow(ui->platformFrame,shadowSet);
     applyShadow(ui->blinkTableFrame,shadowSet);
+    applyShadow(ui->targetSeedSearchButton,shadowSet);
     //repeat as necessary for each object
-    ui->targetSeedQFrame->setVisible(false);
+    ui->targetSeedLayoutWidget->setVisible(false);
 
     tbl_pastBlink = QColor(222,222,222); //gray
     tbl_currentBlink = QColor(168,255,200); //light green
@@ -251,7 +248,8 @@ QString MainWindow::createLog()
     logAdd += "Timer: " + QString::number(userTS.offset()) + "/" + QString::number(userTS.gap()) + "/" + QString::number(userTS.beeps()) + "/" + QString::number(userTS.input()) + "\n";
     logAdd += "SEED: " + QString::number(userSP.inputSeed,16) + " AfterMin: " + QString::number(seedAfterMin,16)+ "\n";
     logAdd += "SearchResult: " + QString::number(foundIdx) + " ... ";
-    logAdd += foundIdx >= 0 ? "SeedFound: " + QString::number(mainPool[foundIdx].seed,16) + " pos: " + QString::number(foundIdx) + "\n" : " : SEARCH_FAILURE\n";
+    logAdd += foundIdx >= 0 ? "SeedFound: " + QString::number(mainPool[foundIdx].seed,16) + " subsequence pos: " + QString::number(foundIdx) + "\n" : " : SEARCH_FAILURE\n";
+    logAdd += ui->targetSeedEntry->text() == "(optional)" ? "Optional Target unused\n" : "Optional target seed: " + ui->targetSeedEntry->text().toUpper() + "\n";
     logAdd += "Input blinks: ";
     for (int x : blinkList){
         logAdd += QString::number(x) + ", ";
@@ -271,7 +269,6 @@ void MainWindow::nudgeCalibration(bool direction){
 }
 
 void MainWindow::expandExitPool(int expandAmt){
-    expandAmt = 10000;
     std::vector<pool>add10 = generateBlinks(exitPool.back().seed,userPF,expandAmt); //10,000 is heuristic, should generate extras.
     int iterPos = iterExit - exitPool.begin(); //save iterExit's spot
     exitPool.insert(exitPool.end(),add10.begin(),add10.end()); //expand exit pool, may expand capacity at 2^x values, changes memory address
@@ -381,7 +378,7 @@ void MainWindow::timerGUIUpdate(){
         //u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
         u32 seedFinal = exitPool[userSP.arbitrary_Target-1].seed;
         ui->statusLabel->setText("FINISHED! New seed: 0x" + QString::number(seedFinal,16).toUpper()
-                                 + "\nTotal Advancements: " + QString::number(findGap(seedAfterMin,seedFinal)));
+                                 + "\nTotal Advancements: " + QString::number(findGapConfident(seedAfterMin,seedFinal)));
         qDebug() << "Seed: " << QString::number(seedFinal,16);
         basicTimer->stop(); //set this to be after both totalTimer and exitTimer finish
         sfxBlinkOccurs.setMuted(wasMuted);
@@ -401,6 +398,7 @@ void MainWindow::exitTimerUpdate()
 
 void MainWindow::runCalibration(u32 seed){
     resultsActiveView = true;
+    ui->targetSeedLayoutWidget->setVisible(true);
     ui->outTable->clear();
     ui->outTable->setStyleSheet("QTableWidget{border:2px solid purple;padding:6px;padding-left:10px;}" + tableStyle);
     sfxSearchSuccess.play();
@@ -452,11 +450,8 @@ int MainWindow::performSearchPass(u32 &outSeed){
                 foundIdx = resultIndexes.front()+blinkList.size()-1;
                 outSeed = mainPool[foundIdx].seed;
                 qDebug() << QString::number(outSeed,16) << " SEED";
-
-                ui->statusLabel->setText("SUCCESS: Seed is: 0x"
-                    + QString::number(outSeed,16).toUpper()
-                                         + "\nAdvances from " + QString::number(ui->searchMinBox->value()) + ": " + QString::number(findGap(seedAfterMin,outSeed,1)));
-                    // + ".\nSubsequence at position: " + QString::number(resultIndexes.front())); //THIS WILL BE LOGGED
+                seedInfo = "SUCCESS: Seed is: 0x" + QString::number(outSeed,16).toUpper() + "\nAdvances from " + QString::number(ui->searchMinBox->value()) + ": " + QString::number(findGapConfident(seedAfterMin,outSeed,1));
+                ui->statusLabel->setText(seedInfo);
                 foundIdx = resultIndexes.front();
                 //Use debug if necessary
                 return 1;
@@ -592,6 +587,7 @@ void MainWindow::on_startButton_clicked()
         wasMuted = sfxBlinkOccurs.isMuted();
     } else {
         ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
+        ui->statusLabel->setText(ui->statusLabel->text().contains("Error!") ? "STATUS" : ui->statusLabel->text());
         totalTimer->stop();
         basicTimer->stop();
         sfxBlinkOccurs.setMuted(wasMuted);
@@ -756,7 +752,7 @@ void MainWindow::on_increaseBlinksButton_clicked()
     ui->outTable->setRowCount(ui->outTable->rowCount()+ARBITRARY_10_ADD);
     if (uint(ui->outTable->rowCount()) > exitPool.size()){
         qDebug() << "EXPANDED EXITPOOL";
-        expandExitPool(ARBITRARY_10_ADD);
+        expandExitPool();
         qDebug() << exitPool.size() << " blinks now.";
     }
     restoreResults();
@@ -861,22 +857,9 @@ void MainWindow::on_pasteButton_clicked()
 void MainWindow::on_seedEntry_textChanged(const QString &arg1)
 {
     ui->pasteButton->setText("Paste");
-    ui->startButton->setEnabled(arg1.toUInt(nullptr,16));
-    //validation: seed must be a valid 32 bit hex number,
-
-    // u32 s1 = arg1.toUInt(nullptr,16); //if arg1.toUint fails it returns false
-    // u32 s2 = ui->targetSeedEntry->text().toUInt(nullptr,16);
-    // if (!(s1 && s2)){
-    //     ui->startButton->setEnabled(false);
-    //     return;
-    // }
-    // //should perform this upon editing finished?
-    // int gap = findGap(LCGn(s1,ui->searchMinBox->value()),s2); //causes performance issues when seed isn't finished being entered.
-    // if (gap <180 || gap >= 100000000 || gap > ui->searchMaxBox->value()){
-    //     ui->startButton->setEnabled(false);
-    //     return;
-    // }
-    // ui->startButton->setEnabled(true);
+    bool seedOk;
+    arg1.toUInt(&seedOk,16);
+    ui->startButton->setEnabled(seedOk); //This works even seed is 0, as 0 is a valid seed
 }
 
 
@@ -910,17 +893,125 @@ void MainWindow::on_arbTargetBox_editingFinished()
 }
 
 
-// void MainWindow::on_targetPasteButton_clicked()
-// {
-//     ui->targetSeedEntry->setText("");
-//     ui->targetSeedEntry->paste();
-//     ui->targetPasteButton->setText("Pasted!");
-// }
+ void MainWindow::on_targetPasteButton_clicked()
+ {
+     ui->targetSeedEntry->setText("");
+     ui->targetSeedEntry->paste();
+     ui->targetPasteButton->setText("Pasted!");
+ }
 
 
-// void MainWindow::on_targetSeedEntry_textChanged(const QString &arg1)
-// {
-//     on_seedEntry_textChanged(ui->seedEntry->text());
-//     ui->targetPasteButton->setText("Paste");
-// }
+ void MainWindow::on_targetSeedEntry_textChanged(const QString &arg1)
+ {
+     ui->targetPasteButton->setText("Paste");
+     ui->statusLabel->setText(seedInfo);
+     bool targetOk;
+     arg1.toUInt(&targetOk,16);
+     ui->targetSeedSearchButton->setEnabled(targetOk && arg1.toUpper() != ui->seedEntry->text().toUpper());
+     if (ui->statusLabel->text().contains("Target is not a valid seed!")){
+        ui->statusLabel->text().remove("Error! Target is not a valid seed!"); //does this really work?
+     }
+ }
+
+
+void MainWindow::on_targetSeedEntry_selectionChanged()
+{
+    if(ui->targetSeedEntry->text() == "(optional)"){
+        ui->targetSeedEntry->setMaxLength(8);
+        ui->targetSeedEntry->setText("");
+    }
+}
+
+void MainWindow::on_targetSeedEntry_editingFinished()
+{
+    if (ui->targetSeedEntry->text() == ""){
+        ui->targetSeedEntry->setMaxLength(10);
+        ui->targetSeedEntry->setText("(optional)");
+    }
+}
+
+void MainWindow::on_targetSeedSearchButton_clicked()
+{
+    ui->outTable->clearSelection();
+    //validation
+    bool targetOk;
+    u32 targetSeed = ui->targetSeedEntry->text().toUInt(&targetOk,16);
+    if (!targetOk){ //probably redundant, included to be extra safe
+        ui->statusLabel->setText("Error! Target is not a valid seed!");
+        return;
+    }
+
+    //search exit pool for matches
+    for (unsigned int p = 0; p < exitPool.size(); p++){
+        if (targetSeed == exitPool[p].seed){
+            ui->arbTargetBox->setValue(p+1); //DONE -- should update with arbTargetBoxChanged() slot.
+            return; //Return????
+        }
+    }
+    //return??????
+
+    //search exit pool deeply
+    //Wildly untested
+        int bestBlinkIdx = 0;
+        u32 workingSeed = exitPool.front().seed;
+        while(bestBlinkIdx+1 < exitPool.size()){
+            LCG(workingSeed);
+            if (workingSeed == targetSeed){
+                ui->arbTargetBox->setValue(bestBlinkIdx+1);
+                return;
+            }
+            if(workingSeed == exitPool[bestBlinkIdx+1].seed){
+                bestBlinkIdx++; //moves goalpost up
+            }
+        }
+        //not found
+
+    int resultTarget = -1;
+    //expand exit pool to include
+    resultTarget = findGapInRange(exitPool.back().seed,targetSeed,100000); //arbitrary expansion, just to avoid going all the way around.
+    if (resultTarget > 0){
+        qDebug() << "Found within first arb expansion!";
+        //generate blinks up to target as done before?
+        expandExitPool(resultTarget);
+        ui->arbTargetBox->setValue(exitPool.size());
+        return;
+    }
+    //Most Likely Failure!
+    //search for overshoots
+    //Direct search of gap:
+    //resultTarget = findGapUntil(userSP.inputSeed,targetSeed,exitPool.front().seed);
+    resultTarget = findGapDirectionless(userSP.inputSeed,targetSeed);
+
+
+    if (resultTarget > 0 && resultTarget > findGapConfident(userSP.inputSeed,exitPool.back().seed)){
+        qDebug() << "triggered recovery success!" + QString::number(resultTarget);
+        //generate blinks up to target.
+
+        //message box warning for very long blink generation times above a certain amount.
+
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("Warning!");
+        msgBox.setInformativeText("The seed you are searching for is located far ahead of your current seed.\nThe tool may freeze for a long time in order to produce a blink list.\n\nAre you sure you want to continue?\n");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        if (ret == QMessageBox::No){
+            return;
+        }
+        expandExitPool(resultTarget);
+        ui->arbTargetBox->setValue(exitPool.size());
+        return;
+    }
+    //FAILURE
+
+    ui->statusLabel->setText("Error! Seed is " + QString::number(resultTarget) + " advances away!");
+    if (resultTarget < 0){
+        ui->statusLabel->setText(ui->statusLabel->text() + "\nYour target is behind your input seed");
+    } else {
+        ui->statusLabel->setText(ui->statusLabel->text() + "\nYou overshot your target");
+    }
+}
+
+
 

@@ -78,32 +78,137 @@ float LCGPercentage(u32 &seed){
     //return static_cast<float>(static_cast<u32>(LCG(seed) >> 16)/65536); // one liner - possibly cryptic
 }
 
-int findGap(u32 behind, u32 ahead, bool forward){
-    int counter = 0;
-    if (behind == ahead){
+//Old findGap
+//int findGap(u32 behind, u32 ahead, bool forward){
+//    int counter = 0;
+//    if (behind == ahead){
+//        return 0;
+//    }
+//    if (forward){ //what should happen when the origin/behind is actually ahead of target/ahead?
+//        while(behind != ahead){
+//            LCG(behind);
+//            counter++;
+//            if (counter > 100000000){
+//                std::cout <<"Error! findGap() got lost!";
+//                break;
+//            }
+//        }
+//    } else { //do i need to swap the params here? I just want to prevent an infinite loop.
+//        while(behind != ahead){
+//            LCG_BACK(behind);
+//            counter++; //should we return this as a negative number?
+//            if (counter > 100000000){
+//                std::cout <<"Error!";
+//                break;
+//            }
+//        }
+//    }
+//    return counter;
+//}
+
+
+
+int findGapInRange(u32 source, u32 target, uint range){
+    //range is a discrete number of advances
+    if (source == target){
         return 0;
     }
-    if (forward){ //what should happen when the origin/behind is actually ahead of target/ahead?
-        while(behind != ahead){
-            LCG(behind);
-            counter++;
-            if (counter > 100000000){
-                std::cout <<"Error! findGap() got lost!";
-                break;
-            }
-        }
-    } else { //do i need to swap the params here? I just want to prevent an infinite loop.
-        while(behind != ahead){
-            LCG_BACK(behind);
-            counter++; //should we return this as a negative number?
-            if (counter > 100000000){
-                std::cout <<"Error!";
-                break;
-            }
+    uint counter = 0;
+    while (source != target && counter < range){
+        LCG(source);
+        counter++;
+        if (source == target){
+            return counter;
         }
     }
-    return counter;
+    return -1; //replace with bool parameter?
 }
+int findGapUntil(u32 source, u32 target, u32 limit){
+    //Finds a seed if it exists until or unless a limit seed is reached.
+    //Returns -1 on failure.
+    if (source == target){
+        return 0;
+    }
+    int counter = 0;
+    while (source != limit){
+        LCG(source);
+        counter++;
+        if (source == target){
+            return counter;
+        }
+    }
+    //std::cout << std::hex << "findGapUntil() did not find seeds from: " << source << " find: " << target << "until: " << limit;
+    return -1;
+}
+
+/*usage:
+ * bool* resultValid;
+ * int x = findGap(seed,targetseed,&resultValid);
+ * resultValid is optional and will represent a success or failure, without relying solely on the return value alone.
+*/
+int findGapDirectionless(u32 source, u32 target, int bailout, bool* ok){
+    //Searches both directions from source simultaneously, useful for when it's unclear whether the seed is ahead or behind the target.
+    //Say it could be 20 calls ahead of target but user may have overshot, so need to check behind. This finds that. However, may come with performance issues at higher distances.
+    //That's because a target 100K calls away actually endures 200K calls to LCG()
+    //Would love a mathematical way to know if something was ahead or behind the target in O(1) or something.
+    if (source == target){
+        return 0;
+    }
+    double countUp = 0;
+    double countDown = 0;
+    u32 sourceUp = source;
+    u32 sourceDown = source;
+    while (sourceDown != target){
+        if (countDown == -bailout || countUp == bailout){
+            if(ok){*ok = false;}
+            return 0;
+        }
+        LCG(sourceUp);
+        countUp++;
+        if (sourceUp == target){
+            if(ok){*ok = true;}
+            return countUp;
+        }
+        LCG_BACK(sourceDown);
+        countDown++;
+        //debug
+        if (countUp == 100000000 || countDown == -100000000){
+            std::cout << std::hex<< "findGapDirectionless() has likely failed: " << source << " to " << target;
+        }
+    }
+    if(ok){*ok = true;}
+    return -countDown++; //negative result, do not confuse with negative from findGapInRange
+}
+uint findGapConfident(u32 source, u32 target, bool forward){
+    //Caller is CONFIDENT that they know the direction of search.
+    //Otherwise will take an extremely long time and produce a strange result. If used as intended, performance will be faster than directionless alternative.
+    if (source == target){
+        return 0;
+    }
+    double countUp = 0;
+    double countDown = 0;
+    while (source != target){
+        if (forward){
+            countUp++;
+            LCG(source);
+        } else {
+            countDown--;
+            LCG_BACK(source);
+        }
+        if (source == target){
+            return (countUp > countDown) ? countUp : countDown; //one value will be >1, and the other will be 0
+        }
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
 void debugPrint2DVec(std::vector<std::vector<int> > set){
     //FOR DEBUG:
     for (uint i = 0; i < set.size(); i++){

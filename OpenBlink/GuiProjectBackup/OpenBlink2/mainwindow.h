@@ -10,6 +10,7 @@
 #include <QDesktopServices>
 #include <QClipboard>
 #include <filesystem>
+#include <QMessageBox>
 #include "blinkbase.h"
 #include "keycodes.h"
 #include "timersettings.h" //not to be confused with the timersettingsdialogue class
@@ -42,6 +43,7 @@ public:
     int hotKeyLockState;
     bool resultsActiveView;
     u32 seedAfterMin;
+    QString seedInfo;
 
     bool initialWriteComplete;
 
@@ -95,7 +97,7 @@ public:
     void highlightTableRow(int row,QColor color);
     int iterPToMS(iterP iter, float framerate);
     void restoreResults();
-    void expandExitPool(int expandAmt);
+    void expandExitPool(int expandAmt = 10000);
     void nudgeCalibration(bool direction);
     platform collectPlatformInputs();
     searchParameters collectParamInputs();
@@ -153,6 +155,16 @@ private slots:
     void on_searchMaxBox_valueChanged(int arg1);
 
     void on_arbTargetBox_editingFinished();
+
+    void on_targetSeedEntry_selectionChanged();
+
+    void on_targetPasteButton_clicked();
+
+    void on_targetSeedEntry_textChanged(const QString &arg1);
+
+    void on_targetSeedSearchButton_clicked();
+
+    void on_targetSeedEntry_editingFinished();
 
 private:
     Ui::MainWindow *ui;
