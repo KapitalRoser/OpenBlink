@@ -602,6 +602,7 @@ void MainWindow::on_startButton_clicked()
         ui->seedQFrame->setEnabled(true);
         ui->copyButton->setVisible(false);
         ui->copyButton->setEnabled(false);
+        ui->targetSeedLayoutWidget->setVisible(false);
         ui->nudgeOffsetLabel->setText("0");
         ui->startButton->setText("START");
     }

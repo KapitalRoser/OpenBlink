@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>720</width>
+    <width>747</width>
     <height>717</height>
    </rect>
   </property>
@@ -55,9 +55,9 @@
      <number>20</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="InputsFrame" stretch="2,2,0,0,2,3">
+     <layout class="QVBoxLayout" name="InputsFrame" stretch="3,3,0,0,3,5">
       <property name="spacing">
-       <number>20</number>
+       <number>15</number>
       </property>
       <item>
        <widget class="QFrame" name="platformFrame">
@@ -636,6 +636,18 @@ color:grey;
       <item>
        <widget class="QWidget" name="targetSeedLayoutWidget" native="true">
         <layout class="QHBoxLayout" name="targetSeedLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>5</number>
+         </property>
          <item>
           <widget class="QFrame" name="targetSeedQFrame">
            <property name="enabled">
@@ -809,10 +821,16 @@ color:grey;
             <bool>false</bool>
            </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>42</height>
+            </size>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{background-color: #004080;
@@ -1629,7 +1647,7 @@ border-color: lightgrey;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>720</width>
+     <width>747</width>
      <height>20</height>
     </rect>
    </property>
