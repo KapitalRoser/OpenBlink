@@ -1,12 +1,6 @@
 #ifndef BLINKBASE_H
 #define BLINKBASE_H
-#include <thread>
-#include <mutex>
-#include <condition_variable>
 #include <queue>
-
-#include <Windows.h>
-#include <conio.h>
 #include "processcoreblink.h"
 
 

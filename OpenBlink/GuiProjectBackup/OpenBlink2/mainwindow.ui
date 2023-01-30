@@ -38,7 +38,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,55">
     <property name="spacing">
      <number>25</number>
     </property>
@@ -55,12 +55,18 @@
      <number>20</number>
     </property>
     <item>
-     <layout class="QVBoxLayout" name="InputsFrame" stretch="3,3,0,0,3,5">
+     <layout class="QVBoxLayout" name="InputsFrame" stretch="3,3,1,0,3,5">
       <property name="spacing">
        <number>15</number>
       </property>
       <item>
        <widget class="QFrame" name="platformFrame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="styleSheet">
          <string notr="true">
 *{border: 5px solid white;
@@ -93,7 +99,7 @@ font-weight:normal;
              <property name="font">
               <font>
                <family>Century Gothic</family>
-               <pointsize>11</pointsize>
+               <pointsize>13</pointsize>
                <italic>false</italic>
                <bold>true</bold>
               </font>
@@ -107,14 +113,15 @@ font-weight:normal;
             <widget class="QComboBox" name="gameBox">
              <property name="font">
               <font>
-               <family>Century Gothic</family>
-               <pointsize>11</pointsize>
+               <family>CenturyGothic</family>
+               <pointsize>13</pointsize>
                <italic>false</italic>
                <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QComboBox{
+font: 13pt &quot;CenturyGothic&quot;;
 border: 2px solid #828282;
 padding-left: 15px;
 padding-top:10px;
@@ -167,7 +174,7 @@ border-color:lightgrey;
              <property name="font">
               <font>
                <family>Century Gothic</family>
-               <pointsize>11</pointsize>
+               <pointsize>13</pointsize>
                <italic>false</italic>
                <bold>true</bold>
               </font>
@@ -181,12 +188,15 @@ border-color:lightgrey;
             <widget class="QComboBox" name="regionBox">
              <property name="font">
               <font>
-               <family>Century Gothic</family>
-               <pointsize>11</pointsize>
+               <family>CenturyGothic</family>
+               <pointsize>13</pointsize>
+               <italic>false</italic>
+               <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QComboBox{
+font: 13pt &quot;CenturyGothic&quot;;
 border: 2px solid #828282;
 padding-left: 15px;
 padding-top:10px;
@@ -236,6 +246,12 @@ border-color:lightgrey;
       </item>
       <item>
        <widget class="QFrame" name="paramsFrame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="styleSheet">
          <string notr="true">*{
 border: 5px solid white;
@@ -248,8 +264,11 @@ color:grey;
 }</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>10</number>
+         </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="5,3,2">
            <item>
             <widget class="QLabel" name="label_3">
              <property name="font">
@@ -266,13 +285,15 @@ color:grey;
             <widget class="QSpinBox" name="flexValueBox">
              <property name="font">
               <font>
-               <family>Century Gothic</family>
-               <pointsize>9</pointsize>
+               <family>CenturyGothic</family>
+               <pointsize>13</pointsize>
+               <italic>false</italic>
                <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QSpinBox{
+font: 13pt &quot;CenturyGothic&quot;;
 border: 2px solid #828282;
 border-radius: 10px;
 padding-left: 5px;
@@ -327,7 +348,7 @@ border-color: lightgrey;
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="5,4,4,4,4">
            <property name="spacing">
             <number>0</number>
            </property>
@@ -339,6 +360,12 @@ border-color: lightgrey;
            </property>
            <item>
             <widget class="QLabel" name="label_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="font">
               <font>
                <family>Century Gothic</family>
@@ -359,11 +386,15 @@ border-color: lightgrey;
              </property>
              <property name="font">
               <font>
-               <family>Century Gothic</family>
+               <family>CenturyGothic</family>
+               <pointsize>13</pointsize>
+               <italic>false</italic>
+               <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QSpinBox{
+font: 13pt &quot;CenturyGothic&quot;;
 border: 2px solid #828282;
 border-radius: 10px;
 padding-left: 2px;
@@ -386,16 +417,19 @@ border-color:lightgrey;
            <item>
             <widget class="QLabel" name="label_4">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="maximumSize">
               <size>
-               <width>35</width>
+               <width>20</width>
                <height>16777215</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>~</string>
@@ -415,11 +449,15 @@ border-color:lightgrey;
              </property>
              <property name="font">
               <font>
-               <family>Century Gothic</family>
+               <family>CenturyGothic</family>
+               <pointsize>13</pointsize>
+               <italic>false</italic>
+               <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QSpinBox{
+	font: 13pt &quot;CenturyGothic&quot;;
 border: 2px solid #828282;
 border-radius: 10px;
 padding-left: 2px;
@@ -470,10 +508,16 @@ border-color:lightgrey;
       </item>
       <item>
        <layout class="QHBoxLayout" name="centerLayout">
+        <property name="leftMargin">
+         <number>70</number>
+        </property>
+        <property name="rightMargin">
+         <number>70</number>
+        </property>
         <item>
          <widget class="QFrame" name="seedQFrame">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -484,12 +528,17 @@ border-color:lightgrey;
             <height>16777215</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <family>Century Gothic</family>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">
 *{
 color: black;
 background-color: white;
-border-radius: 20px;
+border-radius: 18px;
 }
 *:disabled{
 color:grey;
@@ -521,7 +570,7 @@ QLineEdit:disabled{color:grey;}</string>
            <item>
             <widget class="QLabel" name="seedLabelEntry">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -529,7 +578,7 @@ QLineEdit:disabled{color:grey;}</string>
              <property name="font">
               <font>
                <family>Century Gothic</family>
-               <pointsize>11</pointsize>
+               <pointsize>13</pointsize>
                <bold>true</bold>
                <kerning>false</kerning>
               </font>
@@ -555,12 +604,15 @@ QLineEdit:disabled{color:grey;}</string>
              </property>
              <property name="font">
               <font>
-               <family>Segoe UI</family>
-               <pointsize>11</pointsize>
+               <family>CenturyGothic</family>
+               <pointsize>13</pointsize>
+               <italic>false</italic>
+               <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">padding:10px;</string>
+              <string notr="true">padding:10px;
+font: 13pt &quot;CenturyGothic&quot;;</string>
              </property>
              <property name="text">
               <string>DEADBEEF</string>
@@ -595,20 +647,20 @@ QLineEdit:disabled{color:grey;}</string>
              </property>
              <property name="font">
               <font>
-               <family>Century Gothic</family>
-               <pointsize>9</pointsize>
+               <family>CenturyGothic</family>
+               <pointsize>11</pointsize>
                <italic>false</italic>
                <bold>true</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton{background-color: #004080;
-font: 9pt &quot;Century Gothic&quot;;
+font: 11pt &quot;CenturyGothic&quot;;
 color: white;
 font-weight: bold;
 border-radius:0px;
-border-top-right-radius:20px;
-border-bottom-right-radius:20px;
+border-top-right-radius:18px;
+border-bottom-right-radius:18px;
 padding:10px;
 }
 QPushButton:hover{
@@ -636,14 +688,17 @@ color:grey;
       <item>
        <widget class="QWidget" name="targetSeedLayoutWidget" native="true">
         <layout class="QHBoxLayout" name="targetSeedLayout">
+         <property name="spacing">
+          <number>20</number>
+         </property>
          <property name="leftMargin">
-          <number>0</number>
+          <number>20</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>20</number>
          </property>
          <property name="bottomMargin">
           <number>5</number>
@@ -665,12 +720,17 @@ color:grey;
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>Century Gothic</family>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">
 *{
 color: black;
 background-color: white;
-border-radius: 20px;
+border-radius: 18px;
 }
 *:disabled{
 color:grey;
@@ -683,7 +743,7 @@ QLineEdit:disabled{color:grey;}</string>
            <property name="frameShadow">
             <enum>QFrame::Raised</enum>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="5,5,2">
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="5,5,0">
             <property name="spacing">
              <number>0</number>
             </property>
@@ -702,7 +762,7 @@ QLineEdit:disabled{color:grey;}</string>
             <item>
              <widget class="QLabel" name="targetSeedLabelEntry">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -710,7 +770,7 @@ QLineEdit:disabled{color:grey;}</string>
               <property name="font">
                <font>
                 <family>Century Gothic</family>
-                <pointsize>11</pointsize>
+                <pointsize>13</pointsize>
                 <bold>true</bold>
                 <kerning>false</kerning>
                </font>
@@ -723,7 +783,7 @@ QLineEdit:disabled{color:grey;}</string>
             <item>
              <widget class="QLineEdit" name="targetSeedEntry">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -736,12 +796,18 @@ QLineEdit:disabled{color:grey;}</string>
               </property>
               <property name="font">
                <font>
-                <family>Segoe UI</family>
-                <pointsize>11</pointsize>
+                <family>CenturyGothic</family>
+                <pointsize>13</pointsize>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">padding:10px;</string>
+               <string notr="true">padding-top:10px;
+padding-bottom:10px;
+padding-right:10px;
+padding-left:0px;
+font: 13pt &quot;CenturyGothic&quot;;</string>
               </property>
               <property name="text">
                <string>(optional)</string>
@@ -779,20 +845,20 @@ QLineEdit:disabled{color:grey;}</string>
               </property>
               <property name="font">
                <font>
-                <family>Century Gothic</family>
-                <pointsize>9</pointsize>
+                <family>CenturyGothic</family>
+                <pointsize>11</pointsize>
                 <italic>false</italic>
                 <bold>true</bold>
                </font>
               </property>
               <property name="styleSheet">
                <string notr="true">QPushButton{background-color: #004080;
-font: 9pt &quot;Century Gothic&quot;;
+font: 11pt &quot;CenturyGothic&quot;;
 color: white;
 font-weight: bold;
 border-radius:0px;
-border-top-right-radius:20px;
-border-bottom-right-radius:20px;
+border-top-right-radius:18px;
+border-bottom-right-radius:18px;
 padding:10px;
 }
 QPushButton:hover{
@@ -821,7 +887,7 @@ color:grey;
             <bool>false</bool>
            </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -829,16 +895,19 @@ color:grey;
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>42</height>
+             <height>38</height>
             </size>
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{background-color: #004080;
-font: 9pt &quot;Century Gothic&quot;;
+font: 11pt &quot;Century Gothic&quot;;
 color: white;
 font-weight: bold;
-border-radius:20px;
-padding: 15px;
+border-radius:18px;
+padding-top: 10px;
+padding-bottom:10px;
+padding-left: 20px;
+padding-right:20px;
 }
 QPushButton:hover{
 background-color: #265d93;
@@ -862,6 +931,18 @@ color:grey;
       </item>
       <item>
        <widget class="QFrame" name="statusFrame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>97</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Century Gothic</family>
@@ -905,10 +986,14 @@ border-radius: 20px;
           <widget class="QLabel" name="statusLabel">
            <property name="font">
             <font>
-             <family>Century Gothic</family>
-             <pointsize>11</pointsize>
+             <family>CenturyGothic</family>
+             <pointsize>13</pointsize>
+             <italic>false</italic>
              <bold>true</bold>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font: 700 13pt &quot;CenturyGothic&quot;;</string>
            </property>
            <property name="text">
             <string>STATUS</string>
@@ -940,7 +1025,7 @@ border-radius: 20px;
              <property name="font">
               <font>
                <family>Century Gothic</family>
-               <pointsize>11</pointsize>
+               <pointsize>13</pointsize>
                <italic>false</italic>
                <bold>true</bold>
               </font>
@@ -948,7 +1033,7 @@ border-radius: 20px;
              <property name="styleSheet">
               <string notr="true">QPushButton{
 background-color: #004080;
-font: 11pt &quot;Century Gothic&quot;;
+font: 13pt &quot;Century Gothic&quot;;
 color: white;
 font-weight: bold;
 border-radius:0px;
@@ -1018,10 +1103,16 @@ color:grey;
          <bool>false</bool>
         </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>162</height>
+         </size>
         </property>
         <property name="autoFillBackground">
          <bool>false</bool>
@@ -1185,7 +1276,7 @@ color:grey;
            <property name="font">
             <font>
              <family>Century Gothic</family>
-             <pointsize>9</pointsize>
+             <pointsize>11</pointsize>
              <italic>false</italic>
              <bold>true</bold>
             </font>
@@ -1195,7 +1286,7 @@ color:grey;
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{background-color: #004080;
-font: 9pt &quot;Century Gothic&quot;;
+font: 11pt &quot;Century Gothic&quot;;
 color: white;
 font-weight: bold;
 border-radius:18px;
@@ -1234,7 +1325,7 @@ color:grey;
            <property name="font">
             <font>
              <family>Century Gothic</family>
-             <pointsize>9</pointsize>
+             <pointsize>11</pointsize>
              <italic>false</italic>
              <bold>true</bold>
             </font>
@@ -1244,7 +1335,7 @@ color:grey;
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{background-color: #004080;
-font: 9pt &quot;Century Gothic&quot;;
+font: 11pt &quot;Century Gothic&quot;;
 color: white;
 font-weight: bold;
 border-radius:18px;
@@ -1285,7 +1376,7 @@ color:grey;
            <property name="font">
             <font>
              <family>Century Gothic</family>
-             <pointsize>11</pointsize>
+             <pointsize>13</pointsize>
              <italic>false</italic>
              <bold>false</bold>
             </font>
@@ -1327,7 +1418,7 @@ color:grey;
       </property>
       <property name="minimumSize">
        <size>
-        <width>240</width>
+        <width>0</width>
         <height>0</height>
        </size>
       </property>
@@ -1384,14 +1475,14 @@ border-radius: 20px;
           <bool>false</bool>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>210</width>
+           <width>0</width>
            <height>40</height>
           </size>
          </property>
@@ -1447,12 +1538,12 @@ color:grey;
            <rect>
             <x>0</x>
             <y>9</y>
-            <width>210</width>
+            <width>201</width>
             <height>451</height>
            </rect>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -1648,7 +1739,7 @@ border-color: lightgrey;
      <x>0</x>
      <y>0</y>
      <width>747</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
