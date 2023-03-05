@@ -15,6 +15,7 @@
     -Add century gothic font to resources??
     -Clean up the .h files
     -Tidy up blink class structure to allow a parent battleblink timeline object to be used. Would replace generateBlinks()
+    -Add post-blink seed check, to tell hoew many frames off you are.
 */
 
 //GLOBALS
@@ -136,6 +137,7 @@ void MainWindow::writeAllSettings(){
     if (!initialWriteComplete){
         return;
     }
+    qDebug() << "FILE LOCATION INTENDED: " << QString::fromStdString(settingsName);
     std::ofstream settingsW(settingsName);
     userPF = collectPlatformInputs();
     userSP = collectParamInputs();

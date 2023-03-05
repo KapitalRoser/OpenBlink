@@ -25,12 +25,12 @@ const std::string standardFileName = "settings.txt";
 const std::string applicationName = "OpenBlink";
 
 #if defined __APPLE__
-const std::string settingsPath = std::string(getenv("HOME")) + "/Library/Application Support/applicationName";
+const std::string settingsPath = std::string(getenv("HOME")) + "/Desktop/OpenBlinkX";
 const std::string settingsName = settingsPath + "/" + standardFileName;
 #else
-const std::string settingsName = standardFileName;
+const std::string settingsName = standardFileName;OP
 #endif
-
+///Users/carter/Desktop/OpenBlinkY
 
 //Typedef block
 typedef unsigned int uint;

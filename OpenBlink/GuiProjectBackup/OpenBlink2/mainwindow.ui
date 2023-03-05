@@ -7,18 +7,30 @@
     <x>0</x>
     <y>0</y>
     <width>747</width>
-    <height>717</height>
+    <height>721</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>747</width>
+    <height>721</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>747</width>
+    <height>721</height>
+   </size>
+  </property>
   <property name="font">
    <font>
-    <family>Century Gothic</family>
+    <family>.Apple Color Emoji UI</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -1536,8 +1548,8 @@ color:grey;
          <widget class="QTableWidget" name="outTable">
           <property name="geometry">
            <rect>
-            <x>0</x>
-            <y>9</y>
+            <x>15</x>
+            <y>0</y>
             <width>201</width>
             <height>451</height>
            </rect>
@@ -1618,6 +1630,9 @@ color:grey;
        </item>
        <item>
         <layout class="QHBoxLayout" name="arbTargetLayout" stretch="0,1,2,0">
+         <property name="spacing">
+          <number>5</number>
+         </property>
          <property name="rightMargin">
           <number>0</number>
          </property>
@@ -1626,9 +1641,12 @@ color:grey;
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
@@ -1636,13 +1654,28 @@ color:grey;
          </item>
          <item>
           <widget class="QLabel" name="label_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="font">
             <font>
              <family>Century Gothic</family>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">QLabel:disabled{
+            <string notr="true">QLabel{
+margin:5px;
+}
+QLabel:disabled{
 color:grey;
 }</string>
            </property>
@@ -1657,7 +1690,7 @@ color:grey;
          <item>
           <widget class="QSpinBox" name="arbTargetBox">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -1668,16 +1701,25 @@ color:grey;
              <height>30</height>
             </size>
            </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="font">
             <font>
-             <family>Century Gothic</family>
-             <pointsize>9</pointsize>
+             <family>CenturyGothic</family>
+             <pointsize>13</pointsize>
+             <italic>false</italic>
+             <bold>false</bold>
             </font>
            </property>
            <property name="styleSheet">
             <string notr="true">QSpinBox{
 border: 2px solid #828282;
 border-radius: 10px;
+font: 13pt &quot;CenturyGothic&quot;;
 }
 
 QSpinBox::up-button{
@@ -1720,7 +1762,7 @@ border-color: lightgrey;
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
