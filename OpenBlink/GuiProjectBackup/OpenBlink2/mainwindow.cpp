@@ -41,12 +41,20 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->arbTargetBox->installEventFilter(this);
+//    QMenu *testMenu = new QMenu("more...");
+//    testMenu->addAction("Log");
+//    testMenu->addAction()
+//    ui->menubar->addAction(testMenu->menuAction());
+
     QAction *logAction = ui->menubar->addAction("Log");
     connect(logAction,&QAction::triggered,this,&MainWindow::on_actionLog_triggered);
     QAction *githubAction = ui->menubar->addAction("GitHub");
     connect(githubAction,&QAction::triggered,this,&MainWindow::on_actionGithub_triggered);
     QAction *helpAction = ui->menubar->addAction("Help");
     connect(helpAction,&QAction::triggered,this,&MainWindow::on_actionHelp_triggered);
+
+
+
     std::queue<QDropShadow> shadowSet;
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
     applyShadow(ui->statusFrame,shadowSet);
@@ -138,6 +146,9 @@ void MainWindow::writeAllSettings(){
         return;
     }
     qDebug() << "FILE LOCATION INTENDED: " << QString::fromStdString(settingsName);
+#if defined __APPLE__
+    mkdir(settingsPath.c_str(),0777);
+#endif
     std::ofstream settingsW(settingsName);
     userPF = collectPlatformInputs();
     userSP = collectParamInputs();
