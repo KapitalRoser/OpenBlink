@@ -268,12 +268,14 @@ color:grey;
               <font>
                <family>Century Gothic</family>
                <pointsize>9</pointsize>
+               <italic>false</italic>
                <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QSpinBox{
 border: 2px solid #828282;
+font: 9pt &quot;Century Gothic&quot;;
 border-radius: 10px;
 padding-left: 5px;
 padding-top:5px;

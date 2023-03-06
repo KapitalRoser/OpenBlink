@@ -1,8 +1,5 @@
 #ifndef BLINKBASE_H
 #define BLINKBASE_H
-#include <queue>
-
-#include <Windows.h>
 #include "processcoreblink.h"
 
 
