@@ -27,9 +27,8 @@ const std::string applicationName = "OpenBlink";
 const std::string settingsPath = std::string(getenv("HOME")) + "/Library/Application Support/OpenBlink";
 const std::string settingsName = settingsPath + "/" + standardFileName;
 #else
-const std::string settingsName = standardFileName;OP
+const std::string settingsName = standardFileName;
 #endif
-///Users/carter/Desktop/OpenBlinkY
 
 //Typedef block
 typedef unsigned int uint;
