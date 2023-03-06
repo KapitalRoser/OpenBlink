@@ -16,6 +16,7 @@
 #include <queue>
 #include <stdio.h>
 #include <filesystem>
+#include <sys/stat.h>
 
 //TODO: before launching, move this into the game specific folders and update the paths.
 
@@ -25,7 +26,7 @@ const std::string standardFileName = "settings.txt";
 const std::string applicationName = "OpenBlink";
 
 #if defined __APPLE__
-const std::string settingsPath = std::string(getenv("HOME")) + "/Library/Application Support/applicationName";
+const std::string settingsPath = std::string(getenv("HOME")) + "/Library/Application Support/OpenBlink";
 const std::string settingsName = settingsPath + "/" + standardFileName;
 #else
 const std::string settingsName = standardFileName;

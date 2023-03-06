@@ -136,6 +136,9 @@ void MainWindow::writeAllSettings(){
     if (!initialWriteComplete){
         return;
     }
+    #if defined __APPLE__
+        mkdir(settingsPath.c_str(),0777);
+    #endif
     std::ofstream settingsW(settingsName);
     userPF = collectPlatformInputs();
     userSP = collectParamInputs();
