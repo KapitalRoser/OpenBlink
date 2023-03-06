@@ -18,7 +18,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Century Gothic</family>
+    <family>.Apple Color Emoji UI</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -1650,7 +1650,7 @@ border-color: lightgrey;
      <x>0</x>
      <y>0</y>
      <width>747</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">

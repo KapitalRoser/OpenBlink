@@ -2,6 +2,9 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 RC_ICONS = eye6.ico
+
+ICON = eye6.icns
+TARGET = OpenBlink
 CONFIG += c++11
 QT += multimedia
 #make sure the icon stuff works on mac too.
