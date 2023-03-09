@@ -52,13 +52,13 @@ public:
     blinkVars(region platformRegion, bool xd){
         m_interval = (platformRegion == NTSCJ) ? 4 : 5;
         if (xd){
-            m_interval = 13; //console may be higher.
+            m_interval = (platformRegion == NTSCJ) ? 8 : 13; //console may be higher.
             m_framesPer60 = 1;
         }
     }
 
     int next (u32 &seed, int framesPer60){ //these params come from external source
-        if (m_breakTime > 0){
+        if (m_breakTime > 0){ //I think that without this the formula still accounts for it?
             m_breakTime--;
             return false;
         }
