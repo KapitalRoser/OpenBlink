@@ -166,6 +166,10 @@ private slots:
 
     void on_targetSeedEntry_editingFinished();
 
+    void on_slowerButtonX5_clicked();
+
+    void on_fasterButtonX5_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -694,7 +694,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
                 }
             }
         }
-        ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFrameRate()) + "ms");
+        //ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFrameRate()) + "ms");
         break;
     default:
         QWidget::keyPressEvent(event);
@@ -769,6 +769,7 @@ void MainWindow::on_slowerButton_clicked()
         ui->arbTargetBox->clearFocus();
         nudgeCalibration(false);
     }
+    ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFrameRate()) + "ms");
 }
 
 void MainWindow::on_fasterButton_clicked()
@@ -778,6 +779,7 @@ void MainWindow::on_fasterButton_clicked()
         ui->arbTargetBox->clearFocus();
         nudgeCalibration(true);
     }
+    ui->nudgeMSLabel->setText(QString::number(float(ui->nudgeOffsetLabel->text().toInt())/userPF.getFrameRate()) + "ms");
 }
 
 
@@ -1017,5 +1019,18 @@ void MainWindow::on_targetSeedSearchButton_clicked()
     }
 }
 
+void MainWindow::on_slowerButtonX5_clicked()
+{
+    for (int x = 0; x < 5; ++x) {
+        on_slowerButton_clicked();
+    }
+}
 
+
+void MainWindow::on_fasterButtonX5_clicked()
+{
+    for (int x = 0; x < 5; ++x) {
+        on_fasterButton_clicked();
+    }
+}
 
