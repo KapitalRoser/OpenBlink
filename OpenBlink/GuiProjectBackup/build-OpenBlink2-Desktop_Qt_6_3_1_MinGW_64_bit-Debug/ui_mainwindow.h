@@ -39,9 +39,8 @@ public:
     QAction *actionSounds;
     QAction *actionTimer;
     QWidget *centralwidget;
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *BodyHoriz;
-    QVBoxLayout *verticalLayout_5;
+    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *InputsFrame;
     QFrame *platformFrame;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *gameHorizLayout;
@@ -68,6 +67,14 @@ public:
     QLabel *seedLabelEntry;
     QLineEdit *seedEntry;
     QPushButton *pasteButton;
+    QWidget *targetSeedLayoutWidget;
+    QHBoxLayout *targetSeedLayout;
+    QFrame *targetSeedQFrame;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *targetSeedLabelEntry;
+    QLineEdit *targetSeedEntry;
+    QPushButton *targetPasteButton;
+    QPushButton *targetSeedSearchButton;
     QFrame *statusFrame;
     QVBoxLayout *verticalLayout_4;
     QLabel *statusLabel;
@@ -76,13 +83,14 @@ public:
     QPushButton *copyButton;
     QFrame *timerFrame;
     QGridLayout *gridLayout;
-    QHBoxLayout *horizontalLayout;
+    QPushButton *slowerButtonX5;
     QPushButton *slowerButton;
     QLabel *nudgeOffsetLabel;
     QPushButton *fasterButton;
-    QLabel *nudgeMSLabel;
-    QLabel *TotalTimeLabel;
+    QPushButton *fasterButtonX5;
     QLabel *localTimeLabel;
+    QLabel *TotalTimeLabel;
+    QLabel *nudgeMSLabel;
     QFrame *blinkTableFrame;
     QVBoxLayout *verticalLayout;
     QLabel *label_9;
@@ -102,7 +110,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(700, 729);
+        MainWindow->resize(747, 717);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
         QFont font;
         font.setFamilies({QString::fromUtf8("Century Gothic")});
         MainWindow->setFont(font);
@@ -121,17 +134,19 @@ public:
         actionTimer->setFont(font);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        horizontalLayoutWidget = new QWidget(centralwidget);
-        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(20, 10, 661, 687));
-        BodyHoriz = new QHBoxLayout(horizontalLayoutWidget);
-        BodyHoriz->setSpacing(20);
-        BodyHoriz->setObjectName(QString::fromUtf8("BodyHoriz"));
-        BodyHoriz->setContentsMargins(10, 10, 10, 10);
-        verticalLayout_5 = new QVBoxLayout();
-        verticalLayout_5->setSpacing(20);
-        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
-        platformFrame = new QFrame(horizontalLayoutWidget);
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(centralwidget->sizePolicy().hasHeightForWidth());
+        centralwidget->setSizePolicy(sizePolicy1);
+        horizontalLayout = new QHBoxLayout(centralwidget);
+        horizontalLayout->setSpacing(25);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(20, 20, 20, 20);
+        InputsFrame = new QVBoxLayout();
+        InputsFrame->setSpacing(15);
+        InputsFrame->setObjectName(QString::fromUtf8("InputsFrame"));
+        platformFrame = new QFrame(centralwidget);
         platformFrame->setObjectName(QString::fromUtf8("platformFrame"));
         platformFrame->setStyleSheet(QString::fromUtf8("\n"
 "*{border: 5px solid white;\n"
@@ -149,11 +164,11 @@ public:
         gameHorizLayout->setObjectName(QString::fromUtf8("gameHorizLayout"));
         label_7 = new QLabel(platformFrame);
         label_7->setObjectName(QString::fromUtf8("label_7"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
-        label_7->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
+        label_7->setSizePolicy(sizePolicy2);
         label_7->setMinimumSize(QSize(74, 0));
         QFont font1;
         font1.setFamilies({QString::fromUtf8("Century Gothic")});
@@ -205,8 +220,8 @@ public:
         regionHorzLayout->setObjectName(QString::fromUtf8("regionHorzLayout"));
         label_8 = new QLabel(platformFrame);
         label_8->setObjectName(QString::fromUtf8("label_8"));
-        sizePolicy.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
-        label_8->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
+        label_8->setSizePolicy(sizePolicy2);
         label_8->setFont(font1);
 
         regionHorzLayout->addWidget(label_8);
@@ -248,9 +263,9 @@ public:
         verticalLayout_3->addLayout(regionHorzLayout);
 
 
-        verticalLayout_5->addWidget(platformFrame);
+        InputsFrame->addWidget(platformFrame);
 
-        paramsFrame = new QFrame(horizontalLayoutWidget);
+        paramsFrame = new QFrame(centralwidget);
         paramsFrame->setObjectName(QString::fromUtf8("paramsFrame"));
         paramsFrame->setStyleSheet(QString::fromUtf8("*{\n"
 "border: 5px solid white;\n"
@@ -353,11 +368,10 @@ public:
 
         label_4 = new QLabel(paramsFrame);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
-        label_4->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
+        label_4->setSizePolicy(sizePolicy);
+        label_4->setMaximumSize(QSize(35, 16777215));
+        label_4->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_7->addWidget(label_4);
 
@@ -395,17 +409,14 @@ public:
         verticalLayout_2->addLayout(horizontalLayout_7);
 
 
-        verticalLayout_5->addWidget(paramsFrame);
+        InputsFrame->addWidget(paramsFrame);
 
         centerLayout = new QHBoxLayout();
         centerLayout->setObjectName(QString::fromUtf8("centerLayout"));
-        seedQFrame = new QFrame(horizontalLayoutWidget);
+        seedQFrame = new QFrame(centralwidget);
         seedQFrame->setObjectName(QString::fromUtf8("seedQFrame"));
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(seedQFrame->sizePolicy().hasHeightForWidth());
-        seedQFrame->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(seedQFrame->sizePolicy().hasHeightForWidth());
+        seedQFrame->setSizePolicy(sizePolicy1);
         seedQFrame->setMaximumSize(QSize(16777215, 16777215));
         seedQFrame->setStyleSheet(QString::fromUtf8("\n"
 "*{\n"
@@ -422,11 +433,11 @@ public:
         horizontalLayout_2 = new QHBoxLayout(seedQFrame);
         horizontalLayout_2->setSpacing(0);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(26, 0, 0, 0);
+        horizontalLayout_2->setContentsMargins(20, 0, 0, 0);
         seedLabelEntry = new QLabel(seedQFrame);
         seedLabelEntry->setObjectName(QString::fromUtf8("seedLabelEntry"));
-        sizePolicy.setHeightForWidth(seedLabelEntry->sizePolicy().hasHeightForWidth());
-        seedLabelEntry->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(seedLabelEntry->sizePolicy().hasHeightForWidth());
+        seedLabelEntry->setSizePolicy(sizePolicy2);
         QFont font5;
         font5.setFamilies({QString::fromUtf8("Century Gothic")});
         font5.setPointSize(11);
@@ -438,11 +449,9 @@ public:
 
         seedEntry = new QLineEdit(seedQFrame);
         seedEntry->setObjectName(QString::fromUtf8("seedEntry"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(seedEntry->sizePolicy().hasHeightForWidth());
-        seedEntry->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(seedEntry->sizePolicy().hasHeightForWidth());
+        seedEntry->setSizePolicy(sizePolicy2);
+        seedEntry->setMaximumSize(QSize(100, 16777215));
         QFont font6;
         font6.setFamilies({QString::fromUtf8("Segoe UI")});
         font6.setPointSize(11);
@@ -455,11 +464,11 @@ public:
 
         pasteButton = new QPushButton(seedQFrame);
         pasteButton->setObjectName(QString::fromUtf8("pasteButton"));
-        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(pasteButton->sizePolicy().hasHeightForWidth());
-        pasteButton->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(pasteButton->sizePolicy().hasHeightForWidth());
+        pasteButton->setSizePolicy(sizePolicy3);
         pasteButton->setMinimumSize(QSize(0, 0));
         pasteButton->setMaximumSize(QSize(600, 100));
         QFont font7;
@@ -493,14 +502,127 @@ public:
 
         horizontalLayout_2->setStretch(0, 5);
         horizontalLayout_2->setStretch(1, 5);
-        horizontalLayout_2->setStretch(2, 2);
 
         centerLayout->addWidget(seedQFrame);
 
 
-        verticalLayout_5->addLayout(centerLayout);
+        InputsFrame->addLayout(centerLayout);
 
-        statusFrame = new QFrame(horizontalLayoutWidget);
+        targetSeedLayoutWidget = new QWidget(centralwidget);
+        targetSeedLayoutWidget->setObjectName(QString::fromUtf8("targetSeedLayoutWidget"));
+        targetSeedLayout = new QHBoxLayout(targetSeedLayoutWidget);
+        targetSeedLayout->setObjectName(QString::fromUtf8("targetSeedLayout"));
+        targetSeedLayout->setContentsMargins(0, 0, 0, 5);
+        targetSeedQFrame = new QFrame(targetSeedLayoutWidget);
+        targetSeedQFrame->setObjectName(QString::fromUtf8("targetSeedQFrame"));
+        targetSeedQFrame->setEnabled(true);
+        sizePolicy1.setHeightForWidth(targetSeedQFrame->sizePolicy().hasHeightForWidth());
+        targetSeedQFrame->setSizePolicy(sizePolicy1);
+        targetSeedQFrame->setMaximumSize(QSize(16777215, 16777215));
+        targetSeedQFrame->setStyleSheet(QString::fromUtf8("\n"
+"*{\n"
+"color: black;\n"
+"background-color: white;\n"
+"border-radius: 20px;\n"
+"}\n"
+"*:disabled{\n"
+"color:grey;\n"
+"font-weight:normal;}\n"
+"QLineEdit:disabled{color:grey;}"));
+        targetSeedQFrame->setFrameShape(QFrame::StyledPanel);
+        targetSeedQFrame->setFrameShadow(QFrame::Raised);
+        horizontalLayout_4 = new QHBoxLayout(targetSeedQFrame);
+        horizontalLayout_4->setSpacing(0);
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        horizontalLayout_4->setContentsMargins(20, 0, 0, 0);
+        targetSeedLabelEntry = new QLabel(targetSeedQFrame);
+        targetSeedLabelEntry->setObjectName(QString::fromUtf8("targetSeedLabelEntry"));
+        sizePolicy2.setHeightForWidth(targetSeedLabelEntry->sizePolicy().hasHeightForWidth());
+        targetSeedLabelEntry->setSizePolicy(sizePolicy2);
+        targetSeedLabelEntry->setFont(font5);
+
+        horizontalLayout_4->addWidget(targetSeedLabelEntry);
+
+        targetSeedEntry = new QLineEdit(targetSeedQFrame);
+        targetSeedEntry->setObjectName(QString::fromUtf8("targetSeedEntry"));
+        sizePolicy2.setHeightForWidth(targetSeedEntry->sizePolicy().hasHeightForWidth());
+        targetSeedEntry->setSizePolicy(sizePolicy2);
+        targetSeedEntry->setMaximumSize(QSize(100, 16777215));
+        targetSeedEntry->setFont(font6);
+        targetSeedEntry->setStyleSheet(QString::fromUtf8("padding:10px;"));
+        targetSeedEntry->setMaxLength(10);
+        targetSeedEntry->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        targetSeedEntry->setReadOnly(false);
+
+        horizontalLayout_4->addWidget(targetSeedEntry);
+
+        targetPasteButton = new QPushButton(targetSeedQFrame);
+        targetPasteButton->setObjectName(QString::fromUtf8("targetPasteButton"));
+        sizePolicy3.setHeightForWidth(targetPasteButton->sizePolicy().hasHeightForWidth());
+        targetPasteButton->setSizePolicy(sizePolicy3);
+        targetPasteButton->setMinimumSize(QSize(0, 0));
+        targetPasteButton->setMaximumSize(QSize(600, 100));
+        targetPasteButton->setFont(font7);
+        targetPasteButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:0px;\n"
+"border-top-right-radius:20px;\n"
+"border-bottom-right-radius:20px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+
+        horizontalLayout_4->addWidget(targetPasteButton);
+
+        horizontalLayout_4->setStretch(0, 5);
+        horizontalLayout_4->setStretch(1, 5);
+        horizontalLayout_4->setStretch(2, 2);
+
+        targetSeedLayout->addWidget(targetSeedQFrame);
+
+        targetSeedSearchButton = new QPushButton(targetSeedLayoutWidget);
+        targetSeedSearchButton->setObjectName(QString::fromUtf8("targetSeedSearchButton"));
+        targetSeedSearchButton->setEnabled(false);
+        sizePolicy1.setHeightForWidth(targetSeedSearchButton->sizePolicy().hasHeightForWidth());
+        targetSeedSearchButton->setSizePolicy(sizePolicy1);
+        targetSeedSearchButton->setMaximumSize(QSize(16777215, 42));
+        targetSeedSearchButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:20px;\n"
+"padding: 15px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+
+        targetSeedLayout->addWidget(targetSeedSearchButton);
+
+
+        InputsFrame->addWidget(targetSeedLayoutWidget);
+
+        statusFrame = new QFrame(centralwidget);
         statusFrame->setObjectName(QString::fromUtf8("statusFrame"));
         statusFrame->setFont(font);
         statusFrame->setStyleSheet(QString::fromUtf8("color: black;\n"
@@ -533,8 +655,11 @@ public:
         horizontalLayout_5->setSizeConstraint(QLayout::SetFixedSize);
         startButton = new QPushButton(statusFrame);
         startButton->setObjectName(QString::fromUtf8("startButton"));
-        sizePolicy1.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
-        startButton->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
+        startButton->setSizePolicy(sizePolicy4);
         startButton->setFont(font1);
         startButton->setStyleSheet(QString::fromUtf8("QPushButton{\n"
 "background-color: #004080;\n"
@@ -561,8 +686,8 @@ public:
 
         copyButton = new QPushButton(statusFrame);
         copyButton->setObjectName(QString::fromUtf8("copyButton"));
-        sizePolicy1.setHeightForWidth(copyButton->sizePolicy().hasHeightForWidth());
-        copyButton->setSizePolicy(sizePolicy1);
+        sizePolicy4.setHeightForWidth(copyButton->sizePolicy().hasHeightForWidth());
+        copyButton->setSizePolicy(sizePolicy4);
         copyButton->setStyleSheet(QString::fromUtf8("QPushButton{\n"
 "background-color: #004080;\n"
 "font: 11pt \"Century Gothic\";\n"
@@ -592,11 +717,13 @@ public:
         verticalLayout_4->addLayout(horizontalLayout_5);
 
 
-        verticalLayout_5->addWidget(statusFrame);
+        InputsFrame->addWidget(statusFrame);
 
-        timerFrame = new QFrame(horizontalLayoutWidget);
+        timerFrame = new QFrame(centralwidget);
         timerFrame->setObjectName(QString::fromUtf8("timerFrame"));
         timerFrame->setEnabled(false);
+        sizePolicy.setHeightForWidth(timerFrame->sizePolicy().hasHeightForWidth());
+        timerFrame->setSizePolicy(sizePolicy);
         timerFrame->setAutoFillBackground(false);
         timerFrame->setStyleSheet(QString::fromUtf8("*{border: 5px solid white;\n"
 "font: \"Century Gothic\";\n"
@@ -610,18 +737,39 @@ public:
         timerFrame->setFrameShape(QFrame::StyledPanel);
         timerFrame->setFrameShadow(QFrame::Raised);
         gridLayout = new QGridLayout(timerFrame);
+        gridLayout->setSpacing(0);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setSpacing(0);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        slowerButtonX5 = new QPushButton(timerFrame);
+        slowerButtonX5->setObjectName(QString::fromUtf8("slowerButtonX5"));
+        sizePolicy.setHeightForWidth(slowerButtonX5->sizePolicy().hasHeightForWidth());
+        slowerButtonX5->setSizePolicy(sizePolicy);
+        slowerButtonX5->setMinimumSize(QSize(90, 0));
+        slowerButtonX5->setFont(font7);
+        slowerButtonX5->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:18px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+
+        gridLayout->addWidget(slowerButtonX5, 2, 0, 1, 1);
+
         slowerButton = new QPushButton(timerFrame);
         slowerButton->setObjectName(QString::fromUtf8("slowerButton"));
-        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(slowerButton->sizePolicy().hasHeightForWidth());
-        slowerButton->setSizePolicy(sizePolicy5);
-        slowerButton->setMinimumSize(QSize(115, 0));
+        sizePolicy.setHeightForWidth(slowerButton->sizePolicy().hasHeightForWidth());
+        slowerButton->setSizePolicy(sizePolicy);
+        slowerButton->setMinimumSize(QSize(90, 0));
         slowerButton->setFont(font7);
         slowerButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
@@ -641,12 +789,12 @@ public:
 "color:grey;\n"
 "}"));
 
-        horizontalLayout->addWidget(slowerButton);
+        gridLayout->addWidget(slowerButton, 2, 1, 1, 1);
 
         nudgeOffsetLabel = new QLabel(timerFrame);
         nudgeOffsetLabel->setObjectName(QString::fromUtf8("nudgeOffsetLabel"));
-        sizePolicy5.setHeightForWidth(nudgeOffsetLabel->sizePolicy().hasHeightForWidth());
-        nudgeOffsetLabel->setSizePolicy(sizePolicy5);
+        sizePolicy.setHeightForWidth(nudgeOffsetLabel->sizePolicy().hasHeightForWidth());
+        nudgeOffsetLabel->setSizePolicy(sizePolicy);
         nudgeOffsetLabel->setMinimumSize(QSize(40, 0));
         QFont font9;
         font9.setFamilies({QString::fromUtf8("Century Gothic")});
@@ -655,13 +803,13 @@ public:
         nudgeOffsetLabel->setFont(font9);
         nudgeOffsetLabel->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout->addWidget(nudgeOffsetLabel);
+        gridLayout->addWidget(nudgeOffsetLabel, 2, 2, 1, 1);
 
         fasterButton = new QPushButton(timerFrame);
         fasterButton->setObjectName(QString::fromUtf8("fasterButton"));
-        sizePolicy5.setHeightForWidth(fasterButton->sizePolicy().hasHeightForWidth());
-        fasterButton->setSizePolicy(sizePolicy5);
-        fasterButton->setMinimumSize(QSize(115, 0));
+        sizePolicy.setHeightForWidth(fasterButton->sizePolicy().hasHeightForWidth());
+        fasterButton->setSizePolicy(sizePolicy);
+        fasterButton->setMinimumSize(QSize(85, 0));
         fasterButton->setFont(font7);
         fasterButton->setAutoFillBackground(false);
         fasterButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
@@ -682,41 +830,65 @@ public:
 "color:grey;\n"
 "}"));
 
-        horizontalLayout->addWidget(fasterButton);
+        gridLayout->addWidget(fasterButton, 2, 3, 1, 1);
 
+        fasterButtonX5 = new QPushButton(timerFrame);
+        fasterButtonX5->setObjectName(QString::fromUtf8("fasterButtonX5"));
+        sizePolicy.setHeightForWidth(fasterButtonX5->sizePolicy().hasHeightForWidth());
+        fasterButtonX5->setSizePolicy(sizePolicy);
+        fasterButtonX5->setMinimumSize(QSize(70, 0));
+        fasterButtonX5->setFont(font7);
+        fasterButtonX5->setAutoFillBackground(false);
+        fasterButtonX5->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:18px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
 
-        gridLayout->addLayout(horizontalLayout, 2, 0, 1, 3);
-
-        nudgeMSLabel = new QLabel(timerFrame);
-        nudgeMSLabel->setObjectName(QString::fromUtf8("nudgeMSLabel"));
-        nudgeMSLabel->setFont(font9);
-        nudgeMSLabel->setAlignment(Qt::AlignCenter);
-
-        gridLayout->addWidget(nudgeMSLabel, 0, 2, 1, 1);
-
-        TotalTimeLabel = new QLabel(timerFrame);
-        TotalTimeLabel->setObjectName(QString::fromUtf8("TotalTimeLabel"));
-        TotalTimeLabel->setFont(font2);
-
-        gridLayout->addWidget(TotalTimeLabel, 0, 0, 1, 1);
+        gridLayout->addWidget(fasterButtonX5, 2, 4, 1, 1);
 
         localTimeLabel = new QLabel(timerFrame);
         localTimeLabel->setObjectName(QString::fromUtf8("localTimeLabel"));
         localTimeLabel->setFont(font9);
 
-        gridLayout->addWidget(localTimeLabel, 1, 0, 1, 1);
+        gridLayout->addWidget(localTimeLabel, 1, 0, 1, 5);
+
+        TotalTimeLabel = new QLabel(timerFrame);
+        TotalTimeLabel->setObjectName(QString::fromUtf8("TotalTimeLabel"));
+        TotalTimeLabel->setFont(font2);
+
+        gridLayout->addWidget(TotalTimeLabel, 0, 0, 1, 3);
+
+        nudgeMSLabel = new QLabel(timerFrame);
+        nudgeMSLabel->setObjectName(QString::fromUtf8("nudgeMSLabel"));
+        nudgeMSLabel->setFont(font9);
+        nudgeMSLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout->addWidget(nudgeMSLabel, 0, 3, 1, 2);
 
 
-        verticalLayout_5->addWidget(timerFrame);
+        InputsFrame->addWidget(timerFrame);
 
-        verticalLayout_5->setStretch(0, 2);
-        verticalLayout_5->setStretch(1, 2);
-        verticalLayout_5->setStretch(3, 2);
-        verticalLayout_5->setStretch(4, 3);
+        InputsFrame->setStretch(0, 3);
+        InputsFrame->setStretch(1, 3);
+        InputsFrame->setStretch(4, 3);
+        InputsFrame->setStretch(5, 5);
 
-        BodyHoriz->addLayout(verticalLayout_5);
+        horizontalLayout->addLayout(InputsFrame);
 
-        blinkTableFrame = new QFrame(horizontalLayoutWidget);
+        blinkTableFrame = new QFrame(centralwidget);
         blinkTableFrame->setObjectName(QString::fromUtf8("blinkTableFrame"));
         sizePolicy.setHeightForWidth(blinkTableFrame->sizePolicy().hasHeightForWidth());
         blinkTableFrame->setSizePolicy(sizePolicy);
@@ -745,11 +917,11 @@ public:
         seeInputButton = new QPushButton(blinkTableFrame);
         seeInputButton->setObjectName(QString::fromUtf8("seeInputButton"));
         seeInputButton->setEnabled(false);
-        QSizePolicy sizePolicy6(QSizePolicy::Maximum, QSizePolicy::Preferred);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(seeInputButton->sizePolicy().hasHeightForWidth());
-        seeInputButton->setSizePolicy(sizePolicy6);
+        QSizePolicy sizePolicy5(QSizePolicy::Maximum, QSizePolicy::Preferred);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(seeInputButton->sizePolicy().hasHeightForWidth());
+        seeInputButton->setSizePolicy(sizePolicy5);
         seeInputButton->setMinimumSize(QSize(210, 40));
         seeInputButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
@@ -773,8 +945,8 @@ public:
 
         frame = new QFrame(blinkTableFrame);
         frame->setObjectName(QString::fromUtf8("frame"));
-        sizePolicy5.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
-        frame->setSizePolicy(sizePolicy5);
+        sizePolicy.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
+        frame->setSizePolicy(sizePolicy);
         frame->setMinimumSize(QSize(0, 465));
         frame->setFrameShape(QFrame::NoFrame);
         frame->setFrameShadow(QFrame::Plain);
@@ -782,6 +954,8 @@ public:
         outTable = new QTableWidget(frame);
         outTable->setObjectName(QString::fromUtf8("outTable"));
         outTable->setGeometry(QRect(0, 9, 210, 451));
+        sizePolicy1.setHeightForWidth(outTable->sizePolicy().hasHeightForWidth());
+        outTable->setSizePolicy(sizePolicy1);
         outTable->setFrameShape(QFrame::NoFrame);
         outTable->setFrameShadow(QFrame::Plain);
         outTable->setLineWidth(0);
@@ -796,8 +970,8 @@ public:
         increaseBlinksButton = new QPushButton(blinkTableFrame);
         increaseBlinksButton->setObjectName(QString::fromUtf8("increaseBlinksButton"));
         increaseBlinksButton->setEnabled(false);
-        sizePolicy1.setHeightForWidth(increaseBlinksButton->sizePolicy().hasHeightForWidth());
-        increaseBlinksButton->setSizePolicy(sizePolicy1);
+        sizePolicy4.setHeightForWidth(increaseBlinksButton->sizePolicy().hasHeightForWidth());
+        increaseBlinksButton->setSizePolicy(sizePolicy4);
         increaseBlinksButton->setMinimumSize(QSize(0, 40));
         increaseBlinksButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
@@ -838,11 +1012,11 @@ public:
 
         arbTargetBox = new QSpinBox(blinkTableFrame);
         arbTargetBox->setObjectName(QString::fromUtf8("arbTargetBox"));
-        QSizePolicy sizePolicy7(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(arbTargetBox->sizePolicy().hasHeightForWidth());
-        arbTargetBox->setSizePolicy(sizePolicy7);
+        QSizePolicy sizePolicy6(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(arbTargetBox->sizePolicy().hasHeightForWidth());
+        arbTargetBox->setSizePolicy(sizePolicy6);
         arbTargetBox->setMinimumSize(QSize(0, 30));
         QFont font11;
         font11.setFamilies({QString::fromUtf8("Century Gothic")});
@@ -873,7 +1047,7 @@ public:
 "}"));
         arbTargetBox->setAlignment(Qt::AlignCenter);
         arbTargetBox->setMinimum(1);
-        arbTargetBox->setMaximum(1000);
+        arbTargetBox->setMaximum(2147483647);
         arbTargetBox->setValue(15);
 
         arbTargetLayout->addWidget(arbTargetBox);
@@ -887,15 +1061,17 @@ public:
 
         verticalLayout->addLayout(arbTargetLayout);
 
+        verticalLayout->setStretch(0, 2);
+        verticalLayout->setStretch(1, 2);
+        verticalLayout->setStretch(3, 6);
+        verticalLayout->setStretch(4, 2);
 
-        BodyHoriz->addWidget(blinkTableFrame);
+        horizontalLayout->addWidget(blinkTableFrame);
 
-        BodyHoriz->setStretch(0, 1);
-        BodyHoriz->setStretch(1, 3);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 700, 27));
+        menubar->setGeometry(QRect(0, 0, 747, 20));
         menuSettings = new QMenu(menubar);
         menuSettings->setObjectName(QString::fromUtf8("menuSettings"));
         MainWindow->setMenuBar(menubar);
@@ -934,18 +1110,24 @@ public:
         label_5->setText(QCoreApplication::translate("MainWindow", "Search from:", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "~", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Advances", nullptr));
-        seedLabelEntry->setText(QCoreApplication::translate("MainWindow", "Seed:", nullptr));
+        seedLabelEntry->setText(QCoreApplication::translate("MainWindow", "Starting Seed:", nullptr));
         seedEntry->setText(QCoreApplication::translate("MainWindow", "DEADBEEF", nullptr));
         pasteButton->setText(QCoreApplication::translate("MainWindow", "Paste", nullptr));
+        targetSeedLabelEntry->setText(QCoreApplication::translate("MainWindow", "Target Seed:", nullptr));
+        targetSeedEntry->setText(QCoreApplication::translate("MainWindow", "(optional)", nullptr));
+        targetPasteButton->setText(QCoreApplication::translate("MainWindow", "Paste", nullptr));
+        targetSeedSearchButton->setText(QCoreApplication::translate("MainWindow", "Search \360\237\224\216\357\270\216", nullptr));
         statusLabel->setText(QCoreApplication::translate("MainWindow", "STATUS", nullptr));
         startButton->setText(QCoreApplication::translate("MainWindow", "START", nullptr));
         copyButton->setText(QCoreApplication::translate("MainWindow", "Copy", nullptr));
+        slowerButtonX5->setText(QCoreApplication::translate("MainWindow", "\342\206\220  +5", nullptr));
         slowerButton->setText(QCoreApplication::translate("MainWindow", "\342\206\220  Slower", nullptr));
         nudgeOffsetLabel->setText(QCoreApplication::translate("MainWindow", "0", nullptr));
         fasterButton->setText(QCoreApplication::translate("MainWindow", "Faster \342\206\222", nullptr));
-        nudgeMSLabel->setText(QCoreApplication::translate("MainWindow", "+0f", nullptr));
-        TotalTimeLabel->setText(QCoreApplication::translate("MainWindow", "TIME REMAINING:", nullptr));
+        fasterButtonX5->setText(QCoreApplication::translate("MainWindow", "-5 \342\206\222", nullptr));
         localTimeLabel->setText(QCoreApplication::translate("MainWindow", "Next blink:", nullptr));
+        TotalTimeLabel->setText(QCoreApplication::translate("MainWindow", "TIME REMAINING:", nullptr));
+        nudgeMSLabel->setText(QCoreApplication::translate("MainWindow", "+0f", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "Blinks", nullptr));
         seeInputButton->setText(QCoreApplication::translate("MainWindow", "\342\206\221 See inputs", nullptr));
         increaseBlinksButton->setText(QCoreApplication::translate("MainWindow", "Add 10 more blinks", nullptr));

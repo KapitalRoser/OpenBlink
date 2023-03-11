@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_HotkeysDialogue_t {
     const uint offsetsAndSize[8];
-    char stringdata0[58];
+    char stringdata0[61];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_HotkeysDialogue_t, stringdata0) + ofs), len 
@@ -32,11 +32,11 @@ static const qt_meta_stringdata_HotkeysDialogue_t qt_meta_stringdata_HotkeysDial
 QT_MOC_LITERAL(0, 15), // "HotkeysDialogue"
 QT_MOC_LITERAL(16, 13), // "input_clicked"
 QT_MOC_LITERAL(30, 0), // ""
-QT_MOC_LITERAL(31, 26) // "defaultResetButton_clicked"
+QT_MOC_LITERAL(31, 29) // "on_defaultResetButton_clicked"
 
     },
     "HotkeysDialogue\0input_clicked\0\0"
-    "defaultResetButton_clicked"
+    "on_defaultResetButton_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,7 +71,7 @@ void HotkeysDialogue::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         (void)_t;
         switch (_id) {
         case 0: _t->input_clicked(); break;
-        case 1: _t->defaultResetButton_clicked(); break;
+        case 1: _t->on_defaultResetButton_clicked(); break;
         default: ;
         }
     }

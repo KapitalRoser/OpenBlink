@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpinBox>
@@ -24,41 +25,63 @@ class Ui_timerSettingsDialogue
 {
 public:
     QGridLayout *gridLayout;
-    QSpinBox *exitIntervalBox;
-    QSpinBox *exitInputBox;
-    QDialogButtonBox *buttonBox;
-    QLabel *label_7;
-    QLabel *label_6;
-    QLabel *label;
-    QLabel *label_8;
-    QSpinBox *exitOffsetBox;
     QSpinBox *exitBeepsBox;
+    QSpinBox *exitOffsetBox;
+    QLabel *label_6;
+    QLabel *label_8;
+    QLabel *label_7;
+    QSpinBox *exitIntervalBox;
+    QDialogButtonBox *buttonBox;
+    QSpinBox *exitInputBox;
+    QLabel *label;
+    QFrame *line;
 
     void setupUi(QDialog *timerSettingsDialogue)
     {
         if (timerSettingsDialogue->objectName().isEmpty())
             timerSettingsDialogue->setObjectName(QString::fromUtf8("timerSettingsDialogue"));
-        timerSettingsDialogue->resize(428, 208);
+        timerSettingsDialogue->resize(297, 208);
         QFont font;
         font.setFamilies({QString::fromUtf8("Century Gothic")});
         timerSettingsDialogue->setFont(font);
         gridLayout = new QGridLayout(timerSettingsDialogue);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setVerticalSpacing(3);
+        exitBeepsBox = new QSpinBox(timerSettingsDialogue);
+        exitBeepsBox->setObjectName(QString::fromUtf8("exitBeepsBox"));
+        exitBeepsBox->setMaximum(10000);
+        exitBeepsBox->setValue(5);
+
+        gridLayout->addWidget(exitBeepsBox, 2, 1, 1, 1);
+
+        exitOffsetBox = new QSpinBox(timerSettingsDialogue);
+        exitOffsetBox->setObjectName(QString::fromUtf8("exitOffsetBox"));
+        exitOffsetBox->setMaximum(10000000);
+        exitOffsetBox->setValue(5000);
+
+        gridLayout->addWidget(exitOffsetBox, 0, 1, 1, 1);
+
+        label_6 = new QLabel(timerSettingsDialogue);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+
+        gridLayout->addWidget(label_6, 0, 0, 1, 1);
+
+        label_8 = new QLabel(timerSettingsDialogue);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        gridLayout->addWidget(label_8, 2, 0, 1, 1);
+
+        label_7 = new QLabel(timerSettingsDialogue);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        gridLayout->addWidget(label_7, 1, 0, 1, 1);
+
         exitIntervalBox = new QSpinBox(timerSettingsDialogue);
         exitIntervalBox->setObjectName(QString::fromUtf8("exitIntervalBox"));
         exitIntervalBox->setMaximum(100000);
         exitIntervalBox->setValue(500);
 
         gridLayout->addWidget(exitIntervalBox, 1, 1, 1, 1);
-
-        exitInputBox = new QSpinBox(timerSettingsDialogue);
-        exitInputBox->setObjectName(QString::fromUtf8("exitInputBox"));
-        exitInputBox->setMinimum(-10000);
-        exitInputBox->setMaximum(10000);
-        exitInputBox->setValue(0);
-
-        gridLayout->addWidget(exitInputBox, 3, 1, 1, 1);
 
         buttonBox = new QDialogButtonBox(timerSettingsDialogue);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
@@ -90,41 +113,27 @@ public:
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults);
         buttonBox->setCenterButtons(false);
 
-        gridLayout->addWidget(buttonBox, 4, 0, 1, 2);
+        gridLayout->addWidget(buttonBox, 5, 0, 1, 2);
 
-        label_7 = new QLabel(timerSettingsDialogue);
-        label_7->setObjectName(QString::fromUtf8("label_7"));
+        exitInputBox = new QSpinBox(timerSettingsDialogue);
+        exitInputBox->setObjectName(QString::fromUtf8("exitInputBox"));
+        exitInputBox->setMinimum(-10000);
+        exitInputBox->setMaximum(10000);
+        exitInputBox->setValue(0);
 
-        gridLayout->addWidget(label_7, 1, 0, 1, 1);
-
-        label_6 = new QLabel(timerSettingsDialogue);
-        label_6->setObjectName(QString::fromUtf8("label_6"));
-
-        gridLayout->addWidget(label_6, 0, 0, 1, 1);
+        gridLayout->addWidget(exitInputBox, 4, 1, 1, 1);
 
         label = new QLabel(timerSettingsDialogue);
         label->setObjectName(QString::fromUtf8("label"));
 
-        gridLayout->addWidget(label, 3, 0, 1, 1);
+        gridLayout->addWidget(label, 4, 0, 1, 1);
 
-        label_8 = new QLabel(timerSettingsDialogue);
-        label_8->setObjectName(QString::fromUtf8("label_8"));
+        line = new QFrame(timerSettingsDialogue);
+        line->setObjectName(QString::fromUtf8("line"));
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
 
-        gridLayout->addWidget(label_8, 2, 0, 1, 1);
-
-        exitOffsetBox = new QSpinBox(timerSettingsDialogue);
-        exitOffsetBox->setObjectName(QString::fromUtf8("exitOffsetBox"));
-        exitOffsetBox->setMaximum(10000000);
-        exitOffsetBox->setValue(5000);
-
-        gridLayout->addWidget(exitOffsetBox, 0, 1, 1, 1);
-
-        exitBeepsBox = new QSpinBox(timerSettingsDialogue);
-        exitBeepsBox->setObjectName(QString::fromUtf8("exitBeepsBox"));
-        exitBeepsBox->setMaximum(10000);
-        exitBeepsBox->setValue(5);
-
-        gridLayout->addWidget(exitBeepsBox, 2, 1, 1, 1);
+        gridLayout->addWidget(line, 3, 0, 1, 2);
 
 
         retranslateUi(timerSettingsDialogue);
@@ -137,10 +146,10 @@ public:
     void retranslateUi(QDialog *timerSettingsDialogue)
     {
         timerSettingsDialogue->setWindowTitle(QCoreApplication::translate("timerSettingsDialogue", "Dialog", nullptr));
-        label_7->setText(QCoreApplication::translate("timerSettingsDialogue", "Beeps occur in intervals of: (ms)", nullptr));
         label_6->setText(QCoreApplication::translate("timerSettingsDialogue", "Countdown begins at: (ms) ", nullptr));
-        label->setText(QCoreApplication::translate("timerSettingsDialogue", "Exit Input Offset: (frames)", nullptr));
         label_8->setText(QCoreApplication::translate("timerSettingsDialogue", "Total # of beeps:", nullptr));
+        label_7->setText(QCoreApplication::translate("timerSettingsDialogue", "Beeps occur in intervals of: (ms)", nullptr));
+        label->setText(QCoreApplication::translate("timerSettingsDialogue", "Exit Offset: (frames)", nullptr));
     } // retranslateUi
 
 };

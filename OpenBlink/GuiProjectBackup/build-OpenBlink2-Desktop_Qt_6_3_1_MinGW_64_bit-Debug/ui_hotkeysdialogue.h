@@ -28,21 +28,25 @@ public:
     QDialogButtonBox *buttonBox;
     QWidget *layoutWidget;
     QGridLayout *inputGrid;
-    QLabel *label_13;
-    QPushButton *slowerKeyButton;
+    QPushButton *fasterx5KeyButton;
+    QLabel *label_11;
+    QLabel *label_14;
+    QPushButton *slowerx5KeyButton;
     QLabel *label_10;
+    QPushButton *fasterKeyButton;
+    QLabel *label_13;
+    QPushButton *defaultResetButton;
+    QPushButton *slowerKeyButton;
     QLabel *label_12;
     QPushButton *blinkKeyButton;
     QPushButton *startStopKeyButton;
-    QPushButton *defaultResetButton;
-    QPushButton *fasterKeyButton;
-    QLabel *label_11;
+    QLabel *label_15;
 
     void setupUi(QDialog *HotkeysDialogue)
     {
         if (HotkeysDialogue->objectName().isEmpty())
             HotkeysDialogue->setObjectName(QString::fromUtf8("HotkeysDialogue"));
-        HotkeysDialogue->resize(332, 376);
+        HotkeysDialogue->resize(332, 448);
         QFont font;
         font.setFamilies({QString::fromUtf8("Century Gothic")});
         HotkeysDialogue->setFont(font);
@@ -56,7 +60,7 @@ public:
         label_9->setSizePolicy(sizePolicy);
         buttonBox = new QDialogButtonBox(HotkeysDialogue);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(150, 320, 169, 35));
+        buttonBox->setGeometry(QRect(150, 390, 169, 35));
         buttonBox->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
 "font: 9pt \"Century Gothic\";\n"
 "color: white;\n"
@@ -79,14 +83,124 @@ public:
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         layoutWidget = new QWidget(HotkeysDialogue);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(40, 50, 261, 248));
+        layoutWidget->setGeometry(QRect(40, 50, 261, 325));
         inputGrid = new QGridLayout(layoutWidget);
         inputGrid->setObjectName(QString::fromUtf8("inputGrid"));
         inputGrid->setContentsMargins(0, 0, 0, 0);
+        fasterx5KeyButton = new QPushButton(layoutWidget);
+        fasterx5KeyButton->setObjectName(QString::fromUtf8("fasterx5KeyButton"));
+        fasterx5KeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+        fasterx5KeyButton->setCheckable(true);
+
+        inputGrid->addWidget(fasterx5KeyButton, 4, 1, 1, 1);
+
+        label_11 = new QLabel(layoutWidget);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        inputGrid->addWidget(label_11, 1, 0, 1, 1);
+
+        label_14 = new QLabel(layoutWidget);
+        label_14->setObjectName(QString::fromUtf8("label_14"));
+
+        inputGrid->addWidget(label_14, 4, 0, 1, 1);
+
+        slowerx5KeyButton = new QPushButton(layoutWidget);
+        slowerx5KeyButton->setObjectName(QString::fromUtf8("slowerx5KeyButton"));
+        slowerx5KeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+        slowerx5KeyButton->setCheckable(true);
+
+        inputGrid->addWidget(slowerx5KeyButton, 2, 1, 1, 1);
+
+        label_10 = new QLabel(layoutWidget);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        inputGrid->addWidget(label_10, 0, 0, 1, 1);
+
+        fasterKeyButton = new QPushButton(layoutWidget);
+        fasterKeyButton->setObjectName(QString::fromUtf8("fasterKeyButton"));
+        fasterKeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+        fasterKeyButton->setCheckable(true);
+
+        inputGrid->addWidget(fasterKeyButton, 3, 1, 1, 1);
+
         label_13 = new QLabel(layoutWidget);
         label_13->setObjectName(QString::fromUtf8("label_13"));
 
-        inputGrid->addWidget(label_13, 3, 0, 1, 1);
+        inputGrid->addWidget(label_13, 5, 0, 1, 1);
+
+        defaultResetButton = new QPushButton(layoutWidget);
+        defaultResetButton->setObjectName(QString::fromUtf8("defaultResetButton"));
+        defaultResetButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
+"font: 9pt \"Century Gothic\";\n"
+"color: white;\n"
+"font-weight: bold;\n"
+"border-radius:12px;\n"
+"padding:10px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #265d93;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #004080;\n"
+"}\n"
+"QPushButton:disabled{\n"
+"background-color:#e0e0e0;\n"
+"font-weight:normal;\n"
+"color:grey;\n"
+"}"));
+
+        inputGrid->addWidget(defaultResetButton, 6, 0, 1, 2);
 
         slowerKeyButton = new QPushButton(layoutWidget);
         slowerKeyButton->setObjectName(QString::fromUtf8("slowerKeyButton"));
@@ -112,15 +226,10 @@ public:
 
         inputGrid->addWidget(slowerKeyButton, 1, 1, 1, 1);
 
-        label_10 = new QLabel(layoutWidget);
-        label_10->setObjectName(QString::fromUtf8("label_10"));
-
-        inputGrid->addWidget(label_10, 0, 0, 1, 1);
-
         label_12 = new QLabel(layoutWidget);
         label_12->setObjectName(QString::fromUtf8("label_12"));
 
-        inputGrid->addWidget(label_12, 2, 0, 1, 1);
+        inputGrid->addWidget(label_12, 3, 0, 1, 1);
 
         blinkKeyButton = new QPushButton(layoutWidget);
         blinkKeyButton->setObjectName(QString::fromUtf8("blinkKeyButton"));
@@ -168,59 +277,12 @@ public:
 "}"));
         startStopKeyButton->setCheckable(true);
 
-        inputGrid->addWidget(startStopKeyButton, 3, 1, 1, 1);
+        inputGrid->addWidget(startStopKeyButton, 5, 1, 1, 1);
 
-        defaultResetButton = new QPushButton(layoutWidget);
-        defaultResetButton->setObjectName(QString::fromUtf8("defaultResetButton"));
-        defaultResetButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
-"font: 9pt \"Century Gothic\";\n"
-"color: white;\n"
-"font-weight: bold;\n"
-"border-radius:12px;\n"
-"padding:10px;\n"
-"}\n"
-"QPushButton:hover{\n"
-"background-color: #265d93;\n"
-"}\n"
-"QPushButton:pressed{\n"
-"background-color: #004080;\n"
-"}\n"
-"QPushButton:disabled{\n"
-"background-color:#e0e0e0;\n"
-"font-weight:normal;\n"
-"color:grey;\n"
-"}"));
+        label_15 = new QLabel(layoutWidget);
+        label_15->setObjectName(QString::fromUtf8("label_15"));
 
-        inputGrid->addWidget(defaultResetButton, 4, 0, 1, 2);
-
-        fasterKeyButton = new QPushButton(layoutWidget);
-        fasterKeyButton->setObjectName(QString::fromUtf8("fasterKeyButton"));
-        fasterKeyButton->setStyleSheet(QString::fromUtf8("QPushButton{background-color: #004080;\n"
-"font: 9pt \"Century Gothic\";\n"
-"color: white;\n"
-"font-weight: bold;\n"
-"border-radius:12px;\n"
-"padding:10px;\n"
-"}\n"
-"QPushButton:hover{\n"
-"background-color: #265d93;\n"
-"}\n"
-"QPushButton:pressed{\n"
-"background-color: #004080;\n"
-"}\n"
-"QPushButton:disabled{\n"
-"background-color:#e0e0e0;\n"
-"font-weight:normal;\n"
-"color:grey;\n"
-"}"));
-        fasterKeyButton->setCheckable(true);
-
-        inputGrid->addWidget(fasterKeyButton, 2, 1, 1, 1);
-
-        label_11 = new QLabel(layoutWidget);
-        label_11->setObjectName(QString::fromUtf8("label_11"));
-
-        inputGrid->addWidget(label_11, 1, 0, 1, 1);
+        inputGrid->addWidget(label_15, 2, 0, 1, 1);
 
 
         retranslateUi(HotkeysDialogue);
@@ -234,15 +296,19 @@ public:
     {
         HotkeysDialogue->setWindowTitle(QCoreApplication::translate("HotkeysDialogue", "Dialog", nullptr));
         label_9->setText(QCoreApplication::translate("HotkeysDialogue", "Change Hotkeys:", nullptr));
-        label_13->setText(QCoreApplication::translate("HotkeysDialogue", "Start/Stop", nullptr));
-        slowerKeyButton->setText(QCoreApplication::translate("HotkeysDialogue", "Left Arrow", nullptr));
-        label_10->setText(QCoreApplication::translate("HotkeysDialogue", "Enter blink", nullptr));
-        label_12->setText(QCoreApplication::translate("HotkeysDialogue", "Faster (\342\206\222 )", nullptr));
-        blinkKeyButton->setText(QCoreApplication::translate("HotkeysDialogue", "Shift", nullptr));
-        startStopKeyButton->setText(QCoreApplication::translate("HotkeysDialogue", "Enter", nullptr));
-        defaultResetButton->setText(QCoreApplication::translate("HotkeysDialogue", "Reset to Defaults", nullptr));
-        fasterKeyButton->setText(QCoreApplication::translate("HotkeysDialogue", "Right Arrow", nullptr));
+        fasterx5KeyButton->setText(QString());
         label_11->setText(QCoreApplication::translate("HotkeysDialogue", "Slower (\342\206\220 )", nullptr));
+        label_14->setText(QCoreApplication::translate("HotkeysDialogue", "Faster x 5", nullptr));
+        slowerx5KeyButton->setText(QString());
+        label_10->setText(QCoreApplication::translate("HotkeysDialogue", "Enter blink", nullptr));
+        fasterKeyButton->setText(QString());
+        label_13->setText(QCoreApplication::translate("HotkeysDialogue", "Start/Stop", nullptr));
+        defaultResetButton->setText(QCoreApplication::translate("HotkeysDialogue", "Reset to Defaults", nullptr));
+        slowerKeyButton->setText(QString());
+        label_12->setText(QCoreApplication::translate("HotkeysDialogue", "Faster (\342\206\222 )", nullptr));
+        blinkKeyButton->setText(QString());
+        startStopKeyButton->setText(QString());
+        label_15->setText(QCoreApplication::translate("HotkeysDialogue", "Slower x 5", nullptr));
     } // retranslateUi
 
 };
