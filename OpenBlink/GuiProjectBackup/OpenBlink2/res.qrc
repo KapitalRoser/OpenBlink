@@ -10,5 +10,7 @@
         <file>sign-warning-icon.png</file>
         <file>eye6.png</file>
         <file>eye6.ico</file>
+        <file>jpn.qm</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

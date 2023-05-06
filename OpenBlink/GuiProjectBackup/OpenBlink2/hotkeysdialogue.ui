@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Hotkey Settings</string>
   </property>
   <widget class="QLabel" name="label_9">
    <property name="geometry">

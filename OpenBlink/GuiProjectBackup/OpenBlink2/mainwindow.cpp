@@ -40,11 +40,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->arbTargetBox->installEventFilter(this);
-    QAction *logAction = ui->menubar->addAction("Log");
+    QAction *logAction = ui->menubar->addAction(tr("Log"));
     connect(logAction,&QAction::triggered,this,&MainWindow::on_actionLog_triggered);
-    QAction *githubAction = ui->menubar->addAction("GitHub");
+    QAction *githubAction = ui->menubar->addAction(tr("GitHub"));
     connect(githubAction,&QAction::triggered,this,&MainWindow::on_actionGithub_triggered);
-    QAction *helpAction = ui->menubar->addAction("Help");
+    QAction *helpAction = ui->menubar->addAction(tr("Help"));
     connect(helpAction,&QAction::triggered,this,&MainWindow::on_actionHelp_triggered);
     std::queue<QDropShadow> shadowSet;
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
@@ -133,6 +133,9 @@ searchParameters MainWindow::collectParamInputs()
 
 void MainWindow::writeAllSettings(){
     //this is kinda inefficient, as it get's called every time the user changes a value. But not sure how else to do it. Maybe on window exit only?
+
+    //Add language setting?
+
     if (!initialWriteComplete){
         return;
     }
@@ -244,6 +247,7 @@ QString MainWindow::createLog()
     //Therefore can even avoid writing to file, and keep log in ram.
 
     //First platform and parameter data
+    //yeah... this isn't getting localized. Only useful for me anyways.
     QString logAdd;
     logAdd = "ENTRY____\n";
     logAdd += "GAME: " + QString::number(userPF.getXD()) + " emu? " + QString::number(userPF.getEmu5()) + " Region: " + QString::number(userPF.getRegion()) + "\n";
@@ -367,8 +371,8 @@ void MainWindow::timerGUIUpdate(){
             }
         }
 
-        ui->TotalTimeLabel->setText("TIME REMAINING: " + QString::number(float(mainTime)/1000)); //Can we get by updating this every 10 ms instead of 1?
-        ui->localTimeLabel->setText("NEXT BLINK: " + QString::number(float(mainTime-blinkTiming)/1000));
+        ui->TotalTimeLabel->setText(tr("TIME REMAINING: ") + QString::number(float(mainTime)/1000)); //Can we get by updating this every 10 ms instead of 1?
+        ui->localTimeLabel->setText(tr("NEXT BLINK: ") + QString::number(float(mainTime-blinkTiming)/1000));
         if (mainTime <= blinkTiming && iterExit-exitPool.begin() != userSP.arbitrary_Target-1){
             //If the clock has reached the next blink, and if its not the final blink, then proceed
             iterExit++;
@@ -377,11 +381,11 @@ void MainWindow::timerGUIUpdate(){
     }
     if (!totalActive && !exitActive){
         qDebug() << "BasicTimer stopped!";
-        ui->TotalTimeLabel->setText("Complete!");
+        ui->TotalTimeLabel->setText(tr("Complete!"));
         //u32 seedFinal = ui->outTable->item(userSP.arbitrary_Target-1,0)->text().toInt(nullptr,16);
         u32 seedFinal = exitPool[userSP.arbitrary_Target-1].seed;
-        ui->statusLabel->setText("FINISHED! New seed: 0x" + QString::number(seedFinal,16).toUpper()
-                                 + "\nTotal Advancements: " + QString::number(findGapConfident(seedAfterMin,seedFinal)));
+        ui->statusLabel->setText(tr("FINISHED! New seed: 0x") + QString::number(seedFinal,16).toUpper()
+                                 + tr("\nTotal Advancements: ") + QString::number(findGapConfident(seedAfterMin,seedFinal)));
         qDebug() << "Seed: " << QString::number(seedFinal,16);
         basicTimer->stop(); //set this to be after both totalTimer and exitTimer finish
         sfxBlinkOccurs.setMuted(wasMuted);
@@ -414,7 +418,7 @@ void MainWindow::runCalibration(u32 seed){
     //     userSP.arbitrary_Target = exitPool.size()-1; //right?
     // }
     ui->outTable->setRowCount(userSP.arbitrary_Target);
-    ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Frames");
+    ui->outTable->setHorizontalHeaderLabels(QStringList() << tr("Seed") << tr("Frames"));
     iterExit = exitPool.begin();
     postPool(iterExit,iterExit+userSP.arbitrary_Target,0);
     ui->outTable->resizeColumnsToContents();
@@ -445,15 +449,15 @@ void MainWindow::runCalibration(u32 seed){
 int MainWindow::performSearchPass(u32 &outSeed){
     if (!mainPool.empty()){
         std::vector<int> resultIndexes = searchPool(mainPool,blinkList,userSP.flexValue/2); //does not persist between searches -- for size(), null == 0
-            postInterval(QString::number(resultIndexes.size()) + " seeds.",blinkList.back(),blinkList.size()-1); //TABLE UPDATE
+            postInterval(QString::number(resultIndexes.size()) + tr(" seeds."),blinkList.back(),blinkList.size()-1); //TABLE UPDATE
             if (resultIndexes.size() > 1){
-                ui->statusLabel->setText("Searching... " + QString::number(resultIndexes.size()) + " result(s) found!");
+                ui->statusLabel->setText(tr("Searching... ") + QString::number(resultIndexes.size()) + tr(" result(s) found!"));
                 return 2;
             } else if (resultIndexes.size() == 1){
                 foundIdx = resultIndexes.front()+blinkList.size()-1;
                 outSeed = mainPool[foundIdx].seed;
                 qDebug() << QString::number(outSeed,16) << " SEED";
-                seedInfo = "SUCCESS: Seed is: 0x" + QString::number(outSeed,16).toUpper() + "\nAdvances from " + QString::number(ui->searchMinBox->value()) + ": " + QString::number(findGapConfident(seedAfterMin,outSeed,1));
+                seedInfo = tr("SUCCESS: Seed is: 0x") + QString::number(outSeed,16).toUpper() + tr("\nAdvances from ") + QString::number(ui->searchMinBox->value()) + ": " + QString::number(findGapConfident(seedAfterMin,outSeed,1));
                 ui->statusLabel->setText(seedInfo);
                 foundIdx = resultIndexes.front();
                 //Use debug if necessary
@@ -487,10 +491,10 @@ void MainWindow::postPool(iterP setP, iterP limitP, int rowCurrent){
             highlightTableRow(rowCurrent,tbl_warningBlink);
             u32 ttSeed = setP->seed;
             if (userPF.getEmu5()){
-                tblSeed->setToolTip("This blink has a ~60.67% chance to be early by 1 advancement.\nIf so, the seed would be: " + QString::number(LCG(ttSeed),16));
+                tblSeed->setToolTip(tr("This blink has a ~60.67% chance to be early by 1 advancement.\nIf so, the seed would be: ") + QString::number(LCG(ttSeed),16));
             } else {
-                tblSeed->setToolTip("This blink has a ~56.78% chance of delaying 1 advancement, and a ~9.65% chance of delaying 2 advancements.\nThe seed would be: "
-                                    + QString::number(LCG(ttSeed),16) + " and " + QString::number(LCG(ttSeed),16) + " respectively.");
+                tblSeed->setToolTip(tr("This blink has a ~56.78% chance of delaying 1 advancement, and a ~9.65% chance of delaying 2 advancements.\nThe seed would be: ")
+                                    + QString::number(LCG(ttSeed),16) + tr(" and ") + QString::number(LCG(ttSeed),16) + tr(" respectively."));
                 /*
                 # 9.65% chance of 4 calls
                 # 56.78% chance of 3 calls
@@ -544,16 +548,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_startButton_clicked()
 {
-    if (ui->startButton->text() == "START"){
+    if (ui->startButton->text() == tr("START")){
         //ui->pushButton->setEnabled(false);
         qDebug() << QString::number(ui->seedEntry->text().toUInt(nullptr,16),16);
         //keycodetoname
-        ui->statusLabel->setText("Press " + keyCodeToName(keys.getBlinkKey()) + " to search!"); //Allow user to change hotkey.
+        ui->statusLabel->setText(tr("Press ") + keyCodeToName(keys.getBlinkKey()) + tr(" to search!")); //Allow user to change hotkey.
         ui->outTable->clear();
         ui->outTable->setRowCount(1);
         ui->outTable->setColumnCount(2);
         ui->outTable->setItem(0,0,new QTableWidgetItem());
-        ui->outTable->setHorizontalHeaderLabels(QStringList() << "Candidates"<<"Frames");//Dummy sizing, to set up for later
+        ui->outTable->setHorizontalHeaderLabels(QStringList() << tr("Candidates") << tr("Frames"));//Dummy sizing, to set up for later
 
         ui->outTable->setStyleSheet("QTableWidget{border: 2px solid green;padding:6px;padding-left:10px;}" + tableStyle);
         ui->outTable->resizeColumnsToContents();
@@ -582,20 +586,20 @@ void MainWindow::on_startButton_clicked()
         ui->seedQFrame->setEnabled(false);
         ui->copyButton->setVisible(false);
         ui->copyButton->setEnabled(false);
-        ui->copyButton->setText("Copy");
-        ui->pasteButton->setText("Paste");
-        ui->startButton->setText("STOP");
+        ui->copyButton->setText(tr("Copy"));
+        ui->pasteButton->setText(tr("Paste"));
+        ui->startButton->setText(tr("STOP"));
         ui->arbTargetBox->setFocusPolicy(Qt::NoFocus);
         ui->startButton->clearFocus();
         wasMuted = sfxBlinkOccurs.isMuted();
     } else {
-        ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : "STATUS" );
-        ui->statusLabel->setText(ui->statusLabel->text().contains("Error!") ? "STATUS" : ui->statusLabel->text());
+        ui->statusLabel->setText((hotKeyLockState == CALIBRATE) ? ui->statusLabel->text() : tr("STATUS") );
+        ui->statusLabel->setText(ui->statusLabel->text().contains(tr("Error!")) ? tr("STATUS") : ui->statusLabel->text());
         totalTimer->stop();
         basicTimer->stop();
         sfxBlinkOccurs.setMuted(wasMuted);
-        ui->TotalTimeLabel->setText("TIME REMAINING:");
-        ui->localTimeLabel->setText("NEXT BLINK:");
+        ui->TotalTimeLabel->setText(tr("TIME REMAINING:"));
+        ui->localTimeLabel->setText(tr("NEXT BLINK:"));
         hotKeyLockState = INACTIVE;
         ui->timerFrame->setEnabled(false);
         ui->arbTargetBox->setEnabled(true);
@@ -607,7 +611,7 @@ void MainWindow::on_startButton_clicked()
         ui->copyButton->setEnabled(false);
         ui->targetSeedLayoutWidget->setVisible(false);
         ui->nudgeOffsetLabel->setText("0");
-        ui->startButton->setText("START");
+        ui->startButton->setText(tr("START"));
     }
 }
 
@@ -632,7 +636,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     case PRESEARCH:
         if (event->key() == keys.getBlinkKey()){
             hotKeyLockState = LISTEN;
-            ui->statusLabel->setText("Listening!");
+            ui->statusLabel->setText(tr("Listening!"));
             start = std::chrono::high_resolution_clock::now();
         }
         break;
@@ -668,7 +672,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
                 runCalibration(seed);
 
             } else if (status == 0){
-                ui->statusLabel->setText("FAILURE");
+                ui->statusLabel->setText(tr("FAILURE"));
                 sfxSearchFailure.play();
                 hotKeyLockState = INACTIVE;
             }
@@ -714,13 +718,13 @@ void MainWindow::on_seeInputButton_clicked()
             retroInputPool.push_back(pool({blinkList[i],mainPool[foundIdx+i].seed}));
         }
         postPool(retroInputPool.begin(),retroInputPool.end(),0);
-        ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Input");
-        ui->seeInputButton->setText("v See future blinks");
+        ui->outTable->setHorizontalHeaderLabels(QStringList() << tr("Seed") << tr("Input"));
+        ui->seeInputButton->setText(tr("v See future blinks"));
     } else {
         resultsActiveView = true;
         restoreResults();
-        ui->outTable->setHorizontalHeaderLabels(QStringList() << "Seed" << "Frames");
-        ui->seeInputButton->setText("^ See inputs");
+        ui->outTable->setHorizontalHeaderLabels(QStringList() << tr("Seed") << tr("Frames"));
+        ui->seeInputButton->setText(tr("^ See inputs"));
     }
 }
 
@@ -849,14 +853,14 @@ void MainWindow::on_copyButton_clicked()
 {
     QClipboard *clip = QApplication::clipboard();
     clip->setText(ui->outTable->item(userSP.arbitrary_Target-1,0)->text());
-    ui->copyButton->setText("Copied!");
+    ui->copyButton->setText(tr("Copied!"));
 }
 
 void MainWindow::on_pasteButton_clicked()
 {
     ui->seedEntry->setText("");
     ui->seedEntry->paste();
-    ui->pasteButton->setText("Pasted!");
+    ui->pasteButton->setText(tr("Pasted!"));
 }
 
 
@@ -903,26 +907,26 @@ void MainWindow::on_arbTargetBox_editingFinished()
  {
      ui->targetSeedEntry->setText("");
      ui->targetSeedEntry->paste();
-     ui->targetPasteButton->setText("Pasted!");
+     ui->targetPasteButton->setText(tr("Pasted!"));
  }
 
 
  void MainWindow::on_targetSeedEntry_textChanged(const QString &arg1)
  {
-     ui->targetPasteButton->setText("Paste");
+     ui->targetPasteButton->setText(tr("Paste"));
      ui->statusLabel->setText(seedInfo);
      bool targetOk;
      arg1.toUInt(&targetOk,16);
      ui->targetSeedSearchButton->setEnabled(targetOk && arg1.toUpper() != ui->seedEntry->text().toUpper());
-     if (ui->statusLabel->text().contains("Target is not a valid seed!")){
-        ui->statusLabel->text().remove("Error! Target is not a valid seed!"); //does this really work?
+     if (ui->statusLabel->text().contains(tr("Target is not a valid seed!"))){
+        ui->statusLabel->text().remove(tr("Error! Target is not a valid seed!")); //does this really work?
      }
  }
 
 
 void MainWindow::on_targetSeedEntry_selectionChanged()
 {
-    if(ui->targetSeedEntry->text() == "(optional)"){
+    if(ui->targetSeedEntry->text() == tr("(optional)")){
         ui->targetSeedEntry->setMaxLength(8);
         ui->targetSeedEntry->setText("");
     }
@@ -932,7 +936,7 @@ void MainWindow::on_targetSeedEntry_editingFinished()
 {
     if (ui->targetSeedEntry->text() == ""){
         ui->targetSeedEntry->setMaxLength(10);
-        ui->targetSeedEntry->setText("(optional)");
+        ui->targetSeedEntry->setText(tr("(optional)"));
     }
 }
 
@@ -943,7 +947,7 @@ void MainWindow::on_targetSeedSearchButton_clicked()
     bool targetOk;
     u32 targetSeed = ui->targetSeedEntry->text().toUInt(&targetOk,16);
     if (!targetOk){ //probably redundant, included to be extra safe
-        ui->statusLabel->setText("Error! Target is not a valid seed!");
+        ui->statusLabel->setText(tr("Error! Target is not a valid seed!"));
         return;
     }
 
@@ -998,7 +1002,7 @@ void MainWindow::on_targetSeedSearchButton_clicked()
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText("Warning!");
-        msgBox.setInformativeText("The seed you are searching for is located far ahead of your current seed.\nThe tool may freeze for a long time in order to produce a blink list.\n\nAre you sure you want to continue?\n");
+        msgBox.setInformativeText(tr("The seed you are searching for is located far ahead of your current seed.\nThe tool may freeze for a long time in order to produce a blink list.\n\nAre you sure you want to continue?\n"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         int ret = msgBox.exec();
@@ -1011,11 +1015,11 @@ void MainWindow::on_targetSeedSearchButton_clicked()
     }
     //FAILURE
 
-    ui->statusLabel->setText("Error! Seed is " + QString::number(resultTarget) + " advances away!");
+    ui->statusLabel->setText(tr("Error! Seed is ") + QString::number(resultTarget) + tr(" advances away!"));
     if (resultTarget < 0){
-        ui->statusLabel->setText(ui->statusLabel->text() + "\nYour target is behind your input seed");
+        ui->statusLabel->setText(ui->statusLabel->text() + tr("\nYour target is behind your input seed"));
     } else {
-        ui->statusLabel->setText(ui->statusLabel->text() + "\nYou overshot your target");
+        ui->statusLabel->setText(ui->statusLabel->text() + tr("\nYou overshot your target"));
     }
 }
 
