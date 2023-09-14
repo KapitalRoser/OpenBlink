@@ -11,6 +11,7 @@
 #include <QClipboard>
 #include <filesystem>
 #include <QMessageBox>
+#include <QTranslator>
 #include "blinkbase.h"
 #include "keycodes.h"
 #include "timersettings.h" //not to be confused with the timersettingsdialogue class
@@ -44,6 +45,7 @@ public:
     bool resultsActiveView;
     u32 seedAfterMin;
     QString seedInfo;
+    QTranslator* t; //For Lang switching at runtime.
 
     bool initialWriteComplete;
 
@@ -140,6 +142,8 @@ private slots:
 
     void on_actionLog_triggered();
 
+    void on_actionLang_triggered();
+
     void on_copyButton_clicked();
 
     void on_pasteButton_clicked();
@@ -169,6 +173,8 @@ private slots:
     void on_slowerButtonX5_clicked();
 
     void on_fasterButtonX5_clicked();
+
+    void on_actionLanguage_triggered();
 
 private:
     Ui::MainWindow *ui;
