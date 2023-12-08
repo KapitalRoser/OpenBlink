@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(githubAction,&QAction::triggered,this,&MainWindow::on_actionGithub_triggered);
     QAction *helpAction = ui->menubar->addAction(tr("Help"));
     connect(helpAction,&QAction::triggered,this,&MainWindow::on_actionHelp_triggered);
+    QAction *langAction = ui->menubar->addAction(tr("日本語"));
+    connect(langAction,&QAction::triggered,this,&MainWindow::on_actionLang_triggered);
     std::queue<QDropShadow> shadowSet;
     shadowSet = fillShadowSet(10,this); //update this number for number of shadows needed
     applyShadow(ui->statusFrame,shadowSet);
@@ -133,7 +135,8 @@ searchParameters MainWindow::collectParamInputs()
 
 void MainWindow::writeAllSettings(){
     //this is kinda inefficient, as it get's called every time the user changes a value. But not sure how else to do it. Maybe on window exit only?
-
+    //probably better to create a settings class object, which has methods like appendToSettings() and allows handles this stuff on the backend.
+    //This is effectively a saveSettings() function.
     //Add language setting?
 
     if (!initialWriteComplete){
@@ -210,7 +213,7 @@ bool MainWindow::applyAllSettings()
 //    for(std::string x : fileData){
 //        qDebug() << QString::fromStdString(x);
 //    }
-
+    //order here is critically important.
     ui->gameBox->setCurrentIndex(std::stoi(fileData[1]) ? 2 : std::stoi(fileData[0])); //really should remove emu5 line and merge with game variable.
     ui->regionBox->setCurrentIndex(std::stoi(fileData[2]));
     ui->flexValueBox->setValue(std::stoi(fileData[3]));
@@ -849,6 +852,15 @@ void MainWindow::on_actionLog_triggered()
     logWin.exec();
 }
 
+void MainWindow::on_actionLang_triggered()
+{
+    qDebug() << "ACTION HIT!";
+
+    t->load(":/resfix1/jpn.qm");
+//    qApp->installTranslator(t);
+//    //ui->retranslateUi(this);
+}
+
 void MainWindow::on_copyButton_clicked()
 {
     QClipboard *clip = QApplication::clipboard();
@@ -1036,5 +1048,20 @@ void MainWindow::on_fasterButtonX5_clicked()
     for (int x = 0; x < 5; ++x) {
         on_fasterButton_clicked();
     }
+}
+
+
+void MainWindow::on_actionLanguage_triggered()
+{
+   qDebug() << this->t->language(); //This isn't valid.
+   //Can we derive which language we are in currently without a setting?
+   //can make simpler by just toggle the language like a bool.
+   //If more langs added in the future, can convert to its own modal submenu like the other settings.
+
+   //Read label for current language if possible. Otherwise read variable in settings.
+   //Switch language in settings/label.
+
+   //refresh gui if needed.
+   //Ah. will need to reimport the language localization file potentially because of the new field.
 }
 

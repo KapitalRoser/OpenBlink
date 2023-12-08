@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
-    <height>717</height>
+    <width>932</width>
+    <height>733</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1649,8 +1649,8 @@ border-color: lightgrey;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>747</width>
-     <height>19</height>
+     <width>932</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuSettings">
@@ -1660,6 +1660,7 @@ border-color: lightgrey;
     <addaction name="actionHotkeys"/>
     <addaction name="actionSounds"/>
     <addaction name="actionTimer"/>
+    <addaction name="actionLanguage"/>
    </widget>
    <addaction name="menuSettings"/>
   </widget>
@@ -1691,6 +1692,11 @@ border-color: lightgrey;
     <font>
      <family>Century Gothic</family>
     </font>
+   </property>
+  </action>
+  <action name="actionLanguage">
+   <property name="text">
+    <string>日本語</string>
    </property>
   </action>
  </widget>
